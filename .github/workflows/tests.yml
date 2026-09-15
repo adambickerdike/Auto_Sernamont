@@ -1,0 +1,49 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unit:
+    name: unit tests (no hardware)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install analysis dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # The suite deliberately imports no instrument drivers: it parses the
+          # large modules with `ast` and exercises the pure-analysis modules
+          # directly, so PyVISA, pythonnet and a display are not needed.
+          pip install numpy scipy matplotlib pyserial
+
+      - name: Run the test suite
+        working-directory: tests
+        run: |
+          fail=0
+          for f in test_*.py; do
+            printf '%-55s ' "$f"
+            if python "$f" > /tmp/out.log 2>&1; then
+              echo PASS
+            else
+              echo FAIL
+              sed 's/^/    /' /tmp/out.log | tail -25
+              fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Byte-compile the measurement package
+        run: python -m compileall -q pockels tests

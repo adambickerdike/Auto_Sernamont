@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: >-
+  PockelsMap: automated Sénarmont polarimetry for electro-optic and
+  ferroelectric mapping of BaTiO3 thin films
+message: >-
+  If you use this software or its analysis in your work, please cite it.
+type: software
+authors:
+  - family-names: Bickerdike
+    given-names: Adam
+repository-code: 'https://github.com/adambickerdike/PockelsMap'
+abstract: >-
+  An instrument-control and analysis system for measuring the linear
+  electro-optic (Pockels) response and the ferroelectric switching behaviour of
+  a 10x10 electrode array on a barium titanate thin film at 1550 nm. It drives
+  three motorised polarisation optics, a two-axis translation stage, a
+  100-channel electrode switching matrix, a source-measure unit, a function
+  generator, an oscilloscope and a lock-in amplifier, and turns the acquired
+  phasors into normalised electro-optic rotations, angular certificates,
+  hysteresis-loop metrics and chip-level maps.
+keywords:
+  - electro-optics
+  - Pockels effect
+  - barium titanate
+  - ferroelectrics
+  - polarimetry
+  - Senarmont
+  - lock-in detection
+  - laboratory automation
+  - photonics
+license: MIT

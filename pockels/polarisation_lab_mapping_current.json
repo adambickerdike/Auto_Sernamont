@@ -1,0 +1,222 @@
+{
+  "created_at": "2026-06-11T09:27:00",
+  "calibration_json_path": "/mnt/d/Pockels_Setup/Control/rotator_lab_frame_mark_calibration.json",
+  "source_calibration_json": "/mnt/d/Pockels_Setup/Control/rotator_lab_frame_mark_calibration.json",
+  "lab_angle_convention": {
+    "x_deg": 0.0,
+    "y_deg": 90.0,
+    "linear_polarisation_period_deg": 180.0,
+    "note": "Raw motor zero is not lab x. These manually anchored raw offsets define the lab-frame axes."
+  },
+  "setup": {
+    "trusted_source_run": "manual_default_readback_2026-06-11",
+    "trusted_source_calibration_json": "/mnt/d/Pockels_Setup/Control/rotator_lab_frame_mark_calibration.json",
+    "current_calibration_json": "/mnt/d/Pockels_Setup/Control/polarisation_lab_mapping_current.json",
+    "physical_reference": "P1/input polariser fixed parallel to lab y; HWP raw 11.9607 and QWP raw 330.2051 have fast-axis white marks parallel to lab y; ANL raw 154.8231 inferred as crossed/null for lab-y input, so it transmits lab x."
+  },
+  "calibrated_lab_axis_reference": {
+    "lab_angle_convention": {
+      "x_deg": 0.0,
+      "y_deg": 90.0,
+      "linear_polarisation_period_deg": 180.0,
+      "note": "Raw motor zero is not lab x. These manually anchored raw offsets define the lab-frame axes."
+    },
+    "raw_setpoints_deg": {
+      "HWP_incident_x": 326.9607,
+      "HWP_incident_y": 11.9607,
+      "QWP_axis_x": 60.205100000000016,
+      "QWP_axis_y": 330.2051,
+      "ANL_transmit_x": 154.8231,
+      "ANL_transmit_y": 64.8231
+    },
+    "inverse_raw_setpoints_deg": {
+      "HWP_for_lab_x": 326.9607,
+      "HWP_for_lab_y": 11.9607,
+      "QWP_for_lab_x": 60.205100000000016,
+      "QWP_for_lab_y": 330.2051,
+      "ANL_for_lab_x": 154.8231,
+      "ANL_for_lab_y": 64.8231,
+      "note": "QWP/analyser x and y raw settings have 180 deg equivalent branches; HWP incident-polarisation settings repeat every 90 raw degrees."
+    },
+    "raw_to_lab_check_deg": {
+      "HWP_x_theta_i": 0.0,
+      "HWP_y_theta_i": 90.0,
+      "QWP_x_axis_theta": 0.0,
+      "QWP_y_axis_theta": 90.0,
+      "ANL_x_transmission_theta": 0.0,
+      "ANL_y_transmission_theta": 90.0
+    },
+    "axis_errors_deg": {
+      "HWP_x_error_deg": 0.0,
+      "HWP_y_error_deg": 0.0,
+      "QWP_x_error_deg": 0.0,
+      "QWP_y_error_deg": 0.0,
+      "ANL_x_error_deg": 0.0,
+      "ANL_y_error_deg": 0.0
+    },
+    "max_abs_axis_error_deg": 0.0,
+    "crossed_null_states": {
+      "incident_y_analyser_x": {
+        "HWP_raw": 11.9607,
+        "QWP_raw": 330.2051,
+        "ANL_raw": 154.8231,
+        "incident_theta_i_deg": 90.0,
+        "analyser_theta_deg": 0.0,
+        "expected": "crossed analyser, optical null if the beam remains linearly y-polarised"
+      },
+      "incident_x_analyser_y": {
+        "HWP_raw": 326.9607,
+        "QWP_raw": 330.2051,
+        "ANL_raw": 64.8231,
+        "incident_theta_i_deg": 0.0,
+        "analyser_theta_deg": 90.0,
+        "expected": "crossed analyser, optical null if the beam remains linearly x-polarised"
+      }
+    },
+    "passed": true,
+    "tolerance_deg": 1e-06
+  },
+  "verification_status": {
+    "run": true,
+    "passed": true,
+    "tolerance_deg": 0.5,
+    "failures": [],
+    "note": "Manual current mapping from 2026-06-11 default readback. HWP/QWP are physical fast-axis marks; ANL is inferred from crossed nulling with known lab-y input."
+  },
+  "verification_errors_deg": {},
+  "raw_to_lab_formulas": {
+    "incident_theta_i_deg": "wrap180(90 + 2*s_H*(H_raw - 11.9607))",
+    "qwp_axis_theta_deg": "wrap180(90 + s_Q*(Q_raw - 330.2051))",
+    "analyser_theta_deg": "wrap180(90 + s_A*(A_raw - 64.8231))",
+    "signs": {
+      "s_H": 1,
+      "s_Q": 1,
+      "s_A": 1
+    }
+  },
+  "lab_to_raw_formulas": {
+    "HWP_for_incident_theta": "H_y_raw + s_H*angle_diff_periodic(theta, 90, 180)/2",
+    "QWP_for_axis_theta": "Q_y_raw + s_Q*angle_diff_periodic(theta, 90, 180)",
+    "ANL_for_transmission_theta": "A_y_raw + s_A*angle_diff_periodic(theta, 90, 180)",
+    "note": "Use calibrated x/y branches in calibrated_lab_axis_reference for exact x/y presets."
+  },
+  "mapping_table": [
+    {
+      "theta_lab_deg": 0.0,
+      "hwp_raw_deg": 326.9607,
+      "hwp_equiv_raw_deg": "326.960700;56.960700;146.960700;236.960700",
+      "qwp_raw_deg": 60.205100000000016,
+      "qwp_equiv_raw_deg": "60.205100;240.205100",
+      "analyser_raw_deg": 154.8231,
+      "analyser_equiv_raw_deg": "154.823100;334.823100"
+    },
+    {
+      "theta_lab_deg": 15.0,
+      "hwp_raw_deg": 334.4607,
+      "hwp_equiv_raw_deg": "334.460700;64.460700;154.460700;244.460700",
+      "qwp_raw_deg": 255.20510000000002,
+      "qwp_equiv_raw_deg": "255.205100;75.205100",
+      "analyser_raw_deg": 349.8231,
+      "analyser_equiv_raw_deg": "349.823100;169.823100"
+    },
+    {
+      "theta_lab_deg": 22.5,
+      "hwp_raw_deg": 338.2107,
+      "hwp_equiv_raw_deg": "338.210700;68.210700;158.210700;248.210700",
+      "qwp_raw_deg": 262.7051,
+      "qwp_equiv_raw_deg": "262.705100;82.705100",
+      "analyser_raw_deg": 357.3231,
+      "analyser_equiv_raw_deg": "357.323100;177.323100"
+    },
+    {
+      "theta_lab_deg": 30.0,
+      "hwp_raw_deg": 341.9607,
+      "hwp_equiv_raw_deg": "341.960700;71.960700;161.960700;251.960700",
+      "qwp_raw_deg": 270.2051,
+      "qwp_equiv_raw_deg": "270.205100;90.205100",
+      "analyser_raw_deg": 4.823099999999997,
+      "analyser_equiv_raw_deg": "4.823100;184.823100"
+    },
+    {
+      "theta_lab_deg": 45.0,
+      "hwp_raw_deg": 349.4607,
+      "hwp_equiv_raw_deg": "349.460700;79.460700;169.460700;259.460700",
+      "qwp_raw_deg": 285.2051,
+      "qwp_equiv_raw_deg": "285.205100;105.205100",
+      "analyser_raw_deg": 19.823099999999997,
+      "analyser_equiv_raw_deg": "19.823100;199.823100"
+    },
+    {
+      "theta_lab_deg": 60.0,
+      "hwp_raw_deg": 356.9607,
+      "hwp_equiv_raw_deg": "356.960700;86.960700;176.960700;266.960700",
+      "qwp_raw_deg": 300.2051,
+      "qwp_equiv_raw_deg": "300.205100;120.205100",
+      "analyser_raw_deg": 34.8231,
+      "analyser_equiv_raw_deg": "34.823100;214.823100"
+    },
+    {
+      "theta_lab_deg": 67.5,
+      "hwp_raw_deg": 0.7106999999999992,
+      "hwp_equiv_raw_deg": "0.710700;90.710700;180.710700;270.710700",
+      "qwp_raw_deg": 307.7051,
+      "qwp_equiv_raw_deg": "307.705100;127.705100",
+      "analyser_raw_deg": 42.3231,
+      "analyser_equiv_raw_deg": "42.323100;222.323100"
+    },
+    {
+      "theta_lab_deg": 75.0,
+      "hwp_raw_deg": 4.460699999999999,
+      "hwp_equiv_raw_deg": "4.460700;94.460700;184.460700;274.460700",
+      "qwp_raw_deg": 315.2051,
+      "qwp_equiv_raw_deg": "315.205100;135.205100",
+      "analyser_raw_deg": 49.8231,
+      "analyser_equiv_raw_deg": "49.823100;229.823100"
+    },
+    {
+      "theta_lab_deg": 90.0,
+      "hwp_raw_deg": 11.9607,
+      "hwp_equiv_raw_deg": "11.960700;101.960700;191.960700;281.960700",
+      "qwp_raw_deg": 330.2051,
+      "qwp_equiv_raw_deg": "330.205100;150.205100",
+      "analyser_raw_deg": 64.8231,
+      "analyser_equiv_raw_deg": "64.823100;244.823100"
+    },
+    {
+      "theta_lab_deg": 112.5,
+      "hwp_raw_deg": 23.2107,
+      "hwp_equiv_raw_deg": "23.210700;113.210700;203.210700;293.210700",
+      "qwp_raw_deg": 352.7051,
+      "qwp_equiv_raw_deg": "352.705100;172.705100",
+      "analyser_raw_deg": 87.3231,
+      "analyser_equiv_raw_deg": "87.323100;267.323100"
+    },
+    {
+      "theta_lab_deg": 135.0,
+      "hwp_raw_deg": 34.4607,
+      "hwp_equiv_raw_deg": "34.460700;124.460700;214.460700;304.460700",
+      "qwp_raw_deg": 15.205100000000016,
+      "qwp_equiv_raw_deg": "15.205100;195.205100",
+      "analyser_raw_deg": 109.8231,
+      "analyser_equiv_raw_deg": "109.823100;289.823100"
+    },
+    {
+      "theta_lab_deg": 157.5,
+      "hwp_raw_deg": 45.7107,
+      "hwp_equiv_raw_deg": "45.710700;135.710700;225.710700;315.710700",
+      "qwp_raw_deg": 37.705100000000016,
+      "qwp_equiv_raw_deg": "37.705100;217.705100",
+      "analyser_raw_deg": 132.3231,
+      "analyser_equiv_raw_deg": "132.323100;312.323100"
+    }
+  ],
+  "files": {
+    "outdir": "/mnt/d/Pockels_Setup/Control",
+    "calibration_json": "/mnt/d/Pockels_Setup/Control/rotator_lab_frame_mark_calibration.json",
+    "mapping_json": "/mnt/d/Pockels_Setup/Control/polarisation_lab_mapping_current.json",
+    "mapping_csv": "/mnt/d/Pockels_Setup/Control/polarisation_lab_mapping_current.csv",
+    "mapping_markdown": "/mnt/d/Pockels_Setup/Control/polarisation_lab_mapping_current.md"
+  },
+  "trusted": true,
+  "trusted_reason": "Manual default readback supplied on 2026-06-11: HWP/QWP fast-axis marks at lab y; ANL x inferred from crossed null against lab-y input."
+}
