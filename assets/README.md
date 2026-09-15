@@ -31,9 +31,21 @@ from the repository root.
 | `pixel_grid.png` | `tools/fig_system.py` | Pixel numbering, the display frame used by the GUI, and the electrode routing map. |
 | `switch_matrix_circuit.png` | `tools/fig_system.py` | The 100-channel switching matrix, from the Arduino pins to the selected electrode pair. |
 | `timing_breakdown.png` | `tools/fig_system.py` | Where the wall-clock time goes, per pixel and per campaign. |
+| `perovskite_structure.png` | `tools/fig_material.py` | The cubic ABO₃ cell, the tetragonal distortion with the Ti off-centring, and the six polar variants. |
+| `polarisation_rotation.png` | `tools/fig_material.py` | The free-energy valley connecting two polar variants, the transverse susceptibility it controls, and why the shear coefficient inherits it. |
+| `strain_phase_diagram.png` | `tools/fig_material.py` | Schematic misfit-strain phase diagram, and the rotation path a buffer layer opens. |
+| `domain_visibility.png` | `tools/fig_material.py` | The film as a domain mosaic, and which domains produce a first-order signal at normal incidence. |
+| `eo_from_susceptibility.png` | `tools/fig_material.py` | The chain from epitaxial strain to a measured microradian. |
 
 Shared style and physics helpers live in `tools/_figstyle.py` and
 `tools/_polarisation.py`.
+
+> **Note**
+> The crystallographic drawings use atom radii chosen for legibility, and the
+> phase-diagram boundaries are schematic. The displacements, axes, phase
+> sequence and free-energy landscapes follow the accepted physics rather than
+> being invented, and the pages that use them say where a boundary position is
+> illustrative rather than computed.
 
 ## Curated measurement data
 

@@ -46,7 +46,7 @@ The manual is the point of this repository. Start wherever you need to.
 [Null-slope readout](docs/physics/03-senarmont-readout.md)
 [Angular dependence](docs/physics/04-incident-polarisation.md)
 [Ferroelectric switching](docs/physics/05-ferroelectrics.md)
-[Theory of the instrument](docs/physics/06-instrument-theory.md)
+[Theory of the instrument](docs/physics/07-instrument-theory.md)
 
 </td>
 <td width="25%" valign="top">
@@ -170,7 +170,7 @@ feeds an oscilloscope for the slow DC level and a lock-in amplifier for the
 30 kHz phasor.
 
 Full walk-through: [The optical beamline](docs/experiment/beamline.md) and
-[Theory of the instrument](docs/physics/06-instrument-theory.md).
+[Theory of the instrument](docs/physics/07-instrument-theory.md).
 
 ---
 

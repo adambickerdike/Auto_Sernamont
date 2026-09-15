@@ -5,7 +5,7 @@ non-trivial algorithm in the package it states the problem, gives the
 mathematics, says why *this* method and not an alternative, quotes its cost or
 convergence rate, names the constants the code actually uses, and links to the
 implementation. The physics those algorithms serve is in
-[Theory of the Instrument](../physics/06-instrument-theory.md); the
+[Theory of the Instrument](../physics/07-instrument-theory.md); the
 operational recipe for the motion searches is in
 [Motion Control](motion-control.md). This page is the layer in between.
 
@@ -355,7 +355,7 @@ $a_\perp = \mathrm{Im}(E_s\hat{e}^{*})$.
 
 Minimise the detected power $P(q, a)$ over the quarter-wave plate angle $q$ and
 the analyser angle $a$. From equation (7) of
-[Theory of the Instrument](../physics/06-instrument-theory.md#14-the-master-intensity-equation),
+[Theory of the Instrument](../physics/07-instrument-theory.md#14-the-master-intensity-equation),
 near the null $P$ is quadratic in the angular offsets, so the landscape is a
 **tilted two-dimensional paraboloid**. But:
 
@@ -870,7 +870,7 @@ invented when a branch does not reach zero volts.
 4. Subtract the baseline slope from `_tail_linear_slope()`, a degree-1
    `np.polyfit` of $S$ against $V$ in each saturation tail, averaged over the
    two tails. This removes the quadratic electro-optic background derived in
-   [Theory of the Instrument §2](../physics/06-instrument-theory.md#2-harmonic-structure-and-where-the-second-harmonic-comes-from),
+   [Theory of the Instrument §2](../physics/07-instrument-theory.md#2-harmonic-structure-and-where-the-second-harmonic-comes-from),
    which under a DC bias is linear in that bias.
 
 The moments are then taken with weights $w_k = \lvert d_k\rvert$ where
@@ -1042,7 +1042,7 @@ manual [[36]](../references.md#ref-36) and, for the general treatment, Meade
 [[32]](../references.md#ref-32) and Scofield
 [[33]](../references.md#ref-33). The
 resulting rotation noise floor is worked through in
-[Theory of the Instrument §4](../physics/06-instrument-theory.md#4-noise-budget).
+[Theory of the Instrument §4](../physics/07-instrument-theory.md#4-noise-budget).
 
 ### 10.3 Where "two time constants times the filter order" comes from
 
@@ -1189,7 +1189,7 @@ certainly is not.
 
 ## Continue
 
-- [Theory of the Instrument](../physics/06-instrument-theory.md): the physics
+- [Theory of the Instrument](../physics/07-instrument-theory.md): the physics
   these algorithms implement, the transfer function and the noise budget.
 - [Motion Control](motion-control.md): the operational recipe for the searches
   of §4 and §5, with the fallback chain and the diagnostic logging.

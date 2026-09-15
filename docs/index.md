@@ -36,7 +36,7 @@
 | [The null-slope readout](physics/03-senarmont-readout.md) | why the birefringence must be compensated, Malus and its derivative, why ±45°, the triplet, the complex model and the operating-point certificate |
 | [Angular dependence](physics/04-incident-polarisation.md) | the signed 2θ model and four-lobed magnitude, what a polar plot does and does not prove, and why arbitrary encoder zeros do not matter |
 | [Ferroelectric switching](physics/05-ferroelectrics.md) | domains, poling and its kinetics, butterfly versus signed loop, the metric set, the loop taxonomy, rate dependence, domain reset |
-| [Theory of the instrument](physics/06-instrument-theory.md) | the end-to-end forward model of this bench: the Jones product, the harmonic content, the transfer function factor by factor, a noise budget with real numbers, the systematics, and the error propagation |
+| [Theory of the instrument](physics/07-instrument-theory.md) | the end-to-end forward model of this bench: the Jones product, the harmonic content, the transfer function factor by factor, a noise budget with real numbers, the systematics, and the error propagation |
 
 ### 🔧 The experiment: *the bench itself*
 

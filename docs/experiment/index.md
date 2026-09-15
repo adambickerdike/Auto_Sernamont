@@ -164,6 +164,6 @@ Related reading elsewhere in the site:
 
 <div align="center">
 
-[← Theory of the instrument](../physics/06-instrument-theory.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The optical beamline →](beamline.md)
+[← Theory of the instrument](../physics/07-instrument-theory.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The optical beamline →](beamline.md)
 
 </div>
