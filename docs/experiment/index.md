@@ -164,6 +164,6 @@ Related reading elsewhere in the site:
 
 <div align="center">
 
-[← Ferroelectric switching](../physics/05-ferroelectrics.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The optical beamline →](beamline.md)
+[← Theory of the instrument](../physics/06-instrument-theory.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The optical beamline →](beamline.md)
 
 </div>

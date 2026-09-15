@@ -475,6 +475,6 @@ every term in the [Glossary](../reference/glossary.md).
 
 <div align="center">
 
-[← Instrument control](instrument-control.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [Operating guide →](../guide/index.md)
+[← Instrument control](instrument-control.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [Numerical methods →](algorithms.md)
 
 </div>

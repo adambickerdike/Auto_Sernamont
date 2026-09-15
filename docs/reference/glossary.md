@@ -207,6 +207,6 @@ The short forms that appear in column names, terminal output and figure labels.
 
 <div align="center">
 
-[← Data schema](data-schema.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md)
+[← Data schema](data-schema.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [Bibliography →](../references.md)
 
 </div>

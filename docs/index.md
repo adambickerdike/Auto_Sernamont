@@ -36,6 +36,7 @@
 | [The null-slope readout](physics/03-senarmont-readout.md) | why the birefringence must be compensated, Malus and its derivative, why ±45°, the triplet, the complex model and the operating-point certificate |
 | [Angular dependence](physics/04-incident-polarisation.md) | the signed 2θ model and four-lobed magnitude, what a polar plot does and does not prove, and why arbitrary encoder zeros do not matter |
 | [Ferroelectric switching](physics/05-ferroelectrics.md) | domains, poling and its kinetics, butterfly versus signed loop, the metric set, the loop taxonomy, rate dependence, domain reset |
+| [Theory of the instrument](physics/06-instrument-theory.md) | the end-to-end forward model of this bench: the Jones product, the harmonic content, the transfer function factor by factor, a noise budget with real numbers, the systematics, and the error propagation |
 
 ### 🔧 The experiment: *the bench itself*
 
@@ -55,6 +56,7 @@
 | [Architecture](software/architecture.md) | the two-process model, file-based IPC, the five phases of a run, the measurement decision tree, failure policy |
 | [Motion control](software/motion-control.md) | the Elliptec protocol and encoder arithmetic, backlash, verification, fault recovery, the stage, the alignment search algorithms |
 | [Instrument control and timing](software/instrument-control.md) | the anatomy of one lock-in point, why phasors average in X/Y, gating sequences, adaptive poling, the timing budget |
+| [Numerical methods](software/algorithms.md) | the coding theory: phasor statistics, least squares, pattern search, golden section, robust statistics, curve fitting, and the range controller, each with its source |
 | [The data pipeline](software/data-pipeline.md) | what is computed automatically, the quality-flag system, the offline scripts, loading the data in Python |
 
 ### 📋 Operating: *how to actually run it*
@@ -74,6 +76,7 @@
 | [CLI reference](reference/cli.md) | every flag, generated from the argument parsers |
 | [Data schema](reference/data-schema.md) | every output file, column by column |
 | [Glossary](reference/glossary.md) | symbols, terms and abbreviations |
+| [Bibliography](references.md) | the numbered reference list the physics pages cite, with a note on each entry saying what this repository uses it for |
 
 ---
 

@@ -118,6 +118,6 @@ has already cost somebody a day, a chip, or a dataset.
 
 <div align="center">
 
-[← The data pipeline](../software/data-pipeline.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [Installation →](installation.md)
+[← Numerical methods](../software/algorithms.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [Installation →](installation.md)
 
 </div>
