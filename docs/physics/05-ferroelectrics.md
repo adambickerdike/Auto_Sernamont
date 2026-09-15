@@ -863,6 +863,6 @@ Full bibliography: [`../references.md`](../references.md).
 
 <div align="center">
 
-[← Angular dependence](04-incident-polarisation.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [Theory of the instrument →](07-instrument-theory.md)
+[← Angular dependence](04-incident-polarisation.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The material →](06-material.md)
 
 </div>

@@ -825,6 +825,6 @@ each one names the extra information that would break it.
 
 <div align="center">
 
-[← Ferroelectric switching](05-ferroelectrics.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The experiment →](../experiment/index.md)
+[← The material](06-material.md) &nbsp;·&nbsp; [Documentation home](../index.md) &nbsp;·&nbsp; [Repository](../../README.md) &nbsp;·&nbsp; [The experiment →](../experiment/index.md)
 
 </div>

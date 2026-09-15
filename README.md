@@ -7,7 +7,7 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/adambickerdike/Auto_Sernamont/tests.yml?branch=main&style=flat-square&label=tests)](../../actions/workflows/tests.yml)
 [![Stars](https://img.shields.io/github/stars/adambickerdike/Auto_Sernamont?style=flat-square&color=f59e0b)](../../stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/adambickerdike/Auto_Sernamont?style=flat-square&color=7c3aed)](../../commits/main)
-[![Docs](https://img.shields.io/badge/docs-28_pages-16a34a.svg?style=flat-square)](docs/)
+[![Docs](https://img.shields.io/badge/docs-29_pages-16a34a.svg?style=flat-square)](docs/)
 
 ### **[Documentation](docs/)** · **[Physics](docs/physics/)** · **[The instrument](docs/experiment/)** · **[The code](docs/software/)** · **[Quick start](docs/guide/quickstart.md)** · **[References](docs/references.md)**
 
@@ -46,6 +46,7 @@ The manual is the point of this repository. Start wherever you need to.
 [Null-slope readout](docs/physics/03-senarmont-readout.md)
 [Angular dependence](docs/physics/04-incident-polarisation.md)
 [Ferroelectric switching](docs/physics/05-ferroelectrics.md)
+[The material](docs/physics/06-material.md)
 [Theory of the instrument](docs/physics/07-instrument-theory.md)
 
 </td>

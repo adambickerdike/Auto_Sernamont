@@ -17,7 +17,7 @@
 | If you are… | Read, in this order |
 | --- | --- |
 | **A new operator who needs data** | [Installation](guide/installation.md) → [Quick start](guide/quickstart.md) → [Operator manual](guide/operating.md) → [Troubleshooting](guide/troubleshooting.md) |
-| **A physicist who needs to interpret the data** | [Physics overview](physics/index.md) → [Null-slope readout](physics/03-senarmont-readout.md) → [Ferroelectrics](physics/05-ferroelectrics.md) → [Data pipeline](software/data-pipeline.md) |
+| **A physicist who needs to interpret the data** | [Physics overview](physics/index.md) → [Null-slope readout](physics/03-senarmont-readout.md) → [Ferroelectrics](physics/05-ferroelectrics.md) → [The material](physics/06-material.md) → [Data pipeline](software/data-pipeline.md) |
 | **Rebuilding or repairing the bench** | [The experiment](experiment/index.md) → [Instruments](experiment/instruments.md) → [Switching matrix](experiment/switch-matrix.md) → [Motion control](software/motion-control.md) |
 | **Changing the code** | [Software overview](software/index.md) → [Architecture](software/architecture.md) → [Motion control](software/motion-control.md) → [CLI reference](reference/cli.md) |
 | **In a hurry** | [Quick start](guide/quickstart.md) and [Glossary](reference/glossary.md) |
@@ -36,6 +36,7 @@
 | [The null-slope readout](physics/03-senarmont-readout.md) | why the birefringence must be compensated, Malus and its derivative, why ±45°, the triplet, the complex model and the operating-point certificate |
 | [Angular dependence](physics/04-incident-polarisation.md) | the signed 2θ model and four-lobed magnitude, what a polar plot does and does not prove, and why arbitrary encoder zeros do not matter |
 | [Ferroelectric switching](physics/05-ferroelectrics.md) | domains, poling and its kinetics, butterfly versus signed loop, the metric set, the loop taxonomy, rate dependence, domain reset |
+| [The material](physics/06-material.md) | perovskite BaTiO₃, the polar distortion, domains, where the electro-optic coefficients actually come from, polarisation rotation, and what epitaxial strain and a buffer layer do to them |
 | [Theory of the instrument](physics/07-instrument-theory.md) | the end-to-end forward model of this bench: the Jones product, the harmonic content, the transfer function factor by factor, a noise budget with real numbers, the systematics, and the error propagation |
 
 ### 🔧 The experiment: *the bench itself*

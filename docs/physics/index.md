@@ -72,8 +72,16 @@ with a lock-in amplifier. That chain is the whole design.
 4. **Then [04: Angular Dependence](04-incident-polarisation.md)** for why the
    half-wave plate is swept, what the polar plot does and does not prove, and
    the counting argument that says why.
-5. **Finally [05: Ferroelectric Switching](05-ferroelectrics.md)** for poling,
+5. **Then [05: Ferroelectric Switching](05-ferroelectrics.md)** for poling,
    hysteresis loops and their metrics.
+6. **[06: The Material](06-material.md)** answers the question the other pages
+   leave open: where the coefficients come from in the first place, and why the
+   shear one is the large one. Read it whenever you want to know what sets the
+   number rather than how it is measured.
+7. **[07: Theory of the Instrument](07-instrument-theory.md)** assembles the
+   whole bench into one forward model, with the transfer function, the noise
+   budget and the systematics. It is the reference to reach for when a
+   measurement does not behave.
 
 ---
 
@@ -86,6 +94,8 @@ with a lock-in amplifier. That chain is the whole design.
 | [03: The Null-Slope Sénarmont Readout](03-senarmont-readout.md) | Why the static birefringence is compensated first, where the Sénarmont arrangement comes from, Malus' law, the second-order expansion at the null, the noise model and the real optimum analyser offset, the triplet and the balanced four-point fit, the complex model $Z(\psi) = P + E_1\sin 2\psi + E_2\cos 2\psi$, the DC fringe, the derivative-aligned rotation, the full normalisation chain to $\lvert r_\mathrm{eff}\rvert$, and the uncertainty budget. |
 | [04: Angular Dependence](04-incident-polarisation.md) | The $2\theta_i$ dependence derived from the tensor projection, the quadrature between axial and shear mechanisms, the algebra that turns a signed second harmonic into a four-lobed magnitude, the intrinsic ceiling on the magnitude fit, the counting argument for identifiability, the reference-frame argument, and field-direction self-calibration. |
 | [05: Ferroelectric Switching](05-ferroelectrics.md) | Ferroelectricity in BaTiO₃ and why $r \propto P_s$, domains and cancellation, the Landau-Devonshire double well and the intrinsic coercive field, why the measured coercive field is orders of magnitude smaller, KAI and nucleation-limited switching behind the stretched exponential, butterfly versus signed loop, the projection and its validity test, the full loop-metric table, the loop-type taxonomy, rate dependence, domain reset, and why an electro-optic loop is not a polarisation loop. |
+| [06: The Material](06-material.md) | Perovskite BaTiO₃, the tolerance factor and the second-order Jahn-Teller origin of the polar distortion, the phase sequence as a rotation staircase, domains and which ones this instrument can see, the derivation of $r_{ijk} \simeq 2g_{ijkl}P_l\varepsilon_0\chi_{kk}$ from the quadratic polarisation-optic coupling, why $r_{42}$ inherits the transverse susceptibility, polarisation rotation and how flat the valley actually is, misfit strain and what a buffer layer does, and what all of it means for a graded chip. |
+| [07: Theory of the Instrument](07-instrument-theory.md) | The end-to-end forward model of this bench: the Jones product in the sample eigenframe, the geometric gain, the first-order expansion and the odd-parity result behind the triplet, the harmonic content at DC, 1f and 2f, the transfer function factor by factor with its known, measured and unmeasured entries, a noise budget in the instrument's real numbers, eight sized systematics, the error propagation into the coefficient, and the measurement's degeneracies. |
 
 ---
 

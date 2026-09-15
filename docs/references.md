@@ -484,6 +484,110 @@ distribution of relaxation times comes from Williams and Watts
 
 ---
 
+## Perovskite structure, strain and polarisation rotation
+
+<a id="ref-53"></a>
+**[53]** V. M. Goldschmidt, "Die Gesetze der Krystallochemie",
+*Naturwissenschaften*, 1926.
+*Used for:* the tolerance factor, the one number that says whether a perovskite
+relieves its size mismatch by tilting its octahedra or by letting the B cation
+displace off centre. It is why barium titanate is a displacive ferroelectric
+and calcium titanate is not. See
+[06 §2.2](physics/06-material.md#22-the-tolerance-factor-and-why-barium-titanate-not-calcium-titanate).
+
+<a id="ref-54"></a>
+**[54]** R. E. Cohen, "Origin of ferroelectricity in perovskite oxides",
+*Nature*, 1992.
+*Used for:* the first-principles account of why the polar distortion happens at
+all, namely that hybridisation between the Ti 3d and O 2p states softens the
+short-range repulsion that would otherwise hold the cubic structure, and for
+the resulting picture of an energy surface that is flat to within
+millielectronvolts per formula unit. That flatness is the premise of the whole
+polarisation-rotation argument. See
+[06 §2.3](physics/06-material.md#23-why-the-displacement-happens-at-all) and
+[06 §6.4](physics/06-material.md#64-how-flat-is-flat-the-numbers).
+
+<a id="ref-55"></a>
+**[55]** H. Fu and R. E. Cohen, "Polarization rotation mechanism for ultrahigh
+electromechanical response in single-crystal piezoelectrics", *Nature*, 2000.
+*Used for:* the polarisation rotation mechanism itself: the result that a
+ferroelectric responds enormously to a field applied *across* its polar axis
+when the free-energy valley connecting two polar variants is flat. This is the
+reason the shear electro-optic coefficient of barium titanate is an order of
+magnitude larger than its axial coefficients. See
+[06 §6](physics/06-material.md#6-polarisation-rotation-and-why-the-shear-coefficient-is-large).
+
+<a id="ref-56"></a>
+**[56]** B. Noheda and co-workers, "A monoclinic ferroelectric phase in the
+Pb(Zr₁₋ₓTiₓ)O₃ solid solution", *Applied Physics Letters*, 1999.
+*Used for:* the discovery of a low-symmetry monoclinic phase near a
+morphotropic phase boundary, which is the structural signature that the
+polarisation has come unlocked from any high-symmetry direction. This
+repository uses it as the evidence that a flat rotation valley is a real,
+observable state of a crystal and not only a picture. See
+[06 §6.5](physics/06-material.md#65-rotation-against-extension-as-a-general-split).
+
+<a id="ref-57"></a>
+**[57]** N. A. Pertsev, A. G. Zembilgotov and A. K. Tagantsev, "Effect of
+mechanical boundary conditions on phase diagrams of epitaxial ferroelectric
+thin films", *Physical Review Letters*, 1998.
+*Used for:* the misfit-strain against temperature phase diagram, and for the
+thermodynamic argument behind it: a film clamped to a substrate is held at
+fixed in-plane strain rather than fixed stress, so the bulk Landau potential is
+the wrong one and must be Legendre-transformed. This is the map on which a
+buffer layer is a horizontal move. See
+[06 §7.1](physics/06-material.md#71-a-clamped-film-is-at-fixed-strain-not-fixed-stress).
+
+<a id="ref-58"></a>
+**[58]** Y. L. Li and L. Q. Chen, "Temperature-strain phase diagram for BaTiO₃
+thin films", *Applied Physics Letters*, 2006.
+*Used for:* the revised BaTiO₃ misfit-strain phase diagram computed with better
+Landau coefficients. It is cited here as the reason the phase boundaries of
+[[57]](#ref-57) are treated as a topology rather than as a set of coordinates.
+
+<a id="ref-59"></a>
+**[59]** K. J. Choi and co-workers, "Enhancement of ferroelectricity in strained
+BaTiO₃ thin films", *Science*, 2004.
+*Used for:* the demonstration that about one percent of biaxial compression
+raises the Curie temperature of a BaTiO₃ film by several hundred degrees and
+substantially increases its remanent polarisation. It is the experimental proof
+that epitaxial strain is a lever of the same size as the energies that separate
+the polar phases. See
+[06 §7.1](physics/06-material.md#71-a-clamped-film-is-at-fixed-strain-not-fixed-stress).
+
+<a id="ref-60"></a>
+**[60]** D. Damjanovic, "A morphotropic phase boundary system based on
+polarization rotation and polarization extension", *Applied Physics Letters*,
+2010.
+*Used for:* the organising split between polarisation *rotation*, a response to
+a field across the polar axis governed by the anisotropy alone, and
+polarisation *extension*, a response to a field along it governed by the full
+double well. That split is what separates $r_{42}$ from $r_{13}$ and $r_{33}$,
+and it is the same split that separates $d_{15}$ from $d_{33}$. See
+[06 §6.5](physics/06-material.md#65-rotation-against-extension-as-a-general-split).
+
+<a id="ref-61"></a>
+**[61]** H. Yu, N. Guo, C. Deng, H. Han, W. Li, C. Lebudi, S. Wang, Y. Li,
+Y. Chen, S. Peng, J. Zhang, J. Ma, Q. Zheng, J.-F. Li and Q. Li, "Tuning the
+Electro-Optic Properties of BaTiO3 Epitaxial Thin Films via Buffer
+Layer-Controlled Polarization Rotation Paths", *Advanced Functional Materials*,
+volume 34, 2024.
+*Used for:* the demonstration that a GdScO₃ buffer layer grown on LSAT tunes
+the phase constitution of a BaTiO₃ film along a continuous polarisation
+rotation path, from an out-of-plane tetragonal-like phase, through an
+intermediate rhombohedral-like phase, to an in-plane tetragonal-like phase, and
+that the buffered films reach an enhanced effective electro-optic coefficient
+of 175 pm/V. Also for the thermodynamic theory of the optical properties with
+which the authors design a large low-temperature response by engineering the
+energetic competition between ferroelectric phases, arriving at a low-symmetry
+monoclinic phase. This is the worked example of the mechanism of
+[06 §6](physics/06-material.md#6-polarisation-rotation-and-why-the-shear-coefficient-is-large),
+and the 175 pm/V is their number for their films and their geometry, not one
+measured here. See
+[06 §7.2](physics/06-material.md#72-the-buffer-layer-and-the-cited-result).
+
+---
+
 ## Where these are cited
 
 | Page | Principal references |
@@ -493,7 +597,8 @@ distribution of relaxation times comes from Williams and Watts
 | [03 The null-slope readout](physics/03-senarmont-readout.md) | [[11]](#ref-11) [[13]](#ref-13) [[30]](#ref-30) [[31]](#ref-31) [[32]](#ref-32) [[33]](#ref-33) [[34]](#ref-34) [[35]](#ref-35) [[36]](#ref-36) [[43]](#ref-43) [[44]](#ref-44) [[45]](#ref-45) |
 | [04 Angular dependence](physics/04-incident-polarisation.md) | [[2]](#ref-2) [[3]](#ref-3) [[7]](#ref-7) [[9]](#ref-9) [[26]](#ref-26) [[44]](#ref-44) |
 | [05 Ferroelectric switching](physics/05-ferroelectrics.md) | [[6]](#ref-6) [[16]](#ref-16) [[17]](#ref-17) [[18]](#ref-18) [[19]](#ref-19) [[20]](#ref-20) [[21]](#ref-21) [[22]](#ref-22) [[23]](#ref-23) [[24]](#ref-24) [[25]](#ref-25) [[26]](#ref-26) [[28]](#ref-28) |
-| [06 Instrument theory](physics/07-instrument-theory.md) | [[3]](#ref-3) [[11]](#ref-11) [[24]](#ref-24) [[25]](#ref-25) [[26]](#ref-26) [[28]](#ref-28) [[29]](#ref-29) [[30]](#ref-30) [[31]](#ref-31) [[32]](#ref-32) [[33]](#ref-33) [[34]](#ref-34) [[35]](#ref-35) [[36]](#ref-36) [[37]](#ref-37) [[38]](#ref-38) |
+| [06 The material](physics/06-material.md) | [[6]](#ref-6) [[7]](#ref-7) [[24]](#ref-24) [[25]](#ref-25) [[26]](#ref-26) [[53]](#ref-53) [[54]](#ref-54) [[55]](#ref-55) [[56]](#ref-56) [[57]](#ref-57) [[58]](#ref-58) [[59]](#ref-59) [[60]](#ref-60) [[61]](#ref-61) |
+| [07 Instrument theory](physics/07-instrument-theory.md) | [[3]](#ref-3) [[11]](#ref-11) [[24]](#ref-24) [[25]](#ref-25) [[26]](#ref-26) [[28]](#ref-28) [[29]](#ref-29) [[30]](#ref-30) [[31]](#ref-31) [[32]](#ref-32) [[33]](#ref-33) [[34]](#ref-34) [[35]](#ref-35) [[36]](#ref-36) [[37]](#ref-37) [[38]](#ref-38) |
 | [Algorithms](software/algorithms.md) | [[49]](#ref-49) [[50]](#ref-50) [[51]](#ref-51) [[52]](#ref-52) [[20]](#ref-20) [[22]](#ref-22) [[23]](#ref-23) [[25]](#ref-25) [[26]](#ref-26) [[32]](#ref-32) [[33]](#ref-33) [[36]](#ref-36) [[39]](#ref-39) [[40]](#ref-40) [[41]](#ref-41) [[42]](#ref-42) [[43]](#ref-43) [[44]](#ref-44) [[45]](#ref-45) [[46]](#ref-46) [[48]](#ref-48) |
 
 ---
