@@ -322,56 +322,65 @@ def figure_hysteresis_butterfly():
 
 
 def figure_loop_taxonomy():
-    v = np.linspace(-40, 40, 400)
+    v = np.linspace(-40, 40, 600)
 
-    def loop(vc_p, vc_m, w, sat=1.0, lin=0.0, frozen=0.0, pinch=False):
-        down = sat * np.tanh((v - vc_m) / w) + lin * v + frozen
-        up = sat * np.tanh((v - vc_p) / w) + lin * v + frozen
-        if pinch:
-            down = 0.55 * (np.tanh((v - vc_m) / w) + np.tanh((v - vc_m - 16) / w)) + lin * v
-            up = 0.55 * (np.tanh((v - vc_p) / w) + np.tanh((v - vc_p + 16) / w)) + lin * v
+    def loop(vc_p, vc_m, w, sat=1.0, lin=0.0, frozen=0.0):
+        """A plain hysteresis pair: each branch is a shifted tanh."""
+        return (sat * np.tanh((v - vc_m) / w) + lin * v + frozen,
+                sat * np.tanh((v - vc_p) / w) + lin * v + frozen)
+
+    def pinched(bias=12.0, half=4.0, w=2.5):
+        """Two sub-populations with opposite internal bias.
+
+        The loop is closed at zero field and open on either side, which is the
+        signature of defect pinning or internal-bias (defect-dipole) pairs.
+        """
+        down = 0.5 * (np.tanh((v - (bias - half)) / w)
+                      + np.tanh((v + (bias + half)) / w))
+        up = 0.5 * (np.tanh((v - (bias + half)) / w)
+                    + np.tanh((v + (bias - half)) / w))
         return down, up
 
     cases = [
         ("ferroelectric_square", loop(8, -8, 1.6),
-         "uniform, well-switching\nsquareness $\\geq$ 0.7", GREEN),
+         "uniform, well-switching\nmean squareness $\\geq$ 0.7", GREEN),
         ("ferroelectric_slanted", loop(9, -9, 6.0),
-         "broad coercive-field\ndistribution", CYAN),
+         "broad coercive-field\ndistribution (squareness 0.3\u20130.7)", CYAN),
         ("ferroelectric_rounded", loop(10, -10, 14.0),
-         "strong disorder,\ngraded switching", BLUE),
-        ("pinched", loop(6, -6, 3.0, pinch=True),
-         "defect pinning, internal-bias\npairs, AFE-like", VIOLET),
+         "strong disorder,\ngraded switching (squareness < 0.3)", BLUE),
+        ("pinched", pinched(),
+         "constricted at zero field: defect pinning,\ninternal-bias pairs, AFE-like", VIOLET),
         ("linear_no_hysteresis", loop(0.4, -0.4, 0.8, sat=0.05, lin=0.022),
-         "paraelectric-like\nreversible response", AMBER),
-        ("imprinted*", loop(16, 2, 2.4),
-         "loop shifted off zero:\na built-in internal bias", PINK),
+         "paraelectric-like reversible response\n(relative opening < 0.15)", AMBER),
+        ("ferroelectric_square *imprinted", loop(16, 2, 2.2),
+         "shifted off zero: a built-in internal\nbias field", PINK),
     ]
 
-    fig, axes = plt.subplots(2, 3, figsize=(11.8, 6.4))
+    fig, axes = plt.subplots(2, 3, figsize=(12.2, 6.8))
     for ax, (name, (down, up), note, col) in zip(axes.ravel(), cases):
         ax.axhline(0, color=GRID, lw=0.9); ax.axvline(0, color=GRID, lw=0.9)
-        ax.plot(v, down, color=LASER, lw=2.0)
-        ax.plot(v, up, color=GREEN, lw=2.0)
+        ax.plot(v, down, color=LASER, lw=2.1)
+        ax.plot(v, up, color=GREEN, lw=2.1)
         ax.set_xlim(-42, 42); ax.set_ylim(-1.45, 1.45)
-        ax.set_xticks([-40, 0, 40]); ax.set_yticks([])
+        ax.set_xticks([-40, -20, 0, 20, 40]); ax.set_yticks([])
         for spine in ("top", "right", "left"):
             ax.spines[spine].set_visible(False)
-        ax.text(0.5, 1.13, name, transform=ax.transAxes, ha="center",
-                fontsize=9.6, color=col, fontweight="bold", family="monospace")
-        ax.text(0.5, -0.30, note, transform=ax.transAxes, ha="center", va="top",
-                fontsize=8.3, color=MUTED, linespacing=1.45)
-        ax.set_xlabel("$V_\\mathrm{dc}$ (V)", fontsize=8.5, labelpad=1)
-    fig.suptitle("Loop taxonomy: what classify_loop() reports and what it means",
-                 x=0.045, ha="left", fontsize=13, fontweight="bold", y=0.985)
-    fig.text(0.045, 0.925,
-             "Deterministic, threshold-documented categories. Every threshold is a module "
+        ax.text(0.5, 1.10, name, transform=ax.transAxes, ha="center",
+                fontsize=9.8, color=col, fontweight="bold", family="monospace")
+        ax.text(0.5, -0.36, note, transform=ax.transAxes, ha="center", va="top",
+                fontsize=8.4, color=MUTED, linespacing=1.5)
+        ax.set_xlabel("$V_\\mathrm{dc}$ (V)", fontsize=8.6, labelpad=2)
+    fig.suptitle("Loop taxonomy: what classify_loop() reports, and what it means",
+                 x=0.045, ha="left", fontsize=13.5, fontweight="bold", y=0.982)
+    fig.text(0.045, 0.912,
+             "Deterministic, threshold-documented categories \u2014 every threshold is a module "
              "constant in pockels_hysteresis_analysis.py and is overridable per call.\n"
-             "Red = descending branch, green = ascending. Modifiers (marked *) such as "
-             "imprinted, partially_frozen, leaky, drifting_loop and saturation_asymmetric\n"
-             "are reported alongside the primary type.",
-             ha="left", fontsize=8.6, color=MUTED, linespacing=1.55)
-    fig.subplots_adjust(left=0.045, right=0.985, top=0.845, bottom=0.10,
-                        hspace=0.62, wspace=0.16)
+             "Red = descending branch, green = ascending. Modifiers (marked *) such as imprinted, "
+             "partially_frozen, leaky, drifting_loop and saturation_asymmetric\nare reported "
+             "alongside the primary type.",
+             ha="left", va="top", fontsize=8.6, color=MUTED, linespacing=1.55)
+    fig.subplots_adjust(left=0.045, right=0.985, top=0.775, bottom=0.095,
+                        hspace=0.78, wspace=0.16)
     fig.savefig(OUT / "loop_taxonomy.png")
     plt.close(fig)
 

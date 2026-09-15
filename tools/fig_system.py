@@ -45,13 +45,13 @@ def figure_pixel_grid():
                 color=INK if selected else MUTED, fontweight="bold")
         ax.text(x, y - 0.26, f"{row},{col}", ha="center", va="center",
                 fontsize=6.2, color=MUTED, family="monospace")
-    ax.set_xlim(-0.75, 9.75); ax.set_ylim(-0.75, 9.75)
+    ax.set_xlim(-0.85, 9.85); ax.set_ylim(-0.75, 10.05)
     ax.set_aspect("equal"); ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
     for spine in ax.spines.values():
         spine.set_visible(False)
-    ax.annotate("", xy=(9.6, 9.75), xytext=(-0.55, 9.75),
+    ax.annotate("", xy=(9.6, 9.62), xytext=(-0.55, 9.62),
                 arrowprops=dict(arrowstyle="-|>", color=SLATE, lw=1.2))
-    ax.text(4.5, 10.05, "col 0 \u2192 9   (stage $x$)", ha="center",
+    ax.text(9.6, 9.78, "col 0 \u2192 9   (stage $x$)", ha="right",
             fontsize=8.6, color=SLATE)
     ax.annotate("", xy=(-0.75, -0.55), xytext=(-0.75, 9.6),
                 arrowprops=dict(arrowstyle="-|>", color=SLATE, lw=1.2))
@@ -85,9 +85,11 @@ def figure_pixel_grid():
     cb = fig.colorbar(im, ax=ax2, fraction=0.046, pad=0.03)
     cb.set_label("electrical switch channel", fontsize=9)
     cb.outline.set_visible(False)
-    title(ax2, "Display frame and electrode routing",
-          "the GUI draws display_col = 10 \u2212 col so the map matches the camera view;\n"
-          "E$n$ is the switch-matrix channel that energises that pixel")
+    ax2.set_title("Display frame and electrode routing", loc="left", pad=30)
+    ax2.text(0.0, 1.075,
+             "the GUI draws display_col = 10 \u2212 col so the map matches the camera view;\n"
+             "E$n$ is the switch-matrix channel that energises that pixel",
+             transform=ax2.transAxes, fontsize=8.5, color=MUTED, linespacing=1.45)
     fig.tight_layout(pad=1.8)
     fig.savefig(OUT / "pixel_grid.png")
     plt.close(fig)

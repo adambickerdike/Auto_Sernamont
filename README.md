@@ -11,7 +11,7 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/adambickerdike/PockelsMap/tests.yml?branch=main&style=flat-square&label=tests)](../../actions/workflows/tests.yml)
 [![Stars](https://img.shields.io/github/stars/adambickerdike/PockelsMap?style=flat-square&color=f59e0b)](../../stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/adambickerdike/PockelsMap?style=flat-square&color=7c3aed)](../../commits/main)
-[![Docs](https://img.shields.io/badge/docs-17_pages-16a34a.svg?style=flat-square)](docs/)
+[![Docs](https://img.shields.io/badge/docs-25_pages-16a34a.svg?style=flat-square)](docs/)
 
 **[Documentation](docs/) · [Quick start](docs/guide/quickstart.md) · [Physics](docs/physics/) · [The instrument](docs/experiment/) · [The code](docs/software/)**
 
@@ -395,7 +395,7 @@ PockelsMap/
 │   └── _bootstrap.py                  pins imports and the working directory
 ├── tests/                22 test files, no hardware, all passing
 ├── firmware/             the Arduino switching-matrix sketch
-├── docs/                 the full manual (17 pages)
+├── docs/                 the full manual (25 pages)
 ├── assets/               schematic, GDS layout, computed figures, brand
 └── tools/                figure generation, Windows USB stability setup
 ```
