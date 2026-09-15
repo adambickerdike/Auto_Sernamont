@@ -38,7 +38,8 @@ from the repository root.
 | `eo_from_susceptibility.png` | `tools/fig_material.py` | The chain from epitaxial strain to a measured microradian. |
 
 Shared style and physics helpers live in `tools/_figstyle.py` and
-`tools/_polarisation.py`.
+`tools/_polarisation.py`. After changing any constant a figure quotes,
+regenerate it and run `python tools/check_docs.py` from the repository root.
 
 > **Note**
 > The crystallographic drawings use atom radii chosen for legibility, and the

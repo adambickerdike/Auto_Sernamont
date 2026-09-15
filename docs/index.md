@@ -117,6 +117,8 @@ whole chip.
 
 Full definitions: [Glossary](reference/glossary.md).
 
+The conventions above are enforced, not merely documented. `python tools/check_docs.py` from the repository root verifies that no dash is used as punctuation, that every relative link and anchor resolves, and that every citation has a matching reference entry. It runs in CI on every push. Project-level instructions for anyone, or anything, editing this repository are in [`CLAUDE.md`](../CLAUDE.md).
+
 ---
 
 <div align="center">
