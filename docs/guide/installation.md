@@ -9,20 +9,20 @@ both, and finishes with two verification steps that take under a minute.
 
 ## 1. Windows is required for measurement
 
-> **Rule 0 — the measurement software must be run from Windows Python, not
+> **Rule 0: the measurement software must be run from Windows Python, not
 > WSL or Linux.**
 
 The XY stage (two Thorlabs KCubeStepper controllers, serials **26006987** for X
 and **26007025** for Y) and the KLS1550 laser are driven through Thorlabs'
 **Kinesis .NET assemblies**. Those assemblies are Windows-only DLLs, loaded into
 Python by `pythonnet` (`import clr`). There is no Linux equivalent, no
-open-source reimplementation in this repository, and no USB-level fallback —
+open-source reimplementation in this repository, and no USB-level fallback.
 [`pockels/stage_xy.py`](../../pockels/stage_xy.py) and
 [`pockels/kls1550.py`](../../pockels/kls1550.py) both fail at import time
 without them.
 
-Everything else on the bench speaks a portable protocol — VISA over USB and
-Ethernet, or plain serial — but the stage sits in the middle of every
+Everything else on the bench speaks a portable protocol (VISA over USB and
+Ethernet, or plain serial), but the stage sits in the middle of every
 measurement, so in practice **the whole acquisition path is Windows-only**.
 
 ### What runs anywhere
@@ -42,7 +42,7 @@ no hardware attached at all, because they import **no** instrument drivers:
 
 The test suite parses the large GUI module with `ast` and exercises individual
 functions in isolation, precisely so it never needs PyVISA, pythonnet or a
-display. That makes "run the tests" a valid sanity check on any machine — see
+display. That makes "run the tests" a valid sanity check on any machine; see
 [§6](#6-verify-the-installation).
 
 ---
@@ -69,7 +69,7 @@ python -m pip install numpy scipy matplotlib pandas pyvisa pyserial pythonnet cl
 | `tkinter` | the GUI itself | measurement PC (ships with standard Windows Python; missing in some minimal conda environments) |
 
 > **Note** A VISA implementation must also be present for `pyvisa` to find
-> anything. Install NI-VISA or Keysight IO Libraries on the measurement PC —
+> anything. Install NI-VISA or Keysight IO Libraries on the measurement PC;
 > `pyvisa` is only the Python binding, not the backend.
 
 > **Warning** If `python -c "import tkinter"` fails, the GUI cannot start. That
@@ -112,7 +112,7 @@ Cannot find Thorlabs Kinesis. Set THORLABS_KINESIS_PATH or use --kinesis-path.
 
 If you have installed Kinesis somewhere non-standard, set the environment
 variable for the laser and edit the three `clr.AddReference` paths for the
-stage — there is no runtime override for those.
+stage. There is no runtime override for those.
 
 > **Note** Install Kinesis *before* plugging in the KCube controllers, so that
 > Windows picks up the Thorlabs driver rather than a generic one.
@@ -142,7 +142,7 @@ or remove any device. It does two things:
 > instrument vanishing mid-run.** Windows quietly suspends an "idle" hub during
 > a long poling dwell, the SMU or the Arduino drops off the bus, and the worker
 > has to fall into its transport-recovery loop. Do this before your first real
-> campaign, not after you have lost one. The reboot is required — the hub
+> campaign, not after you have lost one. The reboot is required, because the hub
 > policy change does not take effect until the devices re-enumerate.
 
 The automatic recovery behaviour that catches whatever still gets through is
@@ -156,8 +156,8 @@ measurement PC:
 
 - Set the Windows power plan to **High performance** (or a Balanced plan with
   every sleep timeout disabled).
-- Set **Turn off hard disk after** to *Never* — a run writes a CSV row every few
-  seconds for hours.
+- Set **Turn off hard disk after** to *Never*, because a run writes a CSV row
+  every few seconds for hours.
 - Set **Sleep** and **Hibernate** to *Never*. A 49-hour hysteresis campaign must
   survive two nights untouched.
 - Disable screen-saver lock-outs that would suspend the display driver; the GUI
@@ -191,12 +191,12 @@ measurement PC:
 > **The three rotator ports are not auto-resolved.** `PORT_QWP`, `PORT_HWP` and
 > `PORT_ANL` are hard-coded near the top of
 > [`pockels/POL_Chip_Test_Working_2026.py`](../../pockels/POL_Chip_Test_Working_2026.py)
-> (lines 92–94), together with their bus addresses `ADDR_QWP = 2`,
+> (lines 92 to 94), together with their bus addresses `ADDR_QWP = 2`,
 > `ADDR_HWP = 1`, `ADDR_ANL = 2`. If a rotator port changes, edit it there.
 
 The rotator link runs at 9600 8N1. The Arduino runs at 9600 baud and answers
 `1`…`100` to route a pixel, `E1`…`E100` for the paired electrode form, and `0`
-to open everything — see [Switch matrix](../experiment/switch-matrix.md).
+to open everything; see [Switch matrix](../experiment/switch-matrix.md).
 
 ---
 
@@ -215,7 +215,7 @@ done
 ```
 
 All **22** test files should print `PASS`. A `FAIL` here is a software problem,
-not a hardware one — and it tells you so before you have spent an hour at the
+not a hardware one, and it tells you so before you have spent an hour at the
 bench. Individual tests run the same way:
 
 ```bash
@@ -242,8 +242,8 @@ should appear; if one is missing, start with
 python pockels\pockels_fast_map_gui.py
 ```
 
-The **BTO GO!** window opens. Nothing is connected to and **no run folder is
-created** until you press *Start Measurement* — the GUI on its own is only a
+The **BTO GO!** window opens. Nothing is connected and **no run folder is
+created** until you press *Start Measurement*. The GUI on its own is only a
 launcher and a monitor, so this is a safe thing to do just to confirm Tk works.
 
 ---
@@ -253,8 +253,8 @@ launcher and a monitor, so this is a safe thing to do just to confirm Tk works.
 [`pockels/_bootstrap.py`](../../pockels/_bootstrap.py) is imported first by every
 entry script. It pins `sys.path[0]` to `pockels/` so sibling imports always
 resolve to this package, and it pins the working directory to the **repository
-root** so every launch mode — CLI, Spyder `runfile`, double-click, GUI child
-worker — agrees on where "here" is. It announces itself once per process:
+root** so that every launch mode (CLI, Spyder `runfile`, double-click, GUI
+child worker) agrees on where "here" is. It announces itself once per process:
 
 ```text
 [pockels] Working directory pinned to <repo> (runs and calibrations land here); imports pinned to <repo>\pockels
@@ -274,10 +274,10 @@ Consequently all output folders are created at the repository root:
 
 ## Next
 
-- [Quick Start](quickstart.md) — your first measured pixel.
-- [Instruments](../experiment/instruments.md) — what each box on the bench is
+- [Quick Start](quickstart.md), your first measured pixel.
+- [Instruments](../experiment/instruments.md), what each box on the bench is
   and how it is wired.
-- [CLI Reference](../reference/cli.md) — every flag, with defaults.
+- [CLI Reference](../reference/cli.md), every flag, with defaults.
 
 ---
 

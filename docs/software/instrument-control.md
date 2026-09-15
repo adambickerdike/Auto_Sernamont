@@ -29,8 +29,8 @@ combination. It costs about twelve seconds, and this is where every one of them
 goes.
 
 ```text
-1.  Move the analyser to the target angle          — verified readback (motion-control.md §3.2)
-2.  Enable the function-generator drive channel    — verified: CHN?, then EER?
+1.  Move the analyser to the target angle          (verified readback, motion-control.md §3.2)
+2.  Enable the function-generator drive channel    (verified: CHN?, then EER?)
 3.  Settle:  max(--lockin-settle, 2 × TC × filter order)
               = 2.0 s at the production defaults
 4.  Take N = --lockin-avg-readings samples (default 4), spaced by
@@ -38,7 +38,7 @@ goes.
     approximately independent. Each sample is one `MP.` query returning
     magnitude and phase together.
 5.  Check the overload byte before and after the burst
-6.  Average in X/Y (Cartesian) — never in magnitude
+6.  Average in X/Y (Cartesian), never in magnitude
 7.  Record magnitude, phase, X, Y, their standard deviations and standard
     errors, the X/Y covariance, the full-scale fraction and the sample count
 8.  Disable the drive channel
@@ -46,8 +46,8 @@ goes.
 
 **Step 3 is not a guess.** `minimum_lockin_settle_s()` computes the DSP7230's
 own step-settling recommendation, $2 \times \mathrm{TC} \times \text{order}$,
-where the order is the filter-slope index plus one. At the production defaults
-— time-constant index 14 (0.5 s) and a 12 dB/oct filter, so order 2 — that is
+where the order is the filter-slope index plus one. The production defaults are
+time-constant index 14 (0.5 s) and a 12 dB/oct filter, so order 2, giving
 2.0 s. If the operator asks for less, `configure_fast_globals()` **silently
 raises it** and says so on the console. The same value is applied to the sample
 spacing, because two samples taken closer together than the settling time are
@@ -73,12 +73,12 @@ $$\bar{Z} = \frac{1}{N}\sum_k |M_k| e^{i\phi_k}, \qquad |\bar{Z}| = \sqrt{\bar{X
 
 $$\overline{|M|} = \frac{1}{N}\sum_k |M_k| \qquad \text{(wrong)}$$
 
-> **Warning — averaging magnitudes rectifies noise.**
+> **Warning: averaging magnitudes rectifies noise.**
 > Magnitude is $\sqrt{X^2+Y^2}$, a strictly positive-definite function of two
 > noisy quantities. Each individual $|M_k|$ therefore has a **positive bias**:
 > noise in $X$ and $Y$ can only ever push the magnitude *up*, never down. The
 > mean of the magnitudes is biased upward by roughly the noise level, and no
-> amount of extra averaging removes it — more samples converge to the biased
+> amount of extra averaging removes it; more samples converge to the biased
 > value, not the true one.
 >
 > Averaging the phasor first is unbiased, because $X$ and $Y$ noise is
@@ -89,7 +89,7 @@ $$\overline{|M|} = \frac{1}{N}\sum_k |M_k| \qquad \text{(wrong)}$$
 > hysteresis loop the true electro-optic response passes *through zero* and
 > changes sign as the domains reverse. Magnitude averaging turns that genuine
 > zero crossing into a shallow non-zero minimum, blunting the very feature the
-> measurement exists to find — the coercive voltage would be mis-located and
+> measurement exists to find: the coercive voltage would be mis-located and
 > the loop would look artificially "pinched". The sign information is the
 > physics, and only the phasor carries it.
 
@@ -101,9 +101,9 @@ uncertainties obtained by rotating the covariance matrix into radial and
 tangential components along the mean phasor,
 $\sigma_{|Z|}^2 = u_x^2\sigma_x^2 + u_y^2\sigma_y^2 + 2u_xu_y\sigma_{xy}$ with
 $\hat{u} = \bar{Z}/|\bar{Z}|$. Keeping the covariance rather than two
-independent variances matters because a correlated drift in $X$ and $Y$ — a
-laser power drift, say — is *radial*: it inflates the magnitude uncertainty but
-barely touches the phase.
+independent variances matters because a correlated drift in $X$ and $Y$, a
+laser power drift for example, is *radial*: it inflates the magnitude
+uncertainty but barely touches the phase.
 
 `read_lockin_averaged()` in
 [`analyser_sweep_voltage_series.py`](../../pockels/analyser_sweep_voltage_series.py)
@@ -117,7 +117,7 @@ returns both the statistics and the raw sample lists, which are written to
 ## 3. The fixed-range policy
 
 The chip map holds the lock-in sensitivity **fixed** for the entire run at
-index 16 — **200 µV RMS full scale** — with automatic AC gain disabled.
+index 16, **200 µV RMS full scale**, with automatic AC gain disabled.
 
 This is a measurement-integrity decision, not a convenience. A range change
 mid-map rescales the instrument's own gain and offset, and two pixels measured
@@ -150,7 +150,7 @@ in `lockin_configuration.json`. Those strict configuration queries are
 deliberately **not** issued: some DSP7230 firmware/transport combinations return
 an empty string to them even when the write succeeded, and aborting a
 seven-hour run over a cosmetic query is the wrong trade. This is the
-"fail open on telemetry" principle in its purest form — the *configuration*
+"fail open on telemetry" principle in its purest form: the *configuration*
 readback is telemetry, the *measurement* is physics.
 
 Rows are then graded on every read:
@@ -161,7 +161,7 @@ Rows are then graded on every read:
 | ≥ 98 % of full scale (`LOCKIN_FULLSCALE_FAIL_FRACTION`) | **invalid** | `lockin_range_exceeded` |
 | Overload byte set | **invalid** | `lockin_overload` |
 
-Invalid rows are still written to the CSV — nothing is discarded — but they are
+Invalid rows are still written to the CSV (nothing is discarded), but they are
 in `DISQUALIFYING_ROW_FLAGS` and are excluded automatically from every fit. See
 [The Data Pipeline](data-pipeline.md#5-the-quality-flag-system).
 
@@ -177,7 +177,7 @@ spanning two orders of magnitude within a single 45-point sweep.
 opt-in answer, disabled by default.
 
 It chooses among the sensitivity ladder 5, 10, 20, 50, 100, 200 µV full scale
-(indices 11–16) using the already-certified peak response, the current branch,
+(indices 11 to 16) using the already-certified peak response, the current branch,
 and prior points measured at matching voltages on the same branch family. The
 rules are deliberately asymmetric:
 
@@ -191,7 +191,7 @@ rules are deliberately asymmetric:
   too, so the controller only ever narrows on repeated evidence, and then
   cautiously.
 - **Planned changes happen with the AC drive off**, before the existing DC
-  dwell, so they cost no extra time at all — the range write is hidden inside
+  dwell, so they cost no extra time at all: the range write is hidden inside
   30 s of poling that was going to happen anyway.
 - **An unexpectedly high averaged reading is discarded and re-acquired** on a
   wider range. The discarded window is *kept* in
@@ -225,7 +225,7 @@ _funcgen_set_sweep_output(fg, on, verify_command=True, required=True, context=..
 4. OUTPUT ON | OFF
 5. Query EER?   must be 0
                 (−80 means the generator disabled its own output because of an
-                 output-voltage overload — i.e. the load misbehaved)
+                 output-voltage overload, i.e. the load misbehaved)
 6. Sleep 0.2 s
 ```
 
@@ -245,7 +245,7 @@ demodulator. Both channels are configured with `ZLOAD OPEN`.
 
 **Amplitude changes are made with the output off.** `_prepare_hysteresis_ac_drive()`
 forces a verified `OUTPUT OFF`, clears `EER?`, programmes the new amplitude,
-and re-checks `EER?` — because changing 9 Vpp → 4 Vpp while the output is live
+and re-checks `EER?`, because changing 9 Vpp → 4 Vpp while the output is live
 can upset this instrument. `configure_funcgen_safe()` applies the same ordering
 at bring-up and on every reconnect: CH1 is forced off *first*, because after a
 lost handle it may well have remained on.
@@ -261,7 +261,7 @@ $\pm 40$ V ceiling (`DC_HYST_VMAX`) and a 1 mA compliance limit
 ### 6.1 Session setup
 
 ```text
-*CLS ; *RST ; (0.6 s — *RST takes a moment)
+*CLS ; *RST ; (0.6 s, *RST takes a moment)
 SYSTem:FUNCtion:MODE SOURCEVOLTage
 SOURce:VOLTage:TERMinals 2WIRe               deterministic terminal config
 SOURce:VOLTage:SHAPe FIXed
@@ -302,7 +302,7 @@ capped at `SMU_SLEW_RATE_V_PER_MS = 50.0` V/ms rather than using its maximum.
 The reason is capacitive: $i = C\,\mathrm{d}V/\mathrm{d}t$. The device's own
 capacitance turns a fast edge into a large transient current, which trips the
 1 mA compliance limit and aborts the point. At 50 V/ms and $C \approx 1$ nF the
-transient is about 50 µA, comfortably inside compliance — while a 50 V swing in
+transient is about 50 µA, comfortably inside compliance, while a 50 V swing in
 1 ms is still millisecond-scale, far slower than ferroelectric switching, which
 is sub-microsecond. The limit costs nothing physically.
 
@@ -322,18 +322,18 @@ with up to `SMU_DC_READBACK_ATTEMPTS = 3` attempts,
 `SMU_DC_READBACK_RETRY_S = 0.1` s apart, requiring *all three* numeric
 readbacks to come back finite together.
 
-> **Warning — why a 0.5 V mismatch aborts the point before AC turns on.**
+> **Warning: why a 0.5 V mismatch aborts the point before AC turns on.**
 > If the measured terminal voltage differs from the request by more than
 > `SMU_DC_READBACK_TOLERANCE_V = 0.5` V, or if the telemetry is still
 > unavailable after three attempts, the point is **rejected** and the sweep
-> raises — with the AC drive still off.
+> raises, with the AC drive still off.
 >
 > This is the check that catches a broken bond wire, an open probe, a lifted
 > contact or a shorted pixel. The failure signature of all of them is the same:
 > the SMU programmes $+40$ V and the terminals read something else entirely,
 > because the current cannot flow where the software thinks it is flowing. If
 > the measurement continued, the lock-in would faithfully record a real optical
-> phasor — at an unknown applied field. That row would enter the loop, shift
+> phasor, at an unknown applied field. That row would enter the loop, shift
 > the apparent coercive voltage, and be indistinguishable from physics.
 >
 > The abort happens **before AC** for two independent reasons. First, the
@@ -343,19 +343,19 @@ readbacks to come back finite together.
 > Catching the fault one step earlier turns a silently wrong loop into a loud,
 > obvious abort.
 
-### 6.5 Domain reset — `reset_domains_pulsed()`
+### 6.5 Domain reset: `reset_domains_pulsed()`
 
 Bipolar depoling, modelled on the alternating-field erase step in the
 ferroelectric literature: an envelope decaying exponentially from
 `RESET_VMAX = 40` V to `RESET_VMIN = 0.05` V over `RESET_AMP_STEPS = 30`
 amplitudes, with `RESET_CYCLES_PER_AMP = 200` cycles of $+V_n$ then $-V_n$ at
-each, 5 ms per half-cycle — about 12 000 bipolar reversals in ~30 s, slew-limited
+each, 5 ms per half-cycle (about 12 000 bipolar reversals in ~30 s), slew-limited
 as in §6.3.
 
 `OUTPut` stays **on** throughout and the pulses are software-stepped with
 `set_voltage()` rather than using `SHAPe PULSe` with output toggling. Every
 fresh `OUTPut:STATe ON` triggers the SMU's multi-second "Counts/Shapes"
-front-panel banner, during which the rails are not fully established — which
+front-panel banner, during which the rails are not fully established, and that
 would otherwise corrupt the first few hundred pulses of every reset.
 
 ---
@@ -372,7 +372,7 @@ with routed_arduino_channel(matrix, channel, settle_s, require_off=...):
 ```
 
 On entry it sends `turn_all_off()`, waits 50 ms, selects the channel, and waits
-`settle_s`. On exit — in a `finally` — it sends `turn_all_off()` again. With
+`settle_s`. On exit, in a `finally`, it sends `turn_all_off()` again. With
 `require_off=True` a failure to confirm the shutdown re-raises, unless the
 process is unwinding from a `KeyboardInterrupt`, in which case it warns instead
 of masking the interrupt.
@@ -387,11 +387,11 @@ pixel (1..100) ──PIXEL_TO_ELECTRICAL_SWITCH──▶ electrical switch (1..1
 Switching is **exclusive in firmware**: selecting a channel deselects every
 other one, and re-selecting the currently active channel toggles it off.
 `"0\n"` opens everything. With `verify_commands=True` the Python wrapper waits
-up to 2 s for the exact expected acknowledgement line —
-`"-> Electrical Switch N"` or `"-> ALL channels have been turned OFF."` — and
+up to 2 s for the exact expected acknowledgement line, either
+`"-> Electrical Switch N"` or `"-> ALL channels have been turned OFF."`, and
 raises on an `Error:` line or on timeout.
 
-> **Warning — the mapping is checked at import time.**
+> **Warning: the mapping is checked at import time.**
 > The pixel-to-switch mapping is duplicated in three places:
 > `arduino_switch_matrix.PIXEL_TO_ELECTRICAL_SWITCH`,
 > `stage_calibration.PIXEL_TO_PIN` and the firmware array in
@@ -403,8 +403,8 @@ raises on an `Error:` line or on timeout.
 >     raise RuntimeError("Fast-map switch mapping is stale: expected pixel 46 -> 5 and pixel 85 -> 62.")
 > ```
 > and refuses to start if they disagree. A stale map would apply up to 40 V to
-> the *wrong pixel* while labelling the data with the right one — the worst
-> failure mode this system has, because it is completely invisible in the
+> the *wrong pixel* while labelling the data with the right one. That is the
+> worst failure mode this system has, because it is completely invisible in the
 > output. Full details in [The Switch Matrix](../experiment/switch-matrix.md).
 
 ---
@@ -418,7 +418,7 @@ Almost every rule in this section is an ordering rule. Collected in one place:
 | Function generator is brought up with CH1 **off**; only the CH2 reference is enabled | Nothing can be driven before a pixel is routed |
 | SMU is armed at **0 V with the output disabled** at bring-up | The first enable cannot apply a stale level |
 | **Route the Arduino channel, then** enable the SMU | The voltage must never exist before its destination does |
-| `set_voltage()` **then** `output(True)` — never the reverse | A stale programmed level would reach the new pixel |
+| `set_voltage()` **then** `output(True)`, never the reverse | A stale programmed level would reach the new pixel |
 | **Amplitude changes with the drive output off** | The TGF3162 can fault on a live amplitude change |
 | **AC off during every DC poling dwell and every electrical audit** | A 30 kHz probe contaminates the DC leakage current |
 | The point is **aborted before AC turns on** if the electrical audit fails | A wrong field with a good optical read is worse than no read |
@@ -483,9 +483,9 @@ can fit the stretched-exponential (Kohlrausch) form
 $$M(t) = M_\infty + (M_0 - M_\infty)\,\exp\!\left[-\left(t/\tau\right)^{\beta}\right]$$
 
 and return `tau_s`, `beta`, `m0_V`, `m_inf_V` and `r_squared` per pixel. The
-characteristic switching time $\tau$ and the stretching exponent $\beta$ — a
+characteristic switching time $\tau$ and the stretching exponent $\beta$ (a
 direct measure of the *width* of the local switching-time distribution, and so
-of disorder — are obtained at **zero additional measurement cost**, purely
+of disorder) are obtained at **zero additional measurement cost**, purely
 because the poling dwell was instrumented instead of slept through. The
 compositional report joins $\tau$ and $\beta$ against the loop metrics; see
 [Ferroelectric Switching](../physics/05-ferroelectrics.md).
@@ -496,11 +496,11 @@ compositional report joins $\tau$ and $\beta$ against the loop metrics; see
 
 ![Where the wall-clock time goes](../../assets/figures/timing_breakdown.png)
 
-### One lock-in point — about 12 s
+### One lock-in point: about 12 s
 
 | Step | Time |
 | --- | --- |
-| Analyser move + verified readback | ~1–2 s |
+| Analyser move + verified readback | ~1 to 2 s |
 | Function generator on (verified) | ~0.4 s |
 | Settle ($2 \times \mathrm{TC} \times$ order) | 2.0 s |
 | 4 samples × 2.0 s spacing | 8.0 s |
@@ -511,29 +511,29 @@ Two thirds of that is the lock-in's own filter, and it is irreducible at this
 time constant: the samples must be spaced by the settling time to be
 independent, and the settling time is set by the noise bandwidth you need.
 
-### One production pixel — about 4.5–5 min
+### One production pixel: about 4.5 to 5 min
 
 | Step | Time |
 | --- | --- |
-| Stage move + hill-climb alignment | ~20–40 s |
+| Stage move + hill-climb alignment | ~20 to 40 s |
 | Arduino routing + SMU ramp | ~5 s |
-| Adaptive poling | 60–180 s (usually ~60–90 s) |
+| Adaptive poling | 60 to 180 s (usually ~60 to 90 s) |
 | 9 HWP × (verified move + null check) | ~60 s |
 | 9 HWP × 3 lock-in points × ~12 s | ~200 s* |
 | Teardown | ~5 s |
-| **Total** | **≈ 4.5–5 min** |
+| **Total** | **≈ 4.5 to 5 min** |
 
 \* the null/background read shares the analyser position with the previous
 point, so it is cheaper than a full 12 s.
 
 The **calibration pixel** adds the forced 2-D null at every HWP angle, plus the
-balanced four-point fit and its confirmation — roughly **8 min** in total.
+balanced four-point fit and its confirmation, roughly **8 min** in total.
 
-### One hysteresis loop — about 29 min
+### One hysteresis loop: about 29 min
 
 | Step | Time |
 | --- | --- |
-| DC ramp + preset (`DC_RAMP_PRESET_S`) | ~1–2 s |
+| DC ramp + preset (`DC_RAMP_PRESET_S`) | ~1 to 2 s |
 | DC-only poling dwell (`DC_POLING_DWELL_S`) | 30 s |
 | Electrical audit | ~1 s |
 | AC on + settle + averaging | ~6 s |
@@ -550,13 +550,13 @@ traversed $+40 \to -40 \to +40$ as 23 + 22 points.
 | Activity | Wall clock |
 | --- | --- |
 | One lock-in point | ~12 s |
-| One production pixel (9 HWP × triplet) | ~4.5–5 min |
+| One production pixel (9 HWP × triplet) | ~4.5 to 5 min |
 | The calibration pixel | ~8 min |
-| **83-pixel chip map** (the default selection) | **~6–7 h** |
+| **83-pixel chip map** (the default selection) | **~6 to 7 h** |
 | One 45-point hysteresis loop | ~29 min |
 | **100 hysteresis loops** | **~49 h** |
 
-Three quarters of a production pixel is poling and lock-in settling — that is,
+Three quarters of a production pixel is poling and lock-in settling: that is,
 waiting for physics, not for software. This is the honest reason the map uses
 9 HWP × 3 analyser points rather than a full analyser sweep: a naive complete
 plan of 100 pixels × 7 HWP × 5 voltages × 18 analyser angles is 63 000 lock-in

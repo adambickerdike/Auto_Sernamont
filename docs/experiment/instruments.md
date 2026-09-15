@@ -31,7 +31,7 @@ The motion algorithms built on top of these interfaces are described in
 **Auto-resolution.** Windows renumbers USB COM ports whenever cables move.
 `serial_port_resolver.py` identifies the SMU and the Arduino by USB identity
 (VID/PID, serial number, hub location) and, for the Arduino, by probing for its
-`"Signal Matrix Ready"` banner — so those two rarely need editing. The three
+`"Signal Matrix Ready"` banner, so those two rarely need editing. The three
 rotator ports are hard-coded; if one changes you must edit the constant.
 
 ```bat
@@ -40,7 +40,7 @@ python pockels_fast_map_gui.py --cli --list-serial-ports
 
 ---
 
-## 2. Laser — Thorlabs KLS1550 (Kinesis .NET)
+## 2. Laser: Thorlabs KLS1550 (Kinesis .NET)
 
 A fibre-coupled 1550 nm diode laser in a KCube laser source. There is no SCPI
 here: control goes through Thorlabs' `.NET` class library, bridged into Python
@@ -61,12 +61,12 @@ The default setpoint is **7.0 mW** (`--laser-power-mw`); `connect()` also sets
 the input source explicitly via `LaserSourceInputSourceFlags`. In the GUI,
 clicking the laser box in the *Optical Train* panel toggles emission and
 **Apply Laser Power** re-applies the setpoint live. Because the whole `.NET`
-stack is Windows-only, so is the measurement — the analysis modules are not,
+stack is Windows-only, so is the measurement. The analysis modules are not,
 since they import no hardware drivers.
 
 ---
 
-## 3. Rotators — Thorlabs Elliptec ELL14
+## 3. Rotators: Thorlabs Elliptec ELL14
 
 Three identical motorised rotation mounts carry the HWP, the QWP and the
 analyser. The driver is
@@ -76,7 +76,7 @@ analyser. The driver is
 ### 3.1 The wire protocol
 
 Elliptec devices speak a short ASCII-hex protocol over 9600 8N1. Several
-devices can share one bus, distinguished by a one-character address `0`–`F`.
+devices can share one bus, each with a one-character address from `0` to `F`.
 
 ```text
 Packet out:   <addr><2-char command><hex payload>\n
@@ -89,7 +89,7 @@ Packet in:    <addr><2-char reply><hex data>\r\n
 | `gp` | get position | `PO` + 32-bit two's-complement encoder count |
 | `ho` + 1 byte | home (0 = CW, 1 = CCW) | status |
 | `mr` + 4 bytes | **move relative** by a signed encoder delta | `GS` or `PO` |
-| `sv` + 2 hex digits | set velocity, 1–100 % of maximum | status |
+| `sv` + 2 hex digits | set velocity, 1 to 100 % of maximum | status |
 
 Status codes include `ok`, `busy`, `communication timeout`, `mechanical
 timeout`, `command error`, `value out of range`, `module isolated`,
@@ -115,7 +115,7 @@ The device only moves *relatively*. `set_angle()` therefore reads the position
 (`gp`), computes the shortest signed delta wrapped into (−180°, +180°], issues
 `move_by()`, settles, and reads the achieved angle back. So every absolute move
 costs an extra round trip, and is only as good as the readback that preceded
-it — which is why readback verification is not optional in this system.
+it, which is why readback verification is not optional in this system.
 
 ### 3.4 Addresses, tolerances and recovery
 
@@ -124,11 +124,11 @@ it — which is why readback verification is not optional in this system.
 | Resolution | 143 360 counts/rev ≈ **398.2 counts/degree** |
 | Specified accuracy | **±0.05°** |
 | Software tolerance | 0.08° on the accurate chunked path; **0.5°** readback tolerance on fast direct moves (`--rotator-verify-tol`) |
-| Velocity | `sv`, 1–100 %; fast-map default **50 %**, clamped to ≥ 25 % (below which the motor can stall on reversal) |
+| Velocity | `sv`, 1 to 100 %; fast-map default **50 %**, clamped to ≥ 25 % (below which the motor can stall on reversal) |
 | Backlash | 0.3° undershoot then approach from below (`ROTATOR_BACKLASH_DEG`) |
 | Fault recovery | a `sensor` / `limit` / `range` fault triggers `home()` → `tare()` → recompute → retry, inside `set_angle()` |
 
-> **Warning** — the QWP and the analyser both sit at bus address **2**, on
+> **Warning** The QWP and the analyser both sit at bus address **2**, on
 > *different* COM ports; the HWP is address **1** on its own port. If you rewire
 > the Elliptec bus you must update **both** the port and the address, and a
 > mistake here silently moves the wrong optic.
@@ -142,7 +142,7 @@ frame. If you supply exact **raw** angles the software forces
 
 ---
 
-## 4. XY stage — Thorlabs KCubeStepper (Kinesis .NET)
+## 4. XY stage: Thorlabs KCubeStepper (Kinesis .NET)
 
 Two KCube stepper drivers, one per axis, again through `pythonnet`:
 
@@ -171,16 +171,16 @@ Python `Decimal` straight into a .NET `System.Decimal` via `Parse(str(...))`,
 never through a float, so a commanded 2.5000 mm does not arrive as
 2.4999999999.
 
-> **Note — the over-travel quirk.** Kinesis `MoveTo` refuses targets outside
-> 0–25 mm, but `MoveJog` / `MoveContinuous` **do physically move** past those
+> **Note** The over-travel quirk. Kinesis `MoveTo` refuses targets outside
+> 0 to 25 mm, but `MoveJog` / `MoveContinuous` **do physically move** past those
 > limits while *also* throwing an exception. The code suppresses those
 > exceptions and polls the real position instead, with a 2 s timeout. It must
-> never clamp the target into 0–25 mm, because pixels near the edge of the chip
-> genuinely sit slightly outside.
+> never clamp the target into 0 to 25 mm, because pixels near the edge of the
+> chip genuinely sit slightly outside.
 
 ---
 
-## 5. Oscilloscope — Tektronix TBS as a calibrated DC voltmeter
+## 5. Oscilloscope: Tektronix TBS as a calibrated DC voltmeter
 
 The scope is **not** used as a waveform viewer. It is a slow, averaged,
 auto-ranging DC voltmeter that reads the mean detector level. That level tells
@@ -245,7 +245,7 @@ screen (no more than four divisions).
 When the vertical scale changes, the acquisition and the on-screen MEAN do not
 update instantaneously: the first readings after the change are computed partly
 from pre-change data and are simply **wrong**. Averaging them in biases the
-result toward the old range — and because ranging happens exactly when the
+result toward the old range, and because ranging happens exactly when the
 signal has just moved a lot (a new pixel, a new analyser angle), the error
 lands where it does the most damage. The fix is unconditional: wait
 `POST_SCALE_CHANGE_SETTLE_S`, then discard the next
@@ -283,7 +283,7 @@ preamble if needed, and proves recovery with up to three test reads.
 
 ---
 
-## 6. Lock-in — Signal Recovery DSP7230
+## 6. Lock-in: Signal Recovery DSP7230
 
 The AC channel: it extracts the microvolt-level 30 kHz modulation from the
 photodiode signal. Driver: class `DSP7230` in
@@ -323,9 +323,9 @@ plus, from `apply_safe_startup()`, `FLOAT 1` (floating input shell) and
 Other commands used during a run: `MP.` (magnitude and phase in one
 synchronised query), `XY.` (X and Y together), `N` (overload byte), `ST`
 (status byte), `REFN` (harmonic), `REFP.` (reference phase), `FRQ.` (measured
-reference frequency — the unit returns 0 if it is unlocked).
+reference frequency; the unit returns 0 if it is unlocked).
 
-> **Note** — `MP.` is preferred over separate `MAG.` and `PHA.` queries because
+> **Note** `MP.` is preferred over separate `MAG.` and `PHA.` queries because
 > it returns a *synchronised* pair. Two separate queries can straddle a change
 > in the signal and produce a magnitude and a phase that never coexisted.
 
@@ -355,8 +355,8 @@ Rows are graded against it: ≥ 85 % of full scale is *warned*
 ### 6.4 The 2 × TC × order settling rule
 
 A lock-in's output filter is a low-pass of order $n$ (one pole per 6 dB/oct)
-with time constant $\tau$. After a step — a new analyser angle, the drive
-switching on — the output approaches its new value with that filter's impulse
+with time constant $\tau$. After a step (a new analyser angle, or the drive
+switching on) the output approaches its new value with that filter's impulse
 response, so the settling time scales as $n\tau$, not $\tau$. The software
 enforces
 
@@ -364,18 +364,18 @@ $$t_\mathrm{settle} \;\ge\; 2 \,\tau \, n$$
 
 `minimum_lockin_settle_s()` computes `2.0 * TC_seconds * order`, where
 `order = slope_index + 1`, and refuses any TC index below 8 (5 ms) because
-reproducible fast-output mode is disabled. At the production defaults —
-TC index 14 = 500 ms, 12 dB/oct so $n = 2$ — that is **2.0 s**.
+reproducible fast-output mode is disabled. At the production defaults
+(TC index 14 = 500 ms, 12 dB/oct so $n = 2$) that is **2.0 s**.
 
 Both the settle time *and* the spacing between averaged samples are auto-raised
 to that value, so the averaged samples are approximately independent rather
 than repeated looks at the same filtered state. Hysteresis points use ≥ 5 × TC.
 Averaging is done in **X/Y (Cartesian)**, never in magnitude: magnitude is
 $\sqrt{X^2+Y^2}$, a positive-definite function of noisy quantities, so
-averaging magnitudes rectifies noise and biases small signals upward — fatal
-near a coercive point where the true magnitude passes through zero.
+averaging magnitudes rectifies noise and biases small signals upward, which is
+fatal near a coercive point where the true magnitude passes through zero.
 
-### 6.5 Three deliberate quirks — do not "fix" these
+### 6.5 Three deliberate quirks: do not "fix" these
 
 1. **Configuration is write-only; readbacks are skipped.** After applying the
    settings the code records
@@ -395,22 +395,22 @@ near a coercive point where the true magnitude passes through zero.
    logged, and restores the fixed range at the end.)
 3. **`AS` (auto-sensitivity) and `AQN` (auto-phase) are never called.** Auto
    sensitivity would break cross-pixel comparability; **auto-phase would
-   destroy the sign information**, and the sign of the response — the fact that
+   destroy the sign information**, and the sign of the response (the fact that
    +45° and −45° give opposite signs, and that the signed response follows a
-   2θ harmonic — is a large part of the physics.
+   2θ harmonic) is a large part of the physics.
 
-> **Note** — the driver contains a defensive parser, `_parse_float_robust()`,
+> **Note** The driver contains a defensive parser, `_parse_float_robust()`,
 > for a real instrument fault: the DSP7230 occasionally emits a reply with the
 > mantissa duplicated before the exponent (`77.95E7.95E-08`). The parser
 > repairs those, and retries once after clearing I/O, rather than crashing.
 
 ---
 
-## 7. Function generator — Aim-TTi TGF3162
+## 7. Function generator: Aim-TTi TGF3162
 
 | Channel | Role | Settings |
 | --- | --- | --- |
-| **CH1** | AC drive to the chip | 1–9 Vpp (map default **9 Vpp**, hysteresis probe **4 Vpp**), 30 kHz, `ZLOAD OPEN` |
+| **CH1** | AC drive to the chip | 1 to 9 Vpp (map default **9 Vpp**, hysteresis probe **4 Vpp**), 30 kHz, `ZLOAD OPEN` |
 | **CH2** | Lock-in reference | **0.5 Vpp**, 30 kHz, `ZLOAD OPEN`, **always on** |
 
 **Command style.** The TGF3162 is channel-modal: you select a channel and then
@@ -421,8 +421,8 @@ CHN 2 ; ZLOAD OPEN ; FREQ 30000 ; AMPL 0.5  ; OUTPUT ON     # reference, once at
 CHN 1 ; ZLOAD OPEN ; FREQ 30000 ; AMPL <vpp>                # drive, gated per window
 ```
 
-`funcgen_send()` adds a 0.1 s processing delay after every command — this
-instrument does not like being talked over.
+`funcgen_send()` adds a 0.1 s processing delay after every command, because
+this instrument does not like being talked over.
 
 ### 7.1 The select-verify-EER? safety sequence
 
@@ -436,7 +436,7 @@ of the queries that *do* exist:
 1. EER?              clear/expose any stale execution error, so a later EER?
                      unambiguously belongs to THIS transition
 2. CHN 1             select the drive channel
-3. CHN?              must read back 1 — otherwise you are about to switch the
+3. CHN?              must read back 1, otherwise you are about to switch the
                      WRONG channel
 4. OUTPUT ON | OFF   the actual transition
 5. EER?              must be 0.  −80 means the generator disabled its own
@@ -460,18 +460,18 @@ recovery rather than silently leaving the chip driven or undriven.
 
 ---
 
-## 8. Source-measure unit — Aim-TTi SMU4201
+## 8. Source-measure unit: Aim-TTi SMU4201
 
 The DC side: the poling bias, and the DC sweep that produces hysteresis loops.
 Driver: class `SMU4201` in
-[`pockels/smu4201_iv_sweep.py`](../../pockels/smu4201_iv_sweep.py) — plain SCPI
+[`pockels/smu4201_iv_sweep.py`](../../pockels/smu4201_iv_sweep.py), plain SCPI
 over a USB-CDC serial port at 9600 8N1 with `\r\n` terminators.
 
 ### 8.1 Session setup
 
 ```text
 *CLS
-*RST                                                (then 0.6 s — *RST takes a moment)
+*RST                                                (then 0.6 s; *RST takes a moment)
 SYSTem:FUNCtion:MODE SOURCEVOLTage
 SOURce:VOLTage:TERMinals 2WIRe                      deterministic terminal config
 SOURce:VOLTage:SHAPe FIXed
@@ -501,7 +501,7 @@ MEASure:SECondary:LIVEdata?   → the voltage the SMU is really measuring
 ```
 
 The *programmed* level is what you asked for. The *measured terminal voltage*
-is what the pixel actually got. They differ whenever something is wrong — an
+is what the pixel actually got. They differ whenever something is wrong: an
 open probe, a broken bond, a shorted pixel pulling the source into compliance,
 a relay that did not close. Recording both turns every hysteresis point into a
 small electrical audit, and with the primary current reading you get a leakage
@@ -541,21 +541,21 @@ smu.set_voltage(V)      # while OUTPUT is still OFF
 smu.output(True)        # then enable
 ```
 
-Never the other way round — enabling the output at a stale level would apply
+Never the other way round. Enabling the output at a stale level would apply
 the *previous* pixel's voltage to the newly routed one.
 
-> **Note — the front-panel banner.** Enabling the output makes the SMU display
+> **Note** The front-panel banner: enabling the output makes the SMU display
 > a "Counts / Shapes" banner for several seconds during which the rails are not
 > fully established. The standalone I-V script waits `PRESWEEP_S = 5 s`; the
 > campaign code instead keeps the output **on** through a whole domain-reset
 > train and software-steps the bipolar pulses, so it never pays that cost
 > mid-sequence. That reset (`reset_domains_pulsed()`) is a bipolar depoling
 > envelope from 40 V down to 0.05 V over 30 exponentially decaying amplitudes,
-> 200 cycles of +Vₙ then −Vₙ at 5 ms each — about 12 000 reversals in ~30 s.
+> 200 cycles of +Vₙ then −Vₙ at 5 ms each, about 12 000 reversals in ~30 s.
 
 ---
 
-## 9. Switch matrix — Arduino Nano
+## 9. Switch matrix: Arduino Nano
 
 An Arduino Nano (usually a CH340 clone) running
 [`firmware/switch_matrix/switch_matrix.ino`](../../firmware/switch_matrix/switch_matrix.ino)
@@ -570,11 +570,11 @@ protocol and failure modes are on [its own page](switch-matrix.md).
 
 | Limit | Value | Enforced by |
 | --- | --- | --- |
-| DC voltage ceiling | **±40 V** | `DC_HYST_VMAX`; `validate_hysteresis_voltage_limit()` rejects anything higher on every path — in-run, queued, adaptive, reset |
+| DC voltage ceiling | **±40 V** | `DC_HYST_VMAX`; `validate_hysteresis_voltage_limit()` rejects anything higher on every path: in-run, queued, adaptive, reset |
 | SMU current compliance | **1 mA** default | `SMU_COMPLIANCE_A`; must be finite and > 0 |
 | SMU slew during reset | **50 V/ms** | `SMU_SLEW_RATE_V_PER_MS` |
-| DC terminal-voltage error | **0.5 V** | `SMU_DC_READBACK_TOLERANCE_V` — aborts the point **before** AC turns on |
-| Rotator velocity | clamped to 25–100 % | `configure_rotator_velocity()` |
+| DC terminal-voltage error | **0.5 V** | `SMU_DC_READBACK_TOLERANCE_V`, which aborts the point **before** AC turns on |
+| Rotator velocity | clamped to 25 to 100 % | `configure_rotator_velocity()` |
 | Rotator landing | 0.5° with one corrective retry; a verified move that still fails stops the run | `rotator_verified_move_result()` |
 | Stage travel | soft −0.3 … 25.3 mm | `STAGE_MIN_MM` / `STAGE_MAX_MM` |
 | Lock-in TC index | ≥ 8 (5 ms) | `minimum_lockin_settle_s()` |
@@ -582,7 +582,7 @@ protocol and failure modes are on [its own page](switch-matrix.md).
 | Switch-matrix isolation | all channels off in every error path and between pixels | `routed_arduino_channel()`, `close()` |
 | Output ordering | AC off before any DC ramp; matrix routed before any voltage | `ensure_fast_map_outputs_off()`, the hysteresis entry interlock |
 
-> **Warning** — do not relax these "just to try something". If you genuinely
+> **Warning** Do not relax these "just to try something". If you genuinely
 > need a different limit, change the constant, record it in the run log, and
 > understand that every measurement taken with it is a different experiment.
 
@@ -601,7 +601,7 @@ It disables USB selective suspend on both power profiles and clears the "allow
 the computer to turn off this device" policy on the hubs this setup uses; it
 does not disable or remove any device. Also set the power plan to **High
 performance**, disable sleep and hibernate, and do not move USB cables between
-sockets mid-campaign — COM numbers change when you do.
+sockets mid-campaign, because COM numbers change when you do.
 
 See [troubleshooting](../guide/troubleshooting.md) for what each failure looks
 like from the operator's seat, and the [glossary](../reference/glossary.md) for

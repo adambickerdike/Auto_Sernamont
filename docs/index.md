@@ -26,7 +26,7 @@
 
 ## The whole manual
 
-### 🔬 Physics — *what is being measured, and why*
+### 🔬 Physics: *what is being measured, and why*
 
 | Page | Covers |
 | --- | --- |
@@ -37,17 +37,17 @@
 | [Angular dependence](physics/04-incident-polarisation.md) | the signed 2θ model and four-lobed magnitude, what a polar plot does and does not prove, and why arbitrary encoder zeros do not matter |
 | [Ferroelectric switching](physics/05-ferroelectrics.md) | domains, poling and its kinetics, butterfly versus signed loop, the metric set, the loop taxonomy, rate dependence, domain reset |
 
-### 🔧 The experiment — *the bench itself*
+### 🔧 The experiment: *the bench itself*
 
 | Page | Covers |
 | --- | --- |
 | [Overview](experiment/index.md) | a guided tour of the block diagram |
 | [The optical beamline](experiment/beamline.md) | every element in order: what it is, the physics, why it is there, what breaks without it |
-| [Instruments and interfaces](experiment/instruments.md) | laser, rotators, stage, scope, lock-in, function generator, SMU — command sequences, settings and quirks |
+| [Instruments and interfaces](experiment/instruments.md) | laser, rotators, stage, scope, lock-in, function generator and SMU: command sequences, settings and quirks |
 | [The BaTiO₃ chip](experiment/chip.md) | the array, the coplanar electrode geometry, the GDS layout, pixel numbering and the display frame |
 | [The switching matrix](experiment/switch-matrix.md) | shift registers, PhotoMOS relays, the serial protocol, the boot handshake, and the mapping hazard |
 
-### 💻 The software — *how it is built*
+### 💻 The software: *how it is built*
 
 | Page | Covers |
 | --- | --- |
@@ -57,7 +57,7 @@
 | [Instrument control and timing](software/instrument-control.md) | the anatomy of one lock-in point, why phasors average in X/Y, gating sequences, adaptive poling, the timing budget |
 | [The data pipeline](software/data-pipeline.md) | what is computed automatically, the quality-flag system, the offline scripts, loading the data in Python |
 
-### 📋 Operating — *how to actually run it*
+### 📋 Operating: *how to actually run it*
 
 | Page | Covers |
 | --- | --- |
@@ -82,8 +82,8 @@
 A 1550 nm laser is polarised, its polarisation direction is set by a motorised
 half-wave plate, and it is focused through one pixel of a 10 × 10 grid of
 electrode pairs patterned on a barium titanate thin film. A voltage applied
-across the ≈7 µm electrode gap changes the film's refractive indices — the
-**Pockels effect** — which rotates the light's polarisation by a few
+across the ≈7 µm electrode gap changes the film's refractive indices through
+the **Pockels effect**, which rotates the light's polarisation by a few
 microradians. A motorised quarter-wave plate cancels the film's *static*
 birefringence so that a motorised analyser can extinguish the beam almost
 completely; sitting ±45° away from that extinction point puts the measurement
@@ -103,9 +103,9 @@ whole chip.
 | Convention | Meaning |
 | --- | --- |
 | $\theta_i$ | incident polarisation angle in the calibrated lab frame |
-| $\psi$ | analyser offset **from the null** — the readout variable |
+| $\psi$ | analyser offset **from the null**, the readout variable |
 | $\delta$, $\Gamma$ | electro-optic rotation and retardance, $\Gamma = 2\delta$ in this geometry |
-| "pixel" | one of the 100 electrode pairs, numbered 1–100 |
+| "pixel" | one of the 100 electrode pairs, numbered 1 to 100 |
 | "the triplet" | the three readings taken at each incident polarisation: local null, +45°, −45° |
 | "the null" | the QWP/analyser pair that extinguishes the beam through the sample |
 | Voltages | drive amplitudes in $V_\mathrm{pp}$; DC bias in V; $V_\mathrm{rms} = V_\mathrm{pp}/2\sqrt{2}$ |

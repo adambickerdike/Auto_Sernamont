@@ -3,7 +3,7 @@
 Every optical element between the laser and the photodiode, in the order the
 light meets them. For each one: what it physically is, what it does to the
 light, why it sits at that point in the chain, what would go wrong if it were
-missing, and — if it is motorised — how the software drives it.
+missing, and how the software drives it when it is motorised.
 
 The companion pages are [Instruments](instruments.md) for the control
 interfaces and [polarisation](../physics/02-polarisation.md) for the Jones
@@ -34,7 +34,7 @@ shows the polarisation ellipse at each of those points.
 
 ---
 
-## 1. The laser — Thorlabs KLS1550
+## 1. The laser: Thorlabs KLS1550
 
 **What it is.** A fibre-coupled 1550 nm diode laser in a Thorlabs KCube laser
 source, driven over USB through the Kinesis `.NET` API
@@ -61,7 +61,7 @@ set **in software** (default `--laser-power-mw 7.0`) so two runs taken a month
 apart are comparable. Optical power is a recorded run parameter, not a knob.
 
 **Without it / if it drifts.** Every reported optical power scales with it, and
-the null depth in millivolts — the acceptance gate for the whole measurement —
+the null depth in millivolts, the acceptance gate for the whole measurement,
 moves with it. Emission is switched off by the worker's cleanup path on both
 normal exit and safe stop.
 
@@ -75,15 +75,15 @@ laser and sends it upward; the second sends it horizontally into the top of the
 vertical measurement column.
 
 **Physics.** Specular reflection, plus a detail that matters here: at non-normal
-incidence a mirror does *not* treat s- and p-polarised components identically —
-both the amplitude reflectance and the reflection phase differ — so a linear
+incidence a mirror does *not* treat s- and p-polarised components identically
+(both the amplitude reflectance and the reflection phase differ), so a linear
 state incident at 45° generally emerges slightly elliptical and rotated, and
 two mirrors compound the effect.
 
 **Why here.** Purely geometric: the laser is a horizontal bench-mounted source
 and the measurement column is vertical, so the chip can lie flat on the stage
 and the camera can look straight down at it. It does not matter that the
-mirrors disturb the polarisation, because they sit **before** the polariser —
+mirrors disturb the polarisation, because they sit **before** the polariser,
 which is exactly why the polariser is not placed at the laser output.
 
 **Without them.** The laser would have to sit physically above the column,
@@ -105,7 +105,7 @@ the chip passes straight through to the camera, so the two paths are co-axial.
 A cube splitter is generally polarisation-sensitive, which is one more reason
 for the polariser to be downstream of it.
 
-**Why here — this is the important part.** The camera and the measurement beam
+**Why here: this is the important part.** The camera and the measurement beam
 **share the same optical axis and the same focusing lens**. That means what the
 camera sees in focus is what the beam illuminates. The software exploits this:
 
@@ -121,7 +121,7 @@ camera sees in focus is what the beam illuminates. The software exploits this:
 The camera also records an arrival image and a post-alignment image for every
 pixel, which is what lets you go back afterwards and see *why* a pixel failed.
 
-**Without it.** The beam still reaches the chip — the camera is genuinely
+**Without it.** The beam still reaches the chip; the camera is genuinely
 optional (`--no-camera`) and alignment then relies purely on climbing the
 optical signal. What you lose is the fast initial jump and the visual record.
 The cube's cost is a fixed fraction of the laser power lost in each direction,
@@ -129,7 +129,7 @@ which is a constant and cancels in every normalised quantity.
 
 ---
 
-## 4. Polariser 1 — the reference frame
+## 4. Polariser 1: the reference frame
 
 **What it is.** A fixed linear polariser, not motorised, no electronics. In the
 current lab mapping its transmission axis is taken to be parallel to lab **y**
@@ -142,21 +142,21 @@ linear along the transmission axis, at the cost of the discarded orthogonal
 component.
 
 **Why here, and why it is arguably the most important passive element.** It
-**cleans the state** — everything upstream scrambles polarisation and drifts
+**cleans the state** (everything upstream scrambles polarisation and drifts
 over minutes to hours, whereas downstream the input state is a constant of the
-experiment — and it **defines the zero of every angle**. The HWP, QWP and
+experiment), and it **defines the zero of every angle**. The HWP, QWP and
 analyser angles are all expressed relative to this axis, which is why the
 arbitrary mechanical home position of each Elliptec rotator does not matter:
 `tare()` gives a repeatable *software* zero and the optical calibration refers
 everything to the polariser frame, so the encoder offsets cancel.
 
-**Without it.** There is no $\theta_i$ — the "incident polarisation angle" that
+**Without it.** There is no $\theta_i$. The "incident polarisation angle" that
 the entire angular analysis is built on would be undefined and time-varying,
 and the null you found ten minutes ago would no longer be a null.
 
 ---
 
-## 5. The half-wave plate — setting θᵢ
+## 5. The half-wave plate: setting θᵢ
 
 **What it is.** A half-wave retarder at 1550 nm in a **Thorlabs Elliptec ELL14**
 motorised rotation mount: **COM5, bus address 1**.
@@ -176,25 +176,25 @@ degrees.
 **Why it is here.** The Pockels response of this geometry depends on the angle
 between the optical polarisation and the applied in-plane field, because the
 coefficient being probed, $r_{42}$, is a *shear* term. Scanning $\theta_i$ finds
-the angle of strongest response and — more important for a viva — proves that
+the angle of strongest response and, more important for a viva, proves that
 what you are measuring has the angular signature of a linear electro-optic
 effect rather than a thermal or electrostrictive artefact. See
 [electro-optics](../physics/01-electro-optics.md).
 
 **How the software drives it.** Production runs use a 9-point grid spaced
-22.5° in $\theta_i$ — only 11.25° of motor rotation per step, because of the
-factor of two — centred on the manually verified high-response setpoint
+22.5° in $\theta_i$ (only 11.25° of motor rotation per step, because of the
+factor of two), centred on the manually verified high-response setpoint
 `DEFAULT_HWP_GRID_CENTER_RAW_DEG = 7.8951` raw, which the current mapping puts
 at $\theta_i = 81.8688°$ in the lab frame. Moves use the verified fast path or
 the chunked accurate path; see [motion control](../software/motion-control.md).
 
 **Without it.** One incident polarisation, no angular data, no four-lobed
-magnitude, no signed 2θ fit — and no way to distinguish a Pockels signal from
+magnitude, no signed 2θ fit, and no way to distinguish a Pockels signal from
 anything else that happens to modulate at 30 kHz.
 
 ---
 
-## 6. The focusing lens — and why the beam must go into the gap
+## 6. The focusing lens, and why the beam must go into the gap
 
 **What it is.** A lens focusing the collimated beam down into the electrode
 gap; it is also the objective for the camera's imaging path. Make and model are
@@ -221,7 +221,7 @@ follow from the gap width:
 
 | Quantity | Value | Why |
 | --- | --- | --- |
-| Stage position tolerance | 5 µm | ~⅔ of a gap width — the coarsest error that still lands inside |
+| Stage position tolerance | 5 µm | ~⅔ of a gap width, the coarsest error that still lands inside |
 | Backlash compensation | 20 µm, always approach from the same side | mechanical hysteresis is several times the tolerance |
 | Settle criterion | stable within 0.5 µm for 0.5 s | a vibrating stage smears the profile |
 | Fine align step | 0.5 µm (fine scan), parabolic refinement below 1 µm | resolves the peak, not just the plateau |
@@ -234,7 +234,7 @@ follow from the gap width:
 Covered in full on [its own page](chip.md). Optically, what matters here is
 that the beam waist sits in the plane of the film, inside a ~7 µm in-plane gap
 between two coplanar electrodes, and that the film is **statically
-birefringent** — which is the entire reason for the next two elements.
+birefringent**, which is the entire reason for the next two elements.
 
 ---
 
@@ -249,7 +249,7 @@ polariser would be a mistake. **Retardance depends on angle of incidence**: a
 quarter-wave plate is quarter-wave *at normal incidence*, so a diverging beam
 presents a spread of angles, different rays see slightly different retardance,
 and the compensated state is only approximately linear no matter how carefully
-you turn the QWP. **Polariser extinction likewise degrades off-axis** — the
+you turn the QWP. **Polariser extinction likewise degrades off-axis**: the
 deep null the whole measurement depends on is an on-axis, collimated-beam
 property. Re-collimating first lets the QWP and analyser work in the regime
 they are specified for, so the null can get genuinely deep: the acceptance gate
@@ -262,7 +262,7 @@ of the signal-to-noise for no good reason.
 
 ---
 
-## 9. The quarter-wave plate — the Sénarmont compensator
+## 9. The quarter-wave plate: the Sénarmont compensator
 
 **What it is.** A quarter-wave retarder at 1550 nm in an **ELL14** mount:
 **COM4, bus address 2**.
@@ -270,14 +270,14 @@ of the signal-to-noise for no good reason.
 **Physics.** $\delta = \pi/2$. It converts linear polarisation into elliptical
 and, run backwards, converts a particular ellipse back into linear. Turned to
 the right angle it takes the elliptical state emerging from the sample and
-returns it to a *linear* state at some angle — which a linear analyser can then
+returns it to a *linear* state at some angle, which a linear analyser can then
 extinguish completely.
 
-**Why it is here — the crucial point.** The BaTiO₃ film is birefringent with
+**Why it is here: the crucial point.** The BaTiO₃ film is birefringent with
 **no field applied**: thickness, composition, strain and domain configuration
 all contribute, so light leaves the sample elliptical before a single volt has
 been applied. An elliptical state **cannot** be extinguished by a linear
-analyser — there is leakage at every analyser angle. Without compensation there
+analyser; there is leakage at every analyser angle. Without compensation there
 is no deep null, and without a deep null the measurement loses most of its
 sensitivity, because the signal-to-background ratio near extinction is what
 buys the microvolt-level detection. QWP plus analyser near extinction is the
@@ -286,7 +286,7 @@ classic **Sénarmont** configuration.
 **Why it cannot be set once.** The static birefringence differs from pixel to
 pixel *and* with incident polarisation, so the correct QWP angle is not one
 number. The software stores a `(q_null, a_null)` pair for **every HWP angle**
-and re-checks it at **every pixel** — that is what the per-HWP re-null in the
+and re-checks it at **every pixel**. That is what the per-HWP re-null in the
 measurement loop is doing.
 
 **Without it.** Shallow nulls, a large and pixel-dependent background, and an
@@ -295,12 +295,12 @@ the same variables you are trying to study.
 
 ---
 
-## 10. Polariser 2 — the analyser
+## 10. Polariser 2: the analyser
 
 **What it is.** A second linear polariser on an **ELL14** rotator: **COM8, bus
 address 2**. Note that the QWP and the analyser share bus address 2 but sit on
-*different* COM ports — rewiring the Elliptec bus means updating both the port
-and the address.
+*different* COM ports, so rewiring the Elliptec bus means updating both the
+port and the address.
 
 **Physics.** Malus' law. With the compensated state linear, the transmitted
 intensity as a function of the analyser offset $\psi$ from the null follows
@@ -312,14 +312,14 @@ intensity change.
 
 | $\psi$ | Transmission | What it is used for |
 | --- | --- | --- |
-| 0° (the null) | minimum | The electro-optic signal vanishes here, so this reading measures **everything that is not signal** — electrical pickup, laser amplitude modulation, detector artefacts. It is the background row of the triplet. |
-| ±45° | half of maximum | **Maximum slope** — peak sensitivity to a polarisation rotation. The two signs give responses of **opposite sign**, which is the strongest evidence that the signal is a real polarisation rotation and not an intensity artefact. |
+| 0° (the null) | minimum | The electro-optic signal vanishes here, so this reading measures **everything that is not signal**: electrical pickup, laser amplitude modulation, detector artefacts. It is the background row of the triplet. |
+| ±45° | half of maximum | **Maximum slope**, peak sensitivity to a polarisation rotation. The two signs give responses of **opposite sign**, which is the strongest evidence that the signal is a real polarisation rotation and not an intensity artefact. |
 | 90° | maximum | Full brightness. Used as a fourth fitted point on the calibration pixel, and (at +45°) to brighten the beam for stage alignment. |
 
 Each measurement point is a **triplet**: local null background, exact +45°, and
 exact −45°. See [the analyser response](../physics/03-senarmont-readout.md).
 
-**Without it.** No polarisation-to-intensity conversion at all — the photodiode
+**Without it.** No polarisation-to-intensity conversion at all; the photodiode
 is blind to polarisation. The analyser *is* the detector, in the sense that it
 is where the physics becomes an electrical signal.
 
@@ -350,14 +350,14 @@ noise does not work.
    correction
 ```
 
-At $\psi = 45°$ the transmission is half its maximum — plenty of light to climb
-— and the peak in transmitted power versus stage position genuinely marks the
-beam sitting in the gap, because that is where the least light is clipped by
-the electrodes. Returning to the null seed before the per-HWP re-null matters
-too: the re-null is a *local* optimiser, and starting it 45° off null would
-make it do far more work, and far more rotator travel, than necessary.
+At $\psi = 45°$ the transmission is half its maximum, which is plenty of light
+to climb, and the peak in transmitted power versus stage position genuinely
+marks the beam sitting in the gap, because that is where the least light is
+clipped by the electrodes. Returning to the null seed before the per-HWP
+re-null matters too: the re-null is a *local* optimiser, and starting it 45°
+off null would make it do far more work, and far more travel, than necessary.
 
-> **Note** — the fast-map GUI and CLI default to **+45°**
+> **Note** The fast-map GUI and CLI default to **+45°**
 > (`--stage-brighten-offset 45`). The campaign script
 > [`pockels/pockels_campaign.py`](../../pockels/pockels_campaign.py) uses
 > **+30°** for the same purpose, on the grounds that it still gives a large
@@ -365,7 +365,7 @@ make it do far more work, and far more rotator travel, than necessary.
 > Both are recorded in the run metadata; neither changes the physics, because
 > the analyser is returned to the null before anything is measured.
 
-> **Warning** — if the brighten move fails, the code logs the failure and
+> **Warning** If the brighten move fails, the code logs the failure and
 > aligns at the current analyser angle rather than aborting. A run whose log is
 > full of `[WARN] brighten failed` has been aligning on a near-null signal, and
 > its stage positions should be treated as suspect.
@@ -382,17 +382,17 @@ concentrates the whole collimated beam onto it, so the measured power is the
 transmitted power, the reading is insensitive to small beam-pointing changes,
 and the spot stays well inside the active area.
 
-**Without it.** Part of the beam misses the diode — and *how much* misses
+**Without it.** Part of the beam misses the diode, and *how much* misses
 depends on alignment, so a stage move or a waveplate rotation that slightly
 steers the beam would look like an intensity change, indistinguishable at the
 detector from the polarisation change you are trying to measure.
 
 ---
 
-## 13. The detector — Thorlabs PDA30B2
+## 13. The detector: Thorlabs PDA30B2
 
 **What it is.** An amplified photodiode with switchable transimpedance gain
-(0–70 dB in 10 dB steps). Photons → photocurrent → voltage.
+(0 to 70 dB in 10 dB steps). Photons → photocurrent → voltage.
 
 | Parameter | Value |
 | --- | --- |
@@ -408,7 +408,7 @@ the reference frequency means neither measurement compromises the other, and
 the normalisation (lock-in volts per Malus slope) uses the same photocurrent
 that produced the signal.
 
-> ⚠️ **Warning** — the gain is a mechanical switch on the housing. If anybody
+> **Warning** The gain is a mechanical switch on the housing. If anybody
 > moves it, **every optical power in every output file is wrong** by that
 > factor. The full gain table lives in `PDA_GAIN_TABLE`; if the hardware really
 > changes, update `PDA_GAIN_DB` and `PDA_LOAD` and note it in the run log.
@@ -420,16 +420,16 @@ that produced the signal.
 | # | Element | Motorised? | Interface | One-line role |
 | --- | --- | --- | --- | --- |
 | 1 | KLS1550 laser | power only | Kinesis .NET | 1550 nm, ~7 mW, reproducible |
-| 2 | Turning mirrors ×2 | no | — | fold horizontal source into vertical column |
+| 2 | Turning mirrors ×2 | no | none | fold horizontal source into vertical column |
 | 3 | Beamsplitter + camera | no | OpenCV (camera) | co-axial imaging port for CV-guided alignment |
-| 4 | Polariser 1 | no | — | cleans the state, defines the angle zero |
+| 4 | Polariser 1 | no | none | cleans the state, defines the angle zero |
 | 5 | Half-wave plate | **yes** | ELL14, COM5 addr 1 | sets $\theta_i$; 2× the motor angle |
-| 6 | Focusing lens | no | — | beam into the ~7 µm gap |
+| 6 | Focusing lens | no | none | beam into the ~7 µm gap |
 | 7 | BTO chip | **on XY stage** | KCubeStepper ×2 | the sample |
-| 8 | Collection lens | no | — | re-collimate for the waveplate and analyser |
+| 8 | Collection lens | no | none | re-collimate for the waveplate and analyser |
 | 9 | Quarter-wave plate | **yes** | ELL14, COM4 addr 2 | Sénarmont compensator; kills static ellipticity |
 | 10 | Analyser | **yes** | ELL14, COM8 addr 2 | polarisation → intensity; null and ±45° |
-| 11 | Focusing lens | no | — | all the light onto the diode |
+| 11 | Focusing lens | no | none | all the light onto the diode |
 | 12 | PDA30B2 detector | gain switch | BNC → scope + lock-in | intensity → volts |
 
 Continue to [Instruments and Control Interfaces](instruments.md), or step back

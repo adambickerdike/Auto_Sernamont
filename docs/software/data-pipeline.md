@@ -6,7 +6,7 @@ you run afterwards by hand, where everything lands on disk, and which column is
 actually "the signal".
 
 The full column dictionary lives in the
-[Data Schema](../reference/data-schema.md) — this page does not duplicate it.
+[Data Schema](../reference/data-schema.md), and this page does not duplicate it.
 What follows is the *shape* of the pipeline and the handful of decisions you
 need to know before you touch the numbers.
 
@@ -63,7 +63,7 @@ ACQUISITION                           AUTOMATIC  (during the run, per pixel)
 
 Everything marked *automatic* has already run by the time you open the folder.
 You do not have to do anything to get a per-pixel summary, an angular polar
-plot or a full set of loop metrics — they are written as the run proceeds.
+plot or a full set of loop metrics; they are written as the run proceeds.
 
 Everything marked *manual* is chip-level or cross-pixel: it needs the whole run
 to exist before it can say anything, so there is no point running it early.
@@ -83,7 +83,7 @@ Implemented in
 which imports no hardware.
 
 1. **Group the rows** by (HWP angle, drive amplitude).
-2. **Derive a rotation observation** per group — but only from rows that pass
+2. **Derive a rotation observation** per group, but only from rows that pass
    every geometry gate:
 
    | Gate | Limit | Constant |
@@ -111,7 +111,7 @@ which imports no hardware.
    > The signed linear EO response reverses sign every 90° of incident
    > polarisation, so it is a $2\theta_i$ quantity whose **magnitude** is
    > four-lobed. Fitting the signed complex response directly at harmonic 4
-   > destroys the sign change — and was the cause of misleadingly low angular
+   > destroys the sign change, and was the cause of misleadingly low angular
    > $R^2$ values in early runs.
 
 6. **Select the peak.** If the angular fit is valid ($R^2 \geq 0.80$), take the
@@ -133,18 +133,18 @@ lands in a predictable place regardless of how the process was launched.
 
 | Folder | Contents |
 | --- | --- |
-| `pockels_fast_map/` | Fast-map runs — the main output |
+| `pockels_fast_map/` | Fast-map runs, the main output |
 | `pockels_calibration/` | Deep-campaign and standalone hysteresis runs |
 | `calibration_results_withSample/` | Guided sample-in optical calibrations |
 | `calibration_results_3step/` | Three-step optical calibrations |
 | `stage_calibration/` | Stage pixel calibrations, `pixel_stage_calib.json` |
 | `pockels_campaign/` | Campaign runs, `first_null_reference.json` |
 | `analyser_sweep_voltage_series/` | Standalone analyser sweeps |
-| `smu4201_sweeps/` | Standalone I–V sweeps |
+| `smu4201_sweeps/` | Standalone I-V sweeps |
 
 > **Warning**
 > These folders hold measurement data, not source. Keep them out of version
-> control and back them up separately — a chip map is six to seven hours of
+> control and back them up separately: a chip map is six to seven hours of
 > instrument time that cannot be regenerated from the repository.
 
 <details>
@@ -212,7 +212,7 @@ pockels_fast_map/20260915_143012_BTNO_0087_shakedown/
 | `fast_map_raw_samples.csv` | one row per lock-in sample | You are chasing noise, drift within an averaging window, or an outlier. |
 | `fast_map_summary.json` | one object per pixel | You want the fits rather than the points: angular fit, rotation-versus-voltage fit, $r_\mathrm{eff}$ block, gate status. |
 | `dc_hysteresis.csv` | one row per DC point | The loop itself. **Read it with `comment="#"`.** |
-| `dc_hysteresis_metrics.json` | one object per loop | The coercive voltages, imprint, squareness, classification — already computed. |
+| `dc_hysteresis_metrics.json` | one object per loop | The coercive voltages, imprint, squareness and classification, all already computed. |
 | `poling_kinetics.csv` | one row per poll during poling | The $\tau$, $\beta$ switching-kinetics fit. |
 | `run_config.json` | one object per run | Provenance. When a plot looks odd six months later, this says exactly how it was taken. |
 
@@ -221,13 +221,13 @@ pockels_fast_map/20260915_143012_BTNO_0087_shakedown/
 > **For physics, use `lockin_net_x_V` and `lockin_net_y_V`.**
 > These are the **background-subtracted complex phasor**: the measured phasor at
 > the analyser slope point minus the phasor measured at the local null in the
-> same HWP block. The subtraction removes the analyser-independent term — the
+> same HWP block. The subtraction removes the analyser-independent term, the
 > part of the lock-in reading that is present even where there is no optical
 > slope, and which is therefore not light. What remains is the electro-optic
 > response, with its sign.
 >
 > For a quick look, `lockin_net_mag_V` is fine. `lockin_signed_V` is a **display
-> convenience** — magnitude × cos(phase − reference) — and the analysis
+> convenience**, magnitude × cos(phase − reference), and the analysis
 > re-derives its own phase reference rather than trusting it.
 >
 > `lockin_mag_V` is the raw, un-subtracted magnitude. Use it only as a rough
@@ -235,10 +235,10 @@ pockels_fast_map/20260915_143012_BTNO_0087_shakedown/
 
 ### Which column to rank pixels by?
 
-- **Quick screen:** `max_abs_signed_response_V` in the chip summary — the
+- **Quick screen:** `max_abs_signed_response_V` in the chip summary, the
   largest background-subtracted signed response. Good for *where is the
   signal*.
-- **Physical comparison:** `rotation_slope_rad_per_Vrms` — the normalised
+- **Physical comparison:** `rotation_slope_rad_per_Vrms`, the normalised
   rotation per RMS volt. **This is the number to plot against composition.**
 
 They can disagree, and when they do the rotation slope is right. A pixel with a
@@ -247,7 +247,7 @@ a perfectly good electro-optic coefficient; the raw response absorbs laser
 power, coupling and null depth, and the normalised rotation does not.
 
 For hysteresis, the loop is built from `LockIn_X_V` and `LockIn_Y_V`, projected
-onto the saturation-tail phase axis — see §7.
+onto the saturation-tail phase axis; see §7.
 
 ---
 
@@ -269,14 +269,14 @@ DISQUALIFYING_ROW_FLAGS = {
 ```
 
 A row carrying **any** of these is excluded automatically from every fit in
-`pockels_measurement_analysis.py` — the normalisation, the voltage-linearity
+`pockels_measurement_analysis.py`: the normalisation, the voltage-linearity
 fit, the angular fit and the peak selection all skip it, without you having to
 filter anything yourself. The reasoning:
 
 | Flag | Why the row cannot be used |
 | --- | --- |
 | `lockin_overload` | The demodulator was saturated. The number is not a measurement of anything. |
-| `lockin_range_exceeded` | ≥ 98 % of full scale — the reading is at the edge of the range and may be clipped or non-linear. |
+| `lockin_range_exceeded` | ≥ 98 % of full scale, so the reading is at the edge of the range and may be clipped or non-linear. |
 | `s9_operating_point_failed` | The operating point itself did not certify, so the Malus slope this row is normalised by is not trustworthy. A number divided by an unknown is an unknown. |
 
 Other flags you will meet often:
@@ -286,7 +286,7 @@ Other flags you will meet often:
 | `s9_operating_point_certified` | the operating point passed all gates | good |
 | `s9_low_signal_geometry_only` | the geometry is right, the pixel is simply weak | informational |
 | `high_null_leakage`, `high_null_after_adaptive`, `high_null_continued` | the null is worse than the threshold | caution |
-| `plus_minus_same_sign` | the $\pm 45^\circ$ responses do **not** oppose | serious — probably pickup, not light |
+| `plus_minus_same_sign` | the $\pm 45^\circ$ responses do **not** oppose | serious; probably pickup, not light |
 | `plus_minus_asymmetric` | the two sides differ by more than 50 % | caution |
 | `lockin_range_near_fullscale` | ≥ 85 % of full scale | caution |
 | `bto_linearity_unverified`, `bto_null_leakage_too_high`, `bto_qwp_retardance_invalid` | an absolute-calibration gate failed | blocks $r_\mathrm{eff}$ |
@@ -300,7 +300,7 @@ The complete list, with every flag the software can emit, is in the
 
 All of these run from the repository root against a finished run folder.
 
-### Loop metrics — re-analyse one or many CSVs
+### Loop metrics: re-analyse one or many CSVs
 
 ```bash
 python pockels/pockels_hysteresis_analysis.py <path>/dc_hysteresis.csv
@@ -340,10 +340,10 @@ python pockels/make_hysteresis_maps.py <run_dir> --out <dir> --no-heal
 | `--no-heal` | Do **not** compute missing metrics from raw CSVs. |
 
 Produces `hysteresis_metrics_all_pixels.csv`, 21 annotated 10 × 10 heat maps
-(diverging quantities on a blue–white–red scale about zero), the categorical
-`map_hysteresis_type.png`, and `map_loop_gallery.png` — every pixel's loop drawn
-at its chip position, border-coloured by type. That last figure is usually the
-single most informative thing you can put in a talk.
+(diverging quantities on a blue-white-red scale about zero), the categorical
+`map_hysteresis_type.png`, and `map_loop_gallery.png`, which draws every pixel's
+loop at its chip position, border-coloured by type. That last figure is usually
+the single most informative thing you can put in a talk.
 
 ### Compositional report
 
@@ -418,7 +418,7 @@ print(m["classification"]["primary"],
       m["metrics"]["imprint_V"])
 ```
 
-> **Note — `comment="#"` when reading `dc_hysteresis.csv`.**
+> **Note: `comment="#"` when reading `dc_hysteresis.csv`.**
 > The file begins with a block of `#`-prefixed provenance lines recording the
 > run label, $\theta_i$, the AC probe amplitude, the analyser peak angle, the
 > QWP/analyser nulls, the calibrated EO phase axis, the voltage-grid profile and
@@ -426,9 +426,9 @@ print(m["classification"]["primary"],
 > range mode, the overload counts and the SMU readback semantics and tolerance.
 > Without `comment="#"` pandas will treat the first of those lines as the
 > header and the parse will fail confusingly. That header is the reason a loop
-> file is self-describing years later — do not strip it.
+> file is self-describing years later, so do not strip it.
 
-> **Note — display versus internal column indices.**
+> **Note: display versus internal column indices.**
 > `col` in the CSVs is the **0-based internal stage column**
 > (`row = (pixel-1)//10`, `col = (pixel-1)%10`). The GUI heat map draws
 > `display_row = row + 1` and `display_col = 10 − col`, so display columns run

@@ -5,18 +5,18 @@ you are reading a run in Python, Excel or Origin and need to know which column
 to trust.
 
 The long column lists are inside collapsible `<details>` blocks so the page
-stays navigable — click any of them to expand.
+stays navigable; click any of them to expand.
 
 ## Contents
 
 1. [Where data lives](#1-where-data-lives)
 2. [Run folder tree](#2-run-folder-tree)
 3. [Run-level files](#3-run-level-files)
-4. [`fast_map_all_pixels.csv` — the chip summary](#4-fast_map_all_pixelscsv--the-chip-summary)
-5. [`fast_map.csv` — the per-point record](#5-fast_mapcsv--the-per-point-record)
+4. [`fast_map_all_pixels.csv`: the chip summary](#4-fast_map_all_pixelscsv-the-chip-summary)
+5. [`fast_map.csv`: the per-point record](#5-fast_mapcsv-the-per-point-record)
 6. [`fast_map_summary.json`](#6-fast_map_summaryjson)
 7. [Hysteresis files](#7-hysteresis-files)
-8. [`dc_hysteresis_metrics.json` — the loop metrics](#8-dc_hysteresis_metricsjson--the-loop-metrics)
+8. [`dc_hysteresis_metrics.json`: the loop metrics](#8-dc_hysteresis_metricsjson-the-loop-metrics)
 9. [Other per-pixel files](#9-other-per-pixel-files)
 10. [Calibration files](#10-calibration-files)
 11. [Quality flags](#11-quality-flags)
@@ -28,20 +28,20 @@ stays navigable — click any of them to expand.
 
 All output paths are relative to the **repository root**.
 [`pockels/_bootstrap.py`](../../pockels/_bootstrap.py) pins the working
-directory there before anything else happens, so every launch mode — CLI,
-Spyder `runfile`, double-click, GUI child worker — writes to the same place and
+directory there before anything else happens, so every launch mode (CLI,
+Spyder `runfile`, double-click, GUI child worker) writes to the same place and
 discovers the same calibrations.
 
 | Folder | Contents |
 | --- | --- |
-| `pockels_fast_map/` | Fast-map runs — the main output |
+| `pockels_fast_map/` | Fast-map runs, the main output |
 | `pockels_calibration/` | Deep-campaign and standalone hysteresis runs |
 | `calibration_results_withSample/` | Guided sample-in optical calibrations |
 | `calibration_results_3step/` | 3-step optical calibrations |
 | `stage_calibration/` | Stage pixel calibrations, `pixel_stage_calib.json` |
 | `pockels_campaign/` | Campaign runs, `first_null_reference.json` |
 | `analyser_sweep_voltage_series/` | Standalone analyser sweeps |
-| `smu4201_sweeps/` | Standalone I–V sweeps |
+| `smu4201_sweeps/` | Standalone I-V sweeps |
 
 > **Warning** **All of these are git-ignored.** Measurement data does not belong
 > in the repository, and nothing in version control will bring it back. Back up
@@ -148,7 +148,7 @@ What was actually applied to the DSP7230, and what was deliberately skipped.
 | `configuration_mode` | `fixed_range_write_only` |
 | `readback_queries_skipped` | `["TC.", "SLOPE", "IE", "SEN", "FRQ."]` |
 | `reference_locked` | `true` / `false` / `null` |
-| `simulated` | `true` if a fake lock-in was used — **always check this** |
+| `simulated` | `true` if a fake lock-in was used; **always check this** |
 
 </details>
 
@@ -160,13 +160,13 @@ null seed table, and the config. Written after every pixel.
 ### `transport_recovery.jsonl`
 
 One JSON object per line, appended whenever a transport incident or a reconnect
-attempt occurs. Its presence means the run survived a hardware dropout — inspect
-the affected pixels. See
+attempt occurs. Its presence means the run survived a hardware dropout, so
+inspect the affected pixels. See
 [Operator Manual §8](../guide/operating.md#automatic-hardware-recovery).
 
 ---
 
-## 4. `fast_map_all_pixels.csv` — the chip summary
+## 4. `fast_map_all_pixels.csv`: the chip summary
 
 One row per pixel. **This is the file to open first.** The full column list is
 `CHIP_SUMMARY_FIELDS` in
@@ -187,9 +187,9 @@ One row per pixel. **This is the file to open first.** The full column list is
 | `best_vpp` | drive amplitude at the best point |
 | `max_abs_signed_response_V` | **the main ranking metric**: largest \|signed response\| |
 | `max_signed_response_V` | the same, with its sign |
-| `max_lockin_mag_V` | largest raw magnitude — use only as a rough screen |
+| `max_lockin_mag_V` | largest raw magnitude; use only as a rough screen |
 | `best_mag_*` | the same family of conditions, selected by raw magnitude instead |
-| `pair_response_V`, `pair_response_mag_V`, `pair_response_phase_deg` | the $(+45 - -45)/2$ pair combination — pickup-rejected |
+| `pair_response_V`, `pair_response_mag_V`, `pair_response_phase_deg` | the $(+45 - -45)/2$ pair combination, pickup-rejected |
 | `delta_prime_proxy_V_per_Vpp` | response per Vpp, a quick throughput-naive comparator |
 | `best_rotation_hwp_deg`, `best_rotation_theta_i_deg` | the HWP of the best **normalised** point |
 | `rotation_slope_rad_per_Vrms` (+ `_sem_`) | **the physics observable**: rotation per RMS volt |
@@ -198,11 +198,11 @@ One row per pixel. **This is the file to open first.** The full column list is
 | `peak_selection_mode` | how the best point was chosen (fit, or largest certified) |
 | `normalized_peak_certified` | whether the selected peak passed geometry certification |
 | `voltage_linearity_r_squared` | the $\ge 0.98$ gate |
-| `r_eff_abs_pm_per_V` (+ `_sem_`) | absolute coefficient — **usually blank by design** |
+| `r_eff_abs_pm_per_V` (+ `_sem_`) | absolute coefficient, **usually blank by design** |
 | `max_null_leakage_fraction` | worst null leakage as a fraction; gate is ≤ 0.05 |
 | `r_eff_status` | why `r_eff` was or was not emitted |
 | `n_points`, `n_trusted_points` | acquired versus usable point counts |
-| `quality_flags` | `;`-separated flags — see [§11](#11-quality-flags) |
+| `quality_flags` | `;`-separated flags; see [§11](#11-quality-flags) |
 | `output_dir` | the pixel folder |
 
 </details>
@@ -213,9 +213,9 @@ One row per pixel. **This is the file to open first.** The full column list is
 
 ---
 
-## 5. `fast_map.csv` — the per-point record
+## 5. `fast_map.csv`: the per-point record
 
-One row per (pixel, HWP, analyser position, Vpp) — about 140 columns. The full
+One row per (pixel, HWP, analyser position, Vpp), about 140 columns. The full
 list is `FAST_MAP_FIELDS`.
 
 <details>
@@ -256,7 +256,7 @@ list is `FAST_MAP_FIELDS`.
 | --- | --- |
 | `slope_side` | `plus45`, `minus45`, `learned_anchor`, `learned_opposite`, or a background/bright label |
 | `anl_target_deg` (+ frames) | commanded analyser angle |
-| `anl_offset_from_null_deg` | $\psi$ — the quantity the physics depends on |
+| `anl_offset_from_null_deg` | $\psi$, the quantity the physics depends on |
 | `anl_actual_deg`, `anl_error_deg` | readback and error |
 | `chosen_side`, `peak_source`, `peak_track_mode`, `learned_readout_mode` | how this point was selected |
 
@@ -280,7 +280,7 @@ derivation and the thresholds are in
 | `s9_midfringe_fraction`, `s9_midfringe_error` | DC balance at the half-fringe (gate 0.075) |
 | `s9_confirm_error_fraction` | confirmation-point agreement (gate 0.25) |
 | `s9_fit_amplitude_V` | fitted EO amplitude |
-| `s9_analyser_independent_fraction` / `s9_pickup_fraction` | the analyser-independent term $\|P\|$ as a fraction — **not** assumed to be pickup |
+| `s9_analyser_independent_fraction` / `s9_pickup_fraction` | the analyser-independent term $\|P\|$ as a fraction, **not** assumed to be pickup |
 | `s9_derivative_residual_fraction` | how well the AC coefficients align with the DC derivative (gate 0.20) |
 | `s9_temporal_rank_fraction` | whether $E_1$ and $E_2$ share one temporal phase (gate 0.15) |
 | `s9_equivalent_rotation_mag_rad_rms`, `s9_equivalent_rotation_phase_deg` | the certified rotation |
@@ -299,22 +299,22 @@ derivation and the thresholds are in
 | --- | --- |
 | `vpp` | AC drive amplitude |
 | `power_W`, `detector_V` | scope DC reading at this analyser position |
-| `detector_null_reference_V` | the DC level at the null — the second point of the Malus slope |
+| `detector_null_reference_V` | the DC level at the null, the second point of the Malus slope |
 | `lockin_mag_V`, `lockin_phase_deg`, `lockin_x_V`, `lockin_y_V` | the raw averaged phasor |
 | `lockin_*_std_V`, `lockin_*_sem_V`, `lockin_xy_cov_sem_V2` | dispersion and correlated uncertainty |
 | `lockin_bg_*` | the background (null-point) phasor for this HWP block |
-| `lockin_net_*` | **background-subtracted** phasor — *use these for physics* |
+| `lockin_net_*` | **background-subtracted** phasor; *use these for physics* |
 | `lockin_signed_V` (+ std, sem) | magnitude × cos(phase − reference); a cosmetic display projection |
 | `sensitivity_fullscale_V`, `lockin_fullscale_fraction` | the range in force, and how much of it was used |
 | `n_good_samples` | samples that survived filtering |
 | `timestamp`, `elapsed_s` | when |
 | `quality` | overall grade for the point |
-| `quality_flags` | `;`-separated flags — see [§11](#11-quality-flags) |
+| `quality_flags` | `;`-separated flags; see [§11](#11-quality-flags) |
 
 </details>
 
 > **Which column is "the signal"?**
-> For physics, **`lockin_net_x_V` and `lockin_net_y_V`** — the
+> For physics, use **`lockin_net_x_V` and `lockin_net_y_V`**, the
 > background-subtracted complex phasor. For a quick look,
 > `lockin_net_mag_V`. `lockin_signed_V` is a display convenience only: the
 > analysis re-derives its own phase reference from the data.
@@ -356,11 +356,11 @@ count, the dwell, all lock-in settings, the range mode and any dynamic-range
 parameters, range-change and overload counts, SMU readback semantics and
 tolerance, the compliance value, and the number of trips.
 
-> **Note** Read it with `pd.read_csv(path, comment="#")` — otherwise pandas
+> **Note** Read it with `pd.read_csv(path, comment="#")`, otherwise pandas
 > chokes on the header.
 
 <details open>
-<summary><b>Columns — one row per DC point</b></summary>
+<summary><b>Columns, one row per DC point</b></summary>
 
 | Column | Meaning |
 | --- | --- |
@@ -374,7 +374,7 @@ tolerance, the compliance value, and the number of trips.
 | `compliance_tripped` | `True` → the row is excluded from metrics |
 | `P_dc_W` | scope DC optical power |
 | `LockIn_Mag_V`, `LockIn_Phase_deg` | the phasor |
-| `LockIn_X_V`, `LockIn_Y_V` | Cartesian components — **the loop is built from these** |
+| `LockIn_X_V`, `LockIn_Y_V` | Cartesian components; **the loop is built from these** |
 | `LockIn_Mag_Std_V`, `LockIn_Phase_Std_deg`, `N_ok` | dispersion and sample count |
 | `LockIn_Sens_V`, `LockIn_Sens_Index` | the range in force |
 | `AC_Vpp`, `AC_measurement_window_s` | probe amplitude and how long it was on |
@@ -398,14 +398,14 @@ point so a partially written file is never observed.
 
 ### Plots
 
-- `dc_hysteresis.png` — 3-panel acquisition view: magnitude, phase and current
+- `dc_hysteresis.png`, a 3-panel acquisition view: magnitude, phase and current
   versus voltage.
-- `dc_hysteresis_loops.png` — 4-panel analysis view: the signed loop $S(V)$, the
+- `dc_hysteresis_loops.png`, a 4-panel analysis view: the signed loop $S(V)$, the
   butterfly $|R|(V)$, the leakage $I(V)$, and the DC optical power.
 
 ---
 
-## 8. `dc_hysteresis_metrics.json` — the loop metrics
+## 8. `dc_hysteresis_metrics.json`: the loop metrics
 
 ```json
 {
@@ -446,7 +446,7 @@ point so a partially written file is never observed.
 | `nucleation_asymmetry` | $(h_\mathrm{up}-h_\mathrm{dn})/\mathrm{mean}$ of the $dS/dV$ peak heights | branch nucleation asymmetry |
 | `butterfly_min_over_sat(_down/_up)` | $\min\|R\|/\|R\|_\mathrm{sat}$ | switching completeness (≈ 0 = clean 180° cancellation) |
 | `transition_width_25_75_V` (+ `_down`, `_up`) | span between the 25 % and 75 % crossings | switching abruptness ($\approx 1.10\,w$ for a tanh branch) |
-| `phase_intermediate_fraction_down/up` | fraction of coercive-window points 45–135° off axis | gradual rotation versus abrupt flip |
+| `phase_intermediate_fraction_down/up` | fraction of coercive-window points 45 to 135° off axis | gradual rotation versus abrupt flip |
 | `tanh_fit_down`, `tanh_fit_up` | $S = a + bV + S_s\tanh((V-V_c)/w)$ with errors and $R^2$ | model $V_c$, width, and the reversible linear term |
 | `leakage` | `conductance_S`, `i_at_pos_sat_A`, `i_at_neg_sat_A`, `i_max_abs_A`, `offset_A` | conduction / defects |
 | `quadrature_fraction` | $\max\|Q\|/\max\|S\|$ | projection validity (> 0.5 → invalid) |
@@ -461,7 +461,7 @@ point so a partially written file is never observed.
 | Primary type | Criterion (simplified) | Material reading |
 | --- | --- | --- |
 | `ferroelectric_square` | crossings on both branches, width ≥ 2 V, mean squareness ≥ 0.7 | uniform, well-switching |
-| `ferroelectric_slanted` | squareness 0.3–0.7 | broad coercive-field distribution |
+| `ferroelectric_slanted` | squareness 0.3 to 0.7 | broad coercive-field distribution |
 | `ferroelectric_rounded` | squareness < 0.3 | strong disorder / graded switching |
 | `pinched` | the opening profile has ≥ 2 humps with a dip < 0.5× the smaller hump, and relative opening ≥ 0.15 | defect pinning / internal-bias pairs / antiferroelectric-like |
 | `linear_no_hysteresis` | relative opening < 0.15, or width < 2 V | paraelectric-like reversible response |
@@ -500,7 +500,7 @@ shape means physically is in
 | `peak_lock_table.json` / `.csv` | the learned per-HWP readout table: nulls, readout angles, chosen side, the metric used, the S9 fields, quality |
 | `null_seed_by_hwp.json` | nulls found at this pixel, keyed by HWP |
 | `hwp_XXX.Xdeg_null_info.json` | per-HWP null search detail: method, evaluations, escalation, final leakage |
-| `fast_map_angular_response.csv` | normalised rotation $\delta$ and retardance $\Gamma$ versus calibrated $\theta_i$, with uncertainties — the input to the polar plot |
+| `fast_map_angular_response.csv` | normalised rotation $\delta$ and retardance $\Gamma$ versus calibrated $\theta_i$, with uncertainties; the input to the polar plot |
 | `pixel_run_info.json` | per-pixel run context: stage position, alignment result, routing, timing |
 
 ---
@@ -562,7 +562,7 @@ the `voltage_on_*` columns if voltage was applied at the calibrated peak.
 | `s9_operating_point_failed` | it did not | ⚠️ do not trust the physics on this row |
 | `s9_low_signal_geometry_only` | the geometry is right, the pixel is simply weak | ℹ️ informational |
 | `high_null_leakage`, `high_null_after_adaptive`, `high_null_continued` | the null is worse than the threshold | ⚠️ |
-| `calibration_null_hard_limit_exceeded` | a calibration-pixel null exceeded the hard limit — excluded from trusted seeds | ⚠️ |
+| `calibration_null_hard_limit_exceeded` | a calibration-pixel null exceeded the hard limit, so it is excluded from trusted seeds | ⚠️ |
 | `calibration_null_marginal_continued` | within the continuation margin | ℹ️ |
 | `untrusted_high_null_fallback` | the readout fell back because the null was untrusted | ⚠️ |
 | `plus_minus_same_sign` | the ±45° responses do **not** oppose | 🔴 probably pickup, not light |
@@ -627,8 +627,8 @@ print(m["classification"]["primary"], m["metrics"]["loop_width_V"],
       m["metrics"]["imprint_V"])
 ```
 
-> **Note** Use `comment="#"` when reading `dc_hysteresis.csv` — the provenance
-> header lines start with `#`.
+> **Note** Use `comment="#"` when reading `dc_hysteresis.csv`, because the
+> provenance header lines start with `#`.
 
 > **Display versus internal column.** `col` is the 0-based internal stage
 > column. The GUI heat map draws `display_row = row + 1` and
@@ -641,10 +641,10 @@ print(m["classification"]["primary"], m["metrics"]["loop_width_V"],
 
 ## See also
 
-- [Glossary](glossary.md) — every symbol and term used above.
-- [CLI Reference](cli.md) — the flags that set these values.
-- [Data pipeline](../software/data-pipeline.md) — how each file is produced.
-- [Operator Manual](../guide/operating.md) — the settings behind the columns.
+- [Glossary](glossary.md): every symbol and term used above.
+- [CLI Reference](cli.md): the flags that set these values.
+- [Data pipeline](../software/data-pipeline.md): how each file is produced.
+- [Operator Manual](../guide/operating.md): the settings behind the columns.
 
 ---
 

@@ -1,7 +1,7 @@
 # The Software
 
 **What this section is for:** the code that turns the optical bench into an
-instrument. This page gives you the shape of the system — the rules that
+instrument. This page gives you the shape of the system: the rules that
 explain why it is written the way it is, what every module does, how they
 depend on one another, and where to go next.
 
@@ -22,7 +22,7 @@ rules made it so.
 | --- | --- |
 | **Never lose acquired data.** | Every CSV is written incrementally, row by row, as the measurement happens. All post-processing runs inside `try/except`, so a plotting bug can never destroy a measurement. A pixel that fails part-way through is saved as **partial**, not discarded, and a resumed run picks it up from `automation_progress.json`. |
 | **Never leave the hardware energised.** | Output shutdown lives in `finally` blocks and context managers, never in the happy path. `ensure_fast_map_outputs_off()` turns off *both* the function-generator drive channel and the SMU, **verifies** each one, and escalates to full hardware recovery if it cannot confirm. `routed_arduino_channel()` opens the switch matrix on exit including on exception. |
-| **Fail closed on physics, fail open on telemetry.** | A missing SMU terminal-voltage readback aborts the measurement point *before* the AC drive turns on — that reading is physics. A lock-in *configuration* readback that returns an empty string does **not** abort: it is a known DSP7230 firmware quirk, and killing a seven-hour run over a cosmetic query would be the worse failure. |
+| **Fail closed on physics, fail open on telemetry.** | A missing SMU terminal-voltage readback aborts the measurement point *before* the AC drive turns on, because that reading is physics. A lock-in *configuration* readback that returns an empty string does **not** abort: it is a known DSP7230 firmware quirk, and killing a seven-hour run over a cosmetic query would be the worse failure. |
 | **Physics maths must be testable without hardware.** | [`pockels_measurement_analysis.py`](../../pockels/pockels_measurement_analysis.py) and [`pockels_hysteresis_analysis.py`](../../pockels/pockels_hysteresis_analysis.py) import no instrument drivers at all. They are covered by unit tests that run on any machine, with no PyVISA, no pythonnet and no display. |
 
 > **Note**
@@ -35,22 +35,22 @@ rules made it so.
 
 ## Module map
 
-### Entry points — the things you actually run
+### Entry points: the things you actually run
 
 | Module | Lines | Role |
 | --- | --- | --- |
 | [`pockels_fast_map_gui.py`](../../pockels/pockels_fast_map_gui.py) | ~22 800 | The whole operator-facing system. The Tkinter GUI **and** the measurement worker live in this one file: running it opens the GUI, running it with `--cli` runs the measurement headlessly. |
 | [`Pockels_Calibration_2026.py`](../../pockels/Pockels_Calibration_2026.py) | ~5 200 | The deep single-pixel campaign. Hosts `run_dc_hysteresis_sweep()`, `reset_domains_pulsed()`, the AC-Vpp sweep, the function-generator and SMU command layers, and a standalone `--hysteresis-only` mode. |
-| [`stage_calibration.py`](../../pockels/stage_calibration.py) | ~5 100 | The interactive stage/pixel calibration tool — **and** the library that owns the XY stage, the oscilloscope detector, the camera live view, and every alignment algorithm. |
+| [`stage_calibration.py`](../../pockels/stage_calibration.py) | ~5 100 | The interactive stage/pixel calibration tool. It is **also** the library that owns the XY stage, the oscilloscope detector, the camera live view, and every alignment algorithm. |
 | [`sample_calibration.py`](../../pockels/sample_calibration.py) | ~870 | The guided three-step sample-in optical calibration, driven by the GUI as a child process. |
 | [`make_hysteresis_maps.py`](../../pockels/make_hysteresis_maps.py) | ~430 | Chip heat maps (21 metric layers), the loop-type map and the loop gallery. |
 | [`make_compositional_report.py`](../../pockels/make_compositional_report.py) | ~410 | Cross-metric analytics: correlations, composition joins, trends, clustering. |
 | [`make_fast_map_extra_plots.py`](../../pockels/make_fast_map_extra_plots.py), [`make_peak_hwp_angle_map.py`](../../pockels/make_peak_hwp_angle_map.py) | ~710 / ~280 | Additional figure generation from a finished run. |
 | [`pockels_hysteresis_analysis.py`](../../pockels/pockels_hysteresis_analysis.py) | ~1 340 | Also a command-line tool: point it at a `dc_hysteresis.csv` and it produces loop metrics and plots. |
 | [`arduino_switch_matrix.py`](../../pockels/arduino_switch_matrix.py) | ~690 | Also an interactive CLI that mimics the Arduino IDE serial monitor. |
-| [`smu4201_iv_sweep.py`](../../pockels/smu4201_iv_sweep.py) | ~230 | Also a standalone I–V sweep utility. |
+| [`smu4201_iv_sweep.py`](../../pockels/smu4201_iv_sweep.py) | ~230 | Also a standalone I-V sweep utility. |
 
-### Orchestration — the code that sequences a run
+### Orchestration: the code that sequences a run
 
 | Module | Lines | Role |
 | --- | --- | --- |
@@ -59,11 +59,11 @@ rules made it so.
 | [`analyser_sweep_voltage_series.py`](../../pockels/analyser_sweep_voltage_series.py) | ~830 | The analyser-sweep inner loop, function-generator helpers, and `read_lockin_averaged()`. |
 | [`POL_Chip_Test_Working_2026.py`](../../pockels/POL_Chip_Test_Working_2026.py) | ~2 670 | The original chip-test script. The rest of the package imports its hardware constants (COM ports, scope address, detector calibration, stage serials), its `DetectorTekTBS` class, and its accurate rotator move helpers `safe_move_abs()` / `safe_move_abs_fast()`. |
 | [`pockels_transport_recovery.py`](../../pockels/pockels_transport_recovery.py) | ~310 | The reconnect-and-verify state machine. **Imports no drivers**, so it is unit-testable. |
-| [`pockels_lockin_ranging.py`](../../pockels/pockels_lockin_ranging.py) | ~250 | `PredictiveHystereticRangeController` — the optional hysteresis-only ranging predictor. Also driver-free. |
+| [`pockels_lockin_ranging.py`](../../pockels/pockels_lockin_ranging.py) | ~250 | `PredictiveHystereticRangeController`, the optional hysteresis-only ranging predictor. Also driver-free. |
 | [`main_control_classes.py`](../../pockels/main_control_classes.py) | ~640 | Older shared control classes, retained for compatibility with earlier scripts. |
 | [`_bootstrap.py`](../../pockels/_bootstrap.py) | 50 | Import and working-directory pinning (see below). |
 
-### Hardware drivers — one module per instrument
+### Hardware drivers: one module per instrument
 
 | Module | Lines | Instrument |
 | --- | --- | --- |
@@ -79,7 +79,7 @@ Instrument addresses, gains and serial numbers are catalogued in
 [Instruments](../experiment/instruments.md); the switching matrix has its own
 page, [The Switch Matrix](../experiment/switch-matrix.md).
 
-### Pure analysis — no hardware imports, fully unit-tested
+### Pure analysis: no hardware imports, fully unit-tested
 
 | Module | Lines | Role |
 | --- | --- | --- |
@@ -150,8 +150,8 @@ It does exactly two things, and **the order matters**:
    "here" is.
 
 Net effect: **data always lands in one predictable place, and code always
-resolves to this package.** The module is idempotent — Spyder's autoreload can
-re-execute it freely — and it announces itself at most once per process.
+resolves to this package.** The module is idempotent (Spyder's autoreload can
+re-execute it freely) and it announces itself at most once per process.
 
 The test suite has its own, much smaller shim,
 [`tests/_bootstrap.py`](../../tests/_bootstrap.py). It puts `pockels/` on

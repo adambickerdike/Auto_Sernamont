@@ -1,7 +1,7 @@
 # Motion Control
 
-**What this page is for:** exactly how the software makes the motors move —
-wire protocols, encoder arithmetic, backlash, verification, fault recovery and
+**What this page is for:** exactly how the software makes the motors move.
+Wire protocols, encoder arithmetic, backlash, verification, fault recovery and
 every alignment search algorithm with its real constants.
 
 Read this if a motor misbehaves, if you are porting the code to different
@@ -35,15 +35,15 @@ The fast path exists because the arithmetic is brutal: 100 pixels × 9 HWP
 angles × 3 analyser points is roughly 3 000 rotator moves. At the ~2 s that the
 accurate path costs per move, that is over an hour of pure motion before a
 single measurement is taken. The fast path cuts that dramatically **without**
-giving up verification — every fast move is still read back, and a move that
+giving up verification: every fast move is still read back, and a move that
 cannot be verified stops the run rather than silently corrupting an angle.
 
 | Flag | Effect |
 | --- | --- |
 | `--conservative-rotator-moves` | Force the accurate, boundary-safe chunked path everywhere. |
-| `--no-verify-fast-rotator-moves` | Drop readback verification. **Motion tests only** — never for a real measurement. |
+| `--no-verify-fast-rotator-moves` | Drop readback verification. **Motion tests only**, never for a real measurement. |
 | `--rotator-verify-tol` | The fast-path tolerance in degrees (default 0.5). |
-| `--rotator-velocity-pct` | Elliptec velocity as a percentage of maximum (default 50, clamped to 25–100). |
+| `--rotator-velocity-pct` | Elliptec velocity as a percentage of maximum (default 50, clamped to the range 25 to 100). |
 
 ---
 
@@ -58,7 +58,7 @@ analyser (COM8, address 2).
 
 Thorlabs Elliptec devices speak a simple ASCII-hex protocol over 9600 8N1
 serial. Several devices can share one bus, distinguished by a single-character
-address (`0`–`F`).
+address (`0` to `F`).
 
 ```text
 Packet out:   <addr><2-char command><hex payload>\n
@@ -67,7 +67,7 @@ Packet in:    <addr><2-char reply><hex data>\r\n
 
 The reply is parsed as three fields: one address character, a two-character
 reply type and the remainder as a big-endian hex integer. A mismatched address
-raises immediately — on a shared bus, reading another device's answer is worse
+raises immediately: on a shared bus, reading another device's answer is worse
 than reading nothing.
 
 | Command | Meaning | Reply |
@@ -76,7 +76,7 @@ than reading nothing.
 | `gp` | Get position | `PO` + 32-bit two's-complement encoder count |
 | `ho` + 1 byte | Home (`0` = CW, `1` = CCW) | status |
 | `mr` + 4 bytes | **Move relative** by a signed encoder delta | `GS` (status) or `PO` (position) |
-| `sv` + 2 hex digits | Set velocity, 1–100 % | status |
+| `sv` + 2 hex digits | Set velocity, 1 to 100 % | status |
 
 The status codes, in index order, are the module-level `RESPONSES` list:
 
@@ -117,7 +117,7 @@ angle_unwrapped = -360 * (position + offset) / COUNTS_PER_REVOLUTION
 angle           = angle_unwrapped % 360
 ```
 
-> **Note — that minus sign is load-bearing.**
+> **Note: that minus sign is load-bearing.**
 > The Elliptec protocol counts **clockwise-positive**; the software (and all of
 > the optical convention in this instrument) is **counter-clockwise-positive**.
 > Every conversion in both directions carries the negation. Relative moves
@@ -129,7 +129,7 @@ angle           = angle_unwrapped % 360
 > If you ever see a response whose angular dependence is mirrored about
 > $\theta = 0$, this sign is the first thing to check.
 
-At 398.222 counts per degree, one encoder count is about $0.0025^\circ$ — well
+At 398.222 counts per degree, one encoder count is about $0.0025^\circ$, well
 below the ELL14's own $\pm 0.05^\circ$ specification, so the encoder is never
 the limiting term.
 
@@ -163,8 +163,8 @@ recompute the delta from the new position  →  retry the move
 ```
 
 This is hard-won behaviour. ELL14 units occasionally throw sensor or limit
-faults part-way through a multi-hour campaign — a transient, not a
-mis-command — and the correct response is to re-reference the mechanism and
+faults part-way through a multi-hour campaign. These are transients, not
+mis-commands, and the correct response is to re-reference the mechanism and
 carry on. Aborting a seven-hour run at pixel 60 because one rotator sneezed is
 strictly worse than homing, taring and continuing, because the optical
 calibration is expressed relative to the polariser frame and survives a
@@ -201,7 +201,7 @@ rot.set_velocity(50)     # percent of maximum, sent as two hex digits via 'sv'
 ```
 
 The device powers up at 100 %. The fast map uses **50 %**, and the value is
-clamped to the range **25–100 %**. The floor is not arbitrary: below roughly
+clamped to the range **25 to 100 %**. The floor is not arbitrary: below roughly
 25 % the ELL14 can stall on reversal, which produces exactly the kind of silent
 mis-positioning the verification layer exists to catch. Lower speed reduces
 inertial overshoot and makes the motion less jarring, at the cost of a
@@ -211,7 +211,7 @@ proportionally longer physical move.
 
 ## 3. Rotator move strategies
 
-### 3.1 The accurate path — `safe_move_abs()`
+### 3.1 The accurate path: `safe_move_abs()`
 
 In [`POL_Chip_Test_Working_2026.py`](../../pockels/POL_Chip_Test_Working_2026.py):
 
@@ -246,14 +246,14 @@ cost of a few extra round trips.
 the direction you arrived from. By *always* undershooting by 0.3° and then
 making the final approach in the positive direction, every move loads the gear
 train identically. The residual error becomes **systematic rather than
-random** — and a systematic error that is identical at every angle cancels out
+random**, and a systematic error that is identical at every angle cancels out
 of every angular difference the physics actually uses.
 
-An optional `MotionLogger` records every move — target, actual, attempt number,
-whether backlash was applied, settle time and free-text notes — to CSV for
+An optional `MotionLogger` records every move (target, actual, attempt number,
+whether backlash was applied, settle time and free-text notes) to CSV for
 post-hoc analysis. It defaults to `None`, so it costs nothing when unused.
 
-### 3.2 The fast path — `fast_rotator_move_or_fallback()`
+### 3.2 The fast path: `fast_rotator_move_or_fallback()`
 
 In [`pockels_fast_map_gui.py`](../../pockels/pockels_fast_map_gui.py):
 
@@ -272,9 +272,9 @@ In [`pockels_fast_map_gui.py`](../../pockels/pockels_fast_map_gui.py):
 6. Still outside: raise CriticalAngleError  →  the run stops
 ```
 
-The function returns a dictionary — `target_deg`, `actual_deg`, `error_deg`,
+The function returns a dictionary of `target_deg`, `actual_deg`, `error_deg`,
 `corrected`, `fallback_safe_move`, `boundary_safe_move`, `recovery_attempts`,
-`readback_samples`, `readback_ok_samples`, `ok` — and those fields are written
+`readback_samples`, `readback_ok_samples` and `ok`. Those fields are written
 straight into the measurement CSV. Every row therefore carries the evidence
 that its own angles were verified.
 
@@ -283,8 +283,8 @@ that its own angles were verified.
 > wrong: it will certify a motor that happened to read correctly once and then
 > drifted, or that lost telemetry immediately afterwards, because a single good
 > sample anywhere in the window is enough to pass. Requiring the **last**
-> samples to agree tolerates one stale reading immediately after a move —
-> which the ELL14 does genuinely produce — without ever accepting a bad
+> samples to agree tolerates one stale reading immediately after a move,
+> which the ELL14 does genuinely produce, without ever accepting a bad
 > landing. In `rotator_verified_readback()` the counter is reset to zero on any
 > out-of-tolerance or non-finite sample, so only an unbroken run of good final
 > reads can satisfy it.
@@ -304,15 +304,15 @@ trigger a range fault. `rotator_move_needs_boundary_safe_path()` reads the
 current angle, computes the shortest signed delta and checks whether
 `current + delta` leaves the interval $[0, 360]$. If it does, the move is routed
 through the chunked safe path, which walks *around* the boundary rather than
-across it. If the readback is unavailable the function returns `False` — an
-unknown position is not a reason to take the slow path, it is a reason for the
-verification layer to catch the result.
+across it. If the readback is unavailable the function returns `False`, because
+an unknown position is not a reason to take the slow path; it is a reason for
+the verification layer to catch the result.
 
 The analyser is the usual victim, because a null frequently sits within a
 fraction of a degree of 360°, where the same physical position can report
 359.99, 360.00 or 0.00 on successive reads.
 
-### 3.4 Verifying an optimiser's landing — `verify_renull_landing()`
+### 3.4 Verifying an optimiser's landing: `verify_renull_landing()`
 
 Null searches take many small moves and often work from cached positions, so
 the optimiser's *final* landing is the one position nobody has explicitly
@@ -345,8 +345,8 @@ clr.AddReference(r"C:\Program Files\Thorlabs\Kinesis\ThorLabs.MotionControl.KCub
 `pythonnet` bridges Python to the .NET CLI, and `clr_loader.get_netfx()`
 selects the **.NET Framework** runtime specifically. Thorlabs ships Kinesis as
 Windows .NET assemblies with no cross-platform equivalent, so **the measurement
-must run on Windows.** Everything else in the package — including both
-pure-analysis modules and the entire test suite — runs anywhere.
+must run on Windows.** Everything else in the package, including both
+pure-analysis modules and the entire test suite, runs anywhere.
 
 `initialize_device()` performs the full bring-up sequence, and every step of it
 matters:
@@ -397,7 +397,7 @@ boundary comparison. `getcontext().prec = 10` is set at import, and the
 conversion goes through `str()` so the value never passes through a `double` on
 the way into .NET.
 
-### 4.4 Moving — `safe_move_to()`
+### 4.4 Moving: `safe_move_to()`
 
 ```text
 1. Clamp the target to the soft limits (−0.3 … 25.3 mm)
@@ -418,20 +418,20 @@ the way into .NET.
 | `OVERTRAVEL_TIMEOUT_S` | 2.0 s |
 | `OVERTRAVEL_POLL_S` | 0.05 s |
 
-> **Warning — the over-travel quirk.**
-> The Kinesis `MoveTo` API **refuses** targets outside 0–25 mm. But
+> **Warning: the over-travel quirk.**
+> The Kinesis `MoveTo` API **refuses** targets outside 0 to 25 mm. But
 > `MoveJog`/`MoveContinuous` **do physically move** past those limits while
 > *also* throwing an exception. The code therefore suppresses those exceptions
 > deliberately and polls the real position instead of trusting the API.
 >
-> **It must never clamp the target into 0–25 mm.** Pixels near the edge of the
+> **It must never clamp the target into 0 to 25 mm.** Pixels near the edge of the
 > chip genuinely sit slightly outside the nominal travel once the chip is
-> mounted, and a clamp would quietly measure the wrong pixel — the stage would
+> mounted, and a clamp would quietly measure the wrong pixel: the stage would
 > report success at 25.000 mm while the beam sat 300 µm away from the electrode
 > gap. Suppressing an exception feels wrong; measuring the wrong pixel is
 > worse.
 
-### 4.5 Backlash — `move_to_motor_with_backlash()`
+### 4.5 Backlash: `move_to_motor_with_backlash()`
 
 ```python
 undershoot = target_mm - BACKLASH_MM     # BACKLASH_MM = 0.02 mm = 20 µm
@@ -442,7 +442,7 @@ return safe_move_to(device, target_mm, label)
 
 Same principle as the rotators: always approach from below, so the mechanics are
 loaded identically every time and the residual error is systematic. The guard
-clause matters — a backlash undershoot is skipped when it would itself fall
+clause matters: a backlash undershoot is skipped when it would itself fall
 outside the hard range, because the over-travel path in §4.4 is much slower and
 is not worth spending on a 20 µm approach move.
 
@@ -479,13 +479,13 @@ press MODE on the controller rather than aborting.
 because that is where the beam is centred in the ~7 µm electrode gap. Before
 any search runs, the analyser is rotated `BRIGHTEN_OFFSET_DEG` off the
 through-sample null so the photodiode sees a bright peak rather than a dark
-null — hill-climbing on a null is hill-climbing on noise.
+null. Hill-climbing on a null is hill-climbing on noise.
 
 The full-auto chain tries the cheapest method first and falls back:
 
 ```text
 hill-climb  →  fast-peak  →  golden-section  →  full line scan
-  ~17 evals     ~10–15         ~12 s              exhaustive, ~60 s
+  ~17 evals     ~10 to 15      ~12 s              exhaustive, ~60 s
 ```
 
 | Toggle | Default | Effect |
@@ -494,13 +494,13 @@ hill-climb  →  fast-peak  →  golden-section  →  full line scan
 | `FULL_AUTO_USE_FAST` | `True` | Full-auto uses `fast_peak_align` as the next step |
 | `HILL_CLIMB_USE_LOCK` | `True` | Enable the 2-D ring-lock phase |
 
-### 5.1 Hill-climb with ring lock — the default first attempt
+### 5.1 Hill-climb with ring lock: the default first attempt
 
-**Phase 1 — the 2-D ring lock** (`_ring_probe`). Sample
+**Phase 1: the 2-D ring lock** (`_ring_probe`). Sample
 `HILL_CLIMB_LOCK_N_POINTS = 8` points evenly spaced on a circle of radius
 `HILL_CLIMB_LOCK_RADII_UM = [20.0, 80.0]` µm around the start position, trying
 20 µm first. If any ring point reads at least
-`HILL_CLIMB_LOCK_THRESHOLD = 1.15` × the centre reading, move there — you have
+`HILL_CLIMB_LOCK_THRESHOLD = 1.15` × the centre reading, move there: you have
 "locked on" to the bright region. If the 20 µm ring finds nothing, try 80 µm.
 
 This phase exists to escape a specific failure: a local flat spot where both
@@ -508,11 +508,11 @@ $\pm 5$ µm 1-D neighbours read the same as the centre, because both are in the
 off-peak region. A purely 1-D search reports "already at the peak" and stops.
 An octagon at 20 µm sees the gradient that the 1-D probes cannot.
 
-If **no** ring rises above the threshold, the code does not give up — it nudges
+If **no** ring rises above the threshold, the code does not give up. It nudges
 to the brightest point of the last ring probed, if that beats the centre, and
 hill-climbs from there.
 
-**Phase 2 — the adaptive 1-D climb per axis** (`hill_climb_peak`), X first,
+**Phase 2: the adaptive 1-D climb per axis** (`hill_climb_peak`), X first,
 then Y from the X-refined position:
 
 ```text
@@ -520,7 +520,7 @@ then Y from the X-refined position:
       HILL_CLIMB_INITIAL_STEP_UM = 5.0
 
 2. If the centre is ≥ both neighbours, OR all three are within 0.5 %
-   of each other (HILL_CLIMB_FLAT_V_TOL_PCT — the "flat top" case):
+   of each other (HILL_CLIMB_FLAT_V_TOL_PCT, the "flat top" case):
       parabolic fit through the 3 points → move to the vertex → verify
       if the vertex reads below 0.98 × the best probe, REVERT to the best probe
       → done, 4 evals
@@ -534,7 +534,7 @@ then Y from the X-refined position:
       (same 0.98 × revert rule)
 
 5. If the travel would leave ±HILL_CLIMB_MAX_RANGE_UM = 200 µm of the start,
-   stop and return the best seen — the caller then falls back to a
+   stop and return the best seen; the caller then falls back to a
    broader method
 
    (a hard safety cap of 25 evaluations also guarantees termination)
@@ -555,21 +555,21 @@ when the pixel was already on the peak.
 > bracket all return `None`.
 
 `hill_climb_align()` finally checks how far each axis travelled. If either axis
-moved more than 95 % of the allowed range — i.e. it was still climbing when it
-ran out of room — that axis is redone with `fast_peak_search()` over a window
+moved more than 95 % of the allowed range (i.e. it was still climbing when it
+ran out of room), that axis is redone with `fast_peak_search()` over a window
 of $\pm 200$ µm about the original start.
 
-### 5.2 Fast-peak — golden section plus parabolic refinement
+### 5.2 Fast-peak: golden section plus parabolic refinement
 
 `fast_peak_search()` runs a golden-section search only to a **coarse** 5 µm
 tolerance (`ALIGN_FAST_TOL_UM`), then fits a parabola through the best three
 evaluations to refine below 1 µm.
 
-The rationale is convergence order. Golden section converges *linearly* — each
-iteration narrows the bracket by a factor $\varphi$ — while parabolic
+The rationale is convergence order. Golden section converges *linearly*, each
+iteration narrowing the bracket by a factor $\varphi$, while parabolic
 interpolation converges *quadratically* near a smooth peak. Running golden
 section to a loose tolerance and then interpolating typically reaches sub-µm
-precision in about 10 evaluations instead of about 16, roughly 2.5–3× faster
+precision in about 10 evaluations instead of about 16, roughly 2.5 to 3× faster
 than plain golden section for the same final precision. It uses the fast
 measurement settings: `ALIGN_FAST_SETTLE_S = 0.15` s and
 `ALIGN_FAST_AVG_READS = 3`.
@@ -590,7 +590,7 @@ plot. `golden_section_align()` alternates X and Y and auto-extends the range if
 the peak lands at an edge. Robust but slower; this is what the chain falls back
 to when hill-climb fails.
 
-### 5.4 The line scan — the exhaustive fallback
+### 5.4 The line scan: the exhaustive fallback
 
 `auto_align()` is scan-then-refine, and it makes no assumption of unimodality
 at all:
@@ -614,7 +614,7 @@ section work over $\pm 50$ µm (`CV_GUIDED_RANGE_UM = 100`) instead of
 $\pm 200$ µm.
 
 1. Load the one-time pixel-to-stage calibration from
-   `stage_calibration/pixel_stage_calib.json` — an affine matrix $M$ mapping
+   `stage_calibration/pixel_stage_calib.json`, an affine matrix $M$ mapping
    camera-pixel displacement to the stage displacement that caused it, plus
    the beam position `p_beam` in camera pixels. It is produced by
    `calibrate_pixel_to_stage()`, which steps the stage by
@@ -626,7 +626,7 @@ $\pm 200$ µm.
    components smaller than 100 px. Within the dilated structure mask the
    intensity map (weighted 0.7 toward blue, the electrode colour signature) is
    smoothed with a 15 × 15 Gaussian so that the **peak region** is found rather
-   than a single noisy pixel — the filter is sized for the expected
+   than a single noisy pixel. The filter is sized for the expected
    `CV_GAP_WIDTH_UM = 7.0` µm gap through which the laser couples. A clear peak
    is one that exceeds 1.3 × the mean inside the mask; it is then refined by a
    weighted centroid over a 15 px radius. If there is no clear peak, the code
@@ -637,7 +637,7 @@ $\pm 200$ µm.
 > `CV_MAX_CORRECTION_MM = 0.5` mm, it is **rejected** and the code falls back
 > to a plain golden-section search. The pixel pitch is 2.5 mm, so a correction
 > approaching 0.5 mm means the vision system has almost certainly locked onto
-> the wrong feature — a neighbouring electrode, a scratch, a reflection.
+> the wrong feature: a neighbouring electrode, a scratch, a reflection.
 > Acting on it would move the stage confidently to the wrong pixel, which is
 > far worse than spending an extra 30 s on a blind search. The same fallback
 > applies whenever the calibration file is missing, the camera is unavailable,
@@ -655,7 +655,7 @@ Four rules apply to every alignment search, and all four are there because
 violating them produces a plausible-looking peak that is not a peak.
 
 - **The live-view camera's scope polling is paused** (`pause_scope_reads()`)
-  for the duration of the search, synchronously — the call blocks until any
+  for the duration of the search, synchronously: the call blocks until any
   in-flight live-view read has completed. Without this, the alignment thread
   and the viewer collide on the same VISA session. All scope I/O in
   `ScopeDetector` is additionally serialised through an `RLock`.
@@ -669,7 +669,7 @@ violating them produces a plausible-looking peak that is not a peak.
   careful ones. `ScopeDetector.read_averaged()` additionally performs
   median-absolute-deviation outlier rejection at 2.5 × MAD before averaging,
   keeping the raw array if fewer than three samples survive.
-- **Every search writes a diagnostic log and plot** into the run folder —
+- **Every search writes a diagnostic log and plot** into the run folder.
   `save_alignment_log()` and `plot_alignment_diagnostic()` produce a per-pixel
   CSV of every probe and a picture of the profile the optimiser actually saw.
   When a pixel's data looks wrong six months later, this is how you find out
@@ -678,8 +678,8 @@ violating them produces a plausible-looking peak that is not a peak.
 ---
 
 **Next:** [Instrument Control and Timing](instrument-control.md) for what
-happens once the motors have stopped. For the instruments themselves — models,
-addresses, gains — see [Instruments](../experiment/instruments.md); for what to
+happens once the motors have stopped. For the instruments themselves (models,
+addresses, gains) see [Instruments](../experiment/instruments.md); for what to
 do when a motor will not cooperate, see
 [Troubleshooting](../guide/troubleshooting.md).
 

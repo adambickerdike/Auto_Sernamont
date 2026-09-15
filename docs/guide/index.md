@@ -12,7 +12,7 @@ in [Physics](../physics/index.md); the bench itself is described in
 
 You are about to sit down at the rig and produce data that has to survive a
 viva. You do not need to be able to derive the Sénarmont relations before you
-start — but you do need to be able to tell a real electro-optic signal from
+start, but you do need to be able to tell a real electro-optic signal from
 electrical pickup, and this section tells you which columns and which flags to
 look at.
 
@@ -28,15 +28,15 @@ The guide assumes:
 
 ## Recommended reading order
 
-1. **[Installation and Setup](installation.md)** — once per machine. Windows,
+1. **[Installation and Setup](installation.md)**, once per machine. Windows,
    Kinesis, the Python dependencies, the one-time USB stability fix, and how to
    verify that everything is present.
-2. **[Quick Start](quickstart.md)** — once per person. Cold lab to one complete,
+2. **[Quick Start](quickstart.md)**, once per person. Cold lab to one complete,
    trustworthy pixel in about an hour, including how to tell whether it worked.
-3. **[Operator Manual](operating.md)** — the reference you keep open while a
+3. **[Operator Manual](operating.md)**, the reference you keep open while a
    campaign runs. Every setting, the calibration chain, the time budget, the
    follow-up measurements, and how to stop, skip and resume.
-4. **[Troubleshooting](troubleshooting.md)** — when the run stops, the null
+4. **[Troubleshooting](troubleshooting.md)**, for when the run stops, the null
    leaks, or the loop looks like a straight line.
 
 Then, for the data itself: [Data Schema](../reference/data-schema.md) tells you
@@ -59,9 +59,9 @@ These five rules are not style preferences. Each one exists because breaking it
 has already cost somebody a day, a chip, or a dataset.
 
 1. **Always shake down one pixel first.**
-   New chip, new day, new code version — run a single pixel end to end and read
+   New chip, new day, new code version: run a single pixel end to end and read
    its `fast_map.csv` before you queue eighty-three. A production pixel takes
-   ≈ 4.5–5 min and the calibration pixel ≈ 8 min, so a shakedown costs you ten
+   ≈ 4.5 to 5 min and the calibration pixel ≈ 8 min, so a shakedown costs ten
    minutes and can save you seven hours of confidently-acquired rubbish. See
    [Quick Start §5](quickstart.md#5-run-one-pixel-the-shakedown).
 
@@ -76,7 +76,7 @@ has already cost somebody a day, a chip, or a dataset.
    `--simulate-lockin`, `--allow-fake-lockin`, `--allow-fake-smu` and
    `--allow-no-arduino` exist so motion and timing can be tested without
    hardware. `FakeLockin` synthesises a plausible-looking response from the
-   analyser angle — the numbers it produces are fiction, and they look fine.
+   analyser angle, and the numbers it produces are fiction that looks fine.
    Keep *Require real lock-in / SMU / Arduino* ticked, and check
    `"simulated"` in `lockin_configuration.json` before trusting any run.
 
@@ -87,7 +87,7 @@ has already cost somebody a day, a chip, or a dataset.
    and do not change it mid-campaign. If you want the rate dependence, measure
    it deliberately as its own experiment.
 
-5. **Back up your run folders — they are git-ignored.**
+5. **Back up your run folders; they are git-ignored.**
    `pockels_fast_map/`, `pockels_calibration/`, `stage_calibration/` and the
    `calibration_results_*` folders are deliberately excluded from version
    control. Nothing in the repository protects them. Copy each finished run to

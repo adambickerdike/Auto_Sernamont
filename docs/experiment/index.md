@@ -30,7 +30,7 @@ one hundred different places on one chip, unattended, for hours**:
   see the electrode gap it is trying to hit,
 - a 100-channel solid-state switching matrix so exactly one electrode pair is
   ever energised,
-- and two parallel readout channels — an oscilloscope used as a slow DC
+- and two parallel readout channels: an oscilloscope used as a slow DC
   voltmeter for the null and the Malus slope, and a lock-in amplifier that
   picks the 30 kHz modulation out of the noise.
 
@@ -40,7 +40,7 @@ one hundred different places on one chip, unattended, for hours**:
 
 ![Optical and electrical schematic of the Pockels measurement setup](../../assets/setup_schematic.png)
 
-**Reading the diagram.** Follow the red line — that is the 1550 nm beam.
+**Reading the diagram.** Follow the red line, which is the 1550 nm beam.
 
 1. **Laser (right).** The fibre-coupled **KLS1550** diode source emits at
    1550 nm, software-set to ~7 mW. It is mounted horizontally at bench level.
@@ -53,7 +53,7 @@ one hundred different places on one chip, unattended, for hours**:
    downward into the measurement path. It is also the **camera port**: the
    pale blue cone in the diagram is the imaging path, which travels *up* from
    the chip, through the same focusing lens, and straight through the cube to
-   the **camera** at the very top. Beam and camera therefore share an axis —
+   the **camera** at the very top. Beam and camera therefore share an axis,
    which is what makes "move the stage to where the camera sees the gap"
    a meaningful instruction.
 4. **Polariser 1.** A fixed linear polariser. Everything upstream of it
@@ -71,7 +71,7 @@ one hundred different places on one chip, unattended, for hours**:
    real chip carries 100 such pairs, and the whole die rides on the XY stage.
 8. **Lens.** Re-collimates the diverging beam after the focus so the waveplate
    and analyser downstream see a near-parallel beam.
-9. **λ/4 WP.** The motorised quarter-wave plate — the Sénarmont compensator.
+9. **λ/4 WP.** The motorised quarter-wave plate, the Sénarmont compensator.
    It undoes the *static* birefringence of the film so the light arriving at
    the analyser is linear again and can actually be extinguished.
 10. **Polariser 2.** The motorised analyser. Its angle relative to the
@@ -80,7 +80,7 @@ one hundred different places on one chip, unattended, for hours**:
 11. **Lens → Detector.** A final lens concentrates the beam onto the small
     active area of the **PDA30B2** amplified photodiode.
 
-Now follow the thin black lines — that is the electrical path.
+Now follow the thin black lines. Those are the electrical path.
 
 - The **SMU** (top right) sources the DC bias: the poling voltage and the DC
   sweep used for hysteresis loops.
@@ -90,7 +90,7 @@ Now follow the thin black lines — that is the electrical path.
 - The **bias tee** sums them: the inductor passes DC from the SMU while
   blocking AC, the capacitor passes AC from the generator while blocking DC, so
   a single coaxial line carries `DC + AC` to the chip.
-- That single line feeds the **100-channel switching matrix** (not drawn — the
+- That single line feeds the **100-channel switching matrix** (not drawn; the
   schematic shows the one electrode pair the matrix has selected). The matrix
   connects the drive line to exactly one of the 100 electrode pairs and leaves
   the other 99 open.
@@ -98,7 +98,7 @@ Now follow the thin black lines — that is the electrical path.
   **Oscilloscope**, which reads the mean (DC) level, and the **Lock-in**, which
   demodulates the 30 kHz component against the CH2 reference.
 
-> **Note** — the schematic shows one electrode pair because that is what the
+> **Note** The schematic shows one electrode pair because that is what the
 > measurement sees. The mapping from "pixel 46" to "the one relay that must
 > close" is the job of the [switching matrix](switch-matrix.md), and getting it
 > wrong is the most dangerous failure mode in the system.
@@ -129,18 +129,18 @@ detail pages:
 
 1. Move the stage to the nominal pixel position (2.5 mm grid).
 2. Rotate the analyser +45° off the null so the detector sees a bright peak.
-3. Hill-climb the stage in X and Y to maximise transmission — that peak *is*
+3. Hill-climb the stage in X and Y to maximise transmission; that peak *is*
    the beam sitting centred in the electrode gap.
 4. Rotate the analyser back to the null seed.
 5. Route the switching matrix to this pixel's electrode pair.
 6. Pole the film with DC from the SMU.
 7. For each of 9 half-wave-plate angles: re-null the QWP/analyser pair, then
-   measure the lock-in triplet — background at the null, and the exact ±45°
+   measure the lock-in triplet: background at the null, and the exact ±45°
    slope points.
 8. All voltages off, matrix open, move to the next pixel.
 
-A production pixel takes about 4.5–5 minutes; a full 83-pixel default
-selection takes 6–7 hours.
+A production pixel takes about 4.5 to 5 minutes; a full 83-pixel default
+selection takes 6 to 7 hours.
 
 ---
 

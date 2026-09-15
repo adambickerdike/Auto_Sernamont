@@ -16,7 +16,7 @@ For the electro-optic physics the chip is there to expose, see
 | Property | Value |
 | --- | --- |
 | Material | BaTiO₃ (BTO) thin film, typically with a compositional gradient across the die |
-| Film thickness | a few hundred nanometres — **must be measured per chip** for any absolute coefficient |
+| Film thickness | a few hundred nanometres, and **must be measured per chip** for any absolute coefficient |
 | Layout | 10 × 10 grid of coplanar electrode pairs, numbered 1…100 |
 | Pitch | **2.5 mm** nominal (10 points across 25 mm of stage travel) |
 | Electrode gap | **~7 µm** in-plane (`CV_GAP_WIDTH_UM = 7.0`, the width the camera's matched filter expects) |
@@ -38,7 +38,7 @@ field in the film in the region the light passes through.
 
 ### 2.1 Why coplanar rather than a sandwich
 
-A "sandwich" (vertical) geometry — electrode above the film, electrode below —
+A "sandwich" (vertical) geometry (electrode above the film, electrode below)
 is the textbook arrangement, and it is *not* used here, for three reasons:
 
 1. **The film is only a few hundred nanometres thick.** A vertical field needs
@@ -67,12 +67,12 @@ where $g$ is the gap and $\alpha$ is a dimensionless, device-specific
 electrostatic correction obtained from a **finite-element model of the actual
 electrode geometry**.
 
-> **Warning** — $\alpha$ is the single largest source of systematic uncertainty
+> **Warning** $\alpha$ is the single largest source of systematic uncertainty
 > in any *absolute* $r_\mathrm{eff}$ this instrument produces. It is why the
 > software **refuses to report** $r_\mathrm{eff}$ until you supply a measured
-> $\alpha$ for your geometry. Everything the map measures *relatively* — which
+> $\alpha$ for your geometry. Everything the map measures *relatively* (which
 > pixels respond, how the response varies with $\theta_i$, how loops differ
-> across the die — is unaffected by $\alpha$, because it is one common factor.
+> across the die) is unaffected by $\alpha$, because it is one common factor.
 
 ---
 
@@ -80,7 +80,7 @@ electrode geometry**.
 
 ![GDS layout of the chip: 10 × 10 central electrode array with fan-out routing to peripheral bond pads](../../assets/chip_gds_layout.png)
 
-**What you are looking at.** This is the GDS drawing of the metal layer — one
+**What you are looking at.** This is the GDS drawing of the metal layer: one
 lithographic layer, so everything drawn in violet is the same metal. The orange
 rectangle is the die boundary.
 
@@ -88,7 +88,7 @@ rectangle is the die boundary.
   drawn as a diamond (a square rotated 45°) with a small square feature at one
   corner: the diamond is one electrode of the pair, the small feature is the
   other, and the ~7 µm gap between them is where the beam goes. At this zoom the
-  gap is thinner than the line weight — you are seeing the pads, not the gap.
+  gap is thinner than the line weight, so you are seeing the pads, not the gap.
 - **The periphery** is a ring of rectangular **bond pads**, arranged along all
   four edges of the die. These are large because they have to be probed or
   wire-bonded; they are the electrical interface to the outside world.
@@ -96,7 +96,7 @@ rectangle is the die boundary.
   carrying each electrode out to its own pad. The routing is split into four
   quadrants, each fanning outward toward the nearest edge, which is why the
   drawing looks four-fold symmetric. Within a quadrant, tracks run diagonally
-  at 45° and then turn orthogonally to meet the pad row square-on — a standard
+  at 45° and then turn orthogonally to meet the pad row square-on, a standard
   fan-out discipline that keeps track-to-track spacing roughly constant and
   avoids acute-angle corners, which are hard to pattern reliably and are
   field-concentration points.
@@ -117,8 +117,8 @@ hand-derived wiring table rather than a formula.
 **Reading the figure.** The **left panel** is the internal frame: pixel numbers
 in bold with their 0-based `(row, col)` beneath, running left-to-right and
 top-to-bottom, with the pixels outside the 83-pixel default selection greyed
-out. The **right panel** is the same chip as the GUI draws it — columns
-mirrored, so display column 1 is the *right-most* stage column — with each cell
+out. The **right panel** is the same chip as the GUI draws it, with columns
+mirrored so display column 1 is the *right-most* stage column. Each cell is
 also labelled `E<n>`, the switch-matrix channel that energises that pixel, and
 coloured by that channel number. The colour field is visibly scrambled, which
 is the fan-out of §3 made visible: spatial neighbours are not electrical
@@ -160,10 +160,10 @@ the camera image would command the stage to the pixel on the *other* side of
 the die. The flip exists so that "what you see on the heat map" and "what you
 see through the camera" are the same picture.
 
-> **Warning** — this is a genuine trap when reading data by hand. A heat-map
+> **Warning** This is a genuine trap when reading data by hand. A heat-map
 > cell in display column 1 is internal column 9, i.e. pixel `10*row + 10`. If
 > you are relating a published figure to a pixel number, apply
-> `display_col = 10 − stage_col` — and note that the mapping is its own inverse,
+> `display_col = 10 − stage_col`, and note that the mapping is its own inverse,
 > so applying it twice gets you back where you started.
 
 Worked examples:
@@ -185,7 +185,7 @@ Production runs do not necessarily measure all 100. The default selection is
 ```
 
 which omits pixels known to be unusable on the current chip. At roughly
-4.5–5 minutes per production pixel, 83 pixels is a 6–7 hour campaign.
+4.5 to 5 minutes per production pixel, 83 pixels is a 6 to 7 hour campaign.
 
 ---
 
@@ -198,7 +198,7 @@ the loader `install_current_switch_mapping()` asserts precisely that before the
 software will run.
 
 Read the table as *pixel number → electrical switch number*, laid out in the
-internal (row, column) geometry of the array — so the table looks like the
+internal (row, column) geometry of the array, so the table looks like the
 chip, and you can see at a glance that the switch numbers are spatially
 scrambled.
 
@@ -226,8 +226,8 @@ mirrored as `CURRENT_PIXEL_TO_PIN` in `pockels_full_automation.py`, as
 
 </details>
 
-**Spot checks.** The fast-map GUI verifies two entries at import time —
-**pixel 46 → switch 5** and **pixel 85 → switch 62** — and raises
+**Spot checks.** The fast-map GUI verifies two entries at import time,
+**pixel 46 → switch 5** and **pixel 85 → switch 62**, and raises
 `"Fast-map switch mapping is stale"` if either disagrees, refusing to start.
 The reasoning, and the reason the automation sends raw `E<switch>` commands
 rather than logical pixel numbers, is on the
@@ -242,20 +242,20 @@ result: you cannot tell a genuine material property from a local defect, a
 thickness fluctuation, or a lucky domain configuration.
 
 The chips this instrument was built for carry a **compositional gradient**
-across the die — deliberately, so that a single growth run produces a range of
+across the die by design, so that a single growth run produces a range of
 compositions on one substrate. Mapping 100 sites therefore turns one chip into
 a **composition series**:
 
 - **Composition vs response.** With position acting as a proxy for
   composition, the 100-pixel map becomes $r_\mathrm{eff}$ (or the raw lock-in
   response) versus composition, measured under identical optical conditions on
-  the same day with the same alignment procedure — which removes most of the
+  the same day with the same alignment procedure, which removes most of the
   systematic differences that make chip-to-chip comparisons so unreliable.
 - **Ferroelectric behaviour vs composition.** The hysteresis loops measured at
-  each pixel classify differently across the die — loop shape, coercive
-  voltage, and whether a pixel switches at all — and the classification is the
+  each pixel classify differently across the die (loop shape, coercive
+  voltage, and whether a pixel switches at all), and the classification is the
   interesting result, not a nuisance.
-- **Statistics and outlier rejection.** With 83–100 sites, a single anomalous
+- **Statistics and outlier rejection.** With 83 to 100 sites, a single anomalous
   pixel is visibly an outlier instead of being mistaken for the answer.
 - **Yield and uniformity.** Dead, shorted and open pixels are found and
   recorded by the per-point electrical audit rather than being discovered
@@ -275,7 +275,7 @@ best beam-on-gap position sits, pixel to pixel.
 | [The Optical Beamline](beamline.md) | how the beam is focused into the 7 µm gap, and the alignment tolerance that follows |
 | [Instruments](instruments.md) | the SMU and function generator that supply the DC and AC drive |
 | [Electro-optics](../physics/01-electro-optics.md) | $r_{42}$, $\alpha$, and what $r_\mathrm{eff}$ actually means |
-| [Glossary](../reference/glossary.md) | pixel, pin, switch, channel — the four words this page is careful to keep distinct |
+| [Glossary](../reference/glossary.md) | pixel, pin, switch, channel: the four words this page is careful to keep distinct |
 
 ---
 

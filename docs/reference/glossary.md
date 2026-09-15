@@ -22,12 +22,12 @@ the hysteresis and fit quantities.
 | $\theta_\mathrm{HWP}$ | raw half-wave-plate motor angle; $\theta_i \approx 2\theta_\mathrm{HWP} + \text{offset}$ | ° |
 | $\theta_i^\mathrm{legacy}$ | the older 2 × HWP convention, retained so historical runs stay comparable | ° |
 | $\theta_\mathrm{ana}$ | analyser angle expressed in the calibrated analyser frame | ° |
-| $\psi$ | analyser offset **from the null** — the readout variable | ° |
+| $\psi$ | analyser offset **from the null**, the readout variable | ° |
 | $\gamma_0$ | QWP fast-axis zero in the polarisation frame | ° |
-| $s_H$, $s_Q$, $s_A$ | sign conventions relating each rotator's raw encoder direction to the lab frame | — |
+| $s_H$, $s_Q$, $s_A$ | sign conventions relating each rotator's raw encoder direction to the lab frame | dimensionless |
 | `q_null`, `a_null` | QWP and analyser angles that extinguish the beam | ° |
 | `p_null` | residual optical power at the null | W (also reported in mV) |
-| $V_\mathrm{null}$ | the DC detector level at the null — the second point of the Malus slope | V |
+| $V_\mathrm{null}$ | the DC detector level at the null, the second point of the Malus slope | V |
 | $\mathrm{d}I/\mathrm{d}\psi$ | Malus slope; maximal at $\psi = \pm 45°$, which is why the readout sits there | W/rad |
 | $\delta$ | electro-optic polarisation rotation (complex, RMS) | rad |
 | $\delta_\mathrm{rms}$ | the RMS magnitude of that rotation | rad |
@@ -35,11 +35,11 @@ the hysteresis and fit quantities.
 | $\Gamma$ | field-induced retardance; $\Gamma = 2\delta$ in this geometry | rad |
 | $r_{ij}$ | electro-optic tensor element, Voigt notation | pm/V |
 | $r_\mathrm{eff}$ | geometry-specific **effective** coefficient | pm/V |
-| $n$ | refractive index (default 2.1 for BTO at 1550 nm) | — |
+| $n$ | refractive index (default 2.1 for BTO at 1550 nm) | dimensionless |
 | $t$ | film thickness = optical interaction length | nm |
 | $g$ | electrode gap | µm |
-| $\alpha$ | FEM electrostatic field correction, $E = \alpha V/g$ | — |
-| $\nu$ | domain-state factor in the null-slope extraction: 0.5 for an unpoled-equivalent state, 1.0 for a fully poled film | — |
+| $\alpha$ | FEM electrostatic field correction, $E = \alpha V/g$ | dimensionless |
+| $\nu$ | domain-state factor in the null-slope extraction: 0.5 for an unpoled-equivalent state, 1.0 for a fully poled film | dimensionless |
 | $E$ | in-plane electric field | V/m |
 | $\lambda$ | wavelength (1550 nm) | nm |
 | $I_\mathrm{min}$, $I_\mathrm{max}$ | extremes of a transmission sweep; QWP retardance follows from $\delta = 2\arccos\sqrt{I_\mathrm{min}/I_\mathrm{max}}$ | W or V |
@@ -51,7 +51,7 @@ the hysteresis and fit quantities.
 | $D(\psi)$ | DC Malus fringe, $C_0 + C_c\cos 2\psi + C_s\sin 2\psi$ | V |
 | $C_0$, $C_c$, $C_s$ | the DC Malus fringe coefficients | V |
 | $A_\mathrm{opt}$ | Malus amplitude, $(V_\mathrm{dc}(\psi) - V_\mathrm{null})/\sin^2\psi$ | V |
-| $S(V)$ | signed hysteresis loop — the phasor projected on the saturation axis | V |
+| $S(V)$ | signed hysteresis loop, the phasor projected on the saturation axis | V |
 | $Q(V)$ | quadrature residual of that projection | V |
 | $V_c^{\pm}$ | coercive voltages | V |
 | $E_c$ | coercive field, $\alpha V_c/g$ (1 V/µm = 10 kV/cm) | kV/cm |
@@ -61,39 +61,39 @@ the hysteresis and fit quantities.
 | $h$ | peak height of $\|dS/dV\|$ on a branch | V/V |
 | $\sigma$ | width of the switching-field distribution (`switching_sigma_V`) | V |
 | $G$ | leakage conductance of a pixel | S |
-| $\tau$, $\beta$ | poling time constant and stretching exponent | s, — |
+| $\tau$, $\beta$ | poling time constant and stretching exponent | s, dimensionless |
 | $P_s$ | spontaneous polarisation | C/m² |
 | $T_c$ | Curie temperature | °C |
 | $f_\mathrm{mod}$ | modulation frequency (30 kHz) | Hz |
 | TC | lock-in time constant (500 ms at index 14) | s |
-| $G_\mathrm{AC}/G_\mathrm{DC}$ | detector AC-to-DC transfer ratio | — |
+| $G_\mathrm{AC}/G_\mathrm{DC}$ | detector AC-to-DC transfer ratio | dimensionless |
 | $V_\mathrm{pp}$ | peak-to-peak drive amplitude | V |
 | $V_\mathrm{rms}$ | $V_\mathrm{pp}/(2\sqrt2)$ for a zero-offset sine | V |
 | $V_\mathrm{max}$ | symmetric hysteresis endpoint (40 V hard ceiling) | V |
-| $V_\mathrm{device}/V_\mathrm{source}$ | measured volts across the electrodes ÷ programmed generator Vpp, at $f_\mathrm{mod}$, with the device connected | — |
+| $V_\mathrm{device}/V_\mathrm{source}$ | measured volts across the electrodes ÷ programmed generator Vpp, at $f_\mathrm{mod}$, with the device connected | dimensionless |
 | $I(V)$ | DC-only leakage current versus bias, measured with the AC probe off | A |
 | $\mathcal{R}$ | detector responsivity (0.875 A/W at 1550 nm for the PDA30B2) | A/W |
 | $Z_t$ | detector transimpedance (4.75 × 10³ V/A at 10 dB gain into Hi-Z) | V/A |
 | $N_\mathrm{enc}$ | rotator encoder resolution: 143 360 counts/rev = 398.22 counts/deg | counts/° |
-| $f_\mathrm{sat}$ | saturation-tail fraction used to define the tails (`--sat-fraction`, default 0.8) | — |
-| $R^2$ | coefficient of determination of a fit | — |
+| $f_\mathrm{sat}$ | saturation-tail fraction used to define the tails (`--sat-fraction`, default 0.8) | dimensionless |
+| $R^2$ | coefficient of determination of a fit | dimensionless |
 | SEM | standard error of the mean, reported alongside every fitted slope | (as the quantity) |
-| $\rho$, $p$ | Spearman rank correlation coefficient and its p-value | — |
+| $\rho$, $p$ | Spearman rank correlation coefficient and its p-value | dimensionless |
 
 ---
 
 ## 2. Terms
 
 The project's working vocabulary, alphabetically. Several of these words are
-used elsewhere in optics or ferroelectrics with a slightly different sense —
-where that is so, the entry says what it means *here*.
+used elsewhere in optics or ferroelectrics with a slightly different sense.
+Where that is so, the entry says what it means *here*.
 
 | Term | Meaning |
 | --- | --- |
 | **Adaptive poling** | watching the lock-in during the poling dwell and stopping at the plateau instead of always sleeping the full cap (60 s floor, 180 s cap, 3 quiet intervals under 2 %, ≥ 2 µV signal) |
 | **Adaptive re-null** | the default re-null policy: re-optimise QWP/analyser only when the inherited seed leaks. Contrast *seed-only* (never) and *fast-renull* (always) |
 | **Analyser** | the output polariser, on a motorised rotator |
-| **Analyser-independent term** | the part of the lock-in response that does not vary with analyser angle. Often electrical pickup, but also total-transmission modulation, laser AM, or detector terms — hence the deliberately neutral name |
+| **Analyser-independent term** | the part of the lock-in response that does not vary with analyser angle. Often electrical pickup, but also total-transmission modulation, laser AM, or detector terms, hence the deliberately neutral name |
 | **Backlash compensation** | always approaching a target from the same direction so gear play is loaded identically |
 | **Bring-up sequence** | the fixed order in which instruments are connected at the start of a run; the teardown reverses it |
 | **Brighten** | rotating the analyser off the null so the stage alignment has a bright peak to climb |
@@ -101,7 +101,7 @@ where that is so, the entry says what it means *here*.
 | **Calibration pixel** | the first measured pixel, which does the expensive full per-HWP calibration that later pixels inherit |
 | **Centre-dense grid** | the default 45-point hysteresis voltage grid, with levels packed near 0 V where the coercive behaviour is |
 | **Chip map** | see *Fast map* |
-| **Chip summary** | `fast_map_all_pixels.csv`, one row per pixel — the file to open first |
+| **Chip summary** | `fast_map_all_pixels.csv`, one row per pixel; the file to open first |
 | **Compensated null branch** | the QWP/analyser pair that extinguishes the light *through the sample*, absorbing its static birefringence |
 | **Compliance** | the SMU's current limit (1 mA). A point whose compliance tripped is excluded from every loop metric |
 | **Domain reset (depoling)** | the bipolar decaying-amplitude train that randomises the domain state before a virgin-curve measurement |
@@ -115,7 +115,7 @@ where that is so, the entry says what it means *here*.
 | **Headless** | running the worker without the GUI, via `--cli` |
 | **Hill-climb** | the first-choice stage alignment search; the fallback chain continues fast-peak → golden-section → line scan |
 | **Historical follow-up** | adding hysteresis, an AC sweep or an analyser sweep to a run that finished earlier, using that run's saved peak conditions |
-| **Imprint** | a hysteresis loop shifted off zero — an internal bias field |
+| **Imprint** | a hysteresis loop shifted off zero, indicating an internal bias field |
 | **Interlock ordering** | the fixed AC/DC/matrix state sequence that guarantees a pixel is routed before any voltage appears, and that all outputs are off before the matrix changes channel |
 | **Lab frame** | the calibrated polarisation reference frame in which $\theta_i$ is quoted, as opposed to raw motor degrees |
 | **Learned readout** | the per-HWP readout settings inherited from the calibration pixel |
@@ -126,15 +126,15 @@ where that is so, the entry says what it means *here*.
 | **Normalised rotation** | the Malus-normalised, dimensionless polarisation rotation. The correct observable for comparing pixels, days and setups |
 | **Null** | the QWP/analyser combination giving maximum extinction |
 | **Null leakage** | residual DC detector signal at the null. **Optical**, not electrical leakage current |
-| **Operating point** | the analyser position at which the readout is taken — chosen from the DC Malus fringe, never from the AC extremum |
-| **Overload** | the lock-in reporting that a signal exceeded its range. An *input* overload means too much total signal at the front end and cannot be fixed by changing sensitivity — fix the null instead |
+| **Operating point** | the analyser position at which the readout is taken, chosen from the DC Malus fringe, never from the AC extremum |
+| **Overload** | the lock-in reporting that a signal exceeded its range. An *input* overload means too much total signal at the front end and cannot be fixed by changing sensitivity; fix the null instead |
 | **Peak lock table** | the per-pixel record of the learned per-HWP readout: nulls, readout angles, chosen side, and the certificate fields |
 | **Poling kinetics** | the lock-in magnitude sampled every 10 s during the poling dwell, fitted to a stretched exponential to give $\tau$ and $\beta$ |
-| **Production pixel** | any pixel after the calibration pixel — it inherits the seeds and runs the fast triplet readout (≈ 4.5–5 min) |
+| **Production pixel** | any pixel after the calibration pixel; it inherits the seeds and runs the fast triplet readout (≈ 4.5 to 5 min) |
 | **Provenance header** | the leading `#` comment lines of `dc_hysteresis.csv`, recording every condition the loop was taken under |
-| **Overtravel** | deliberately jogging the stage past the nominal 0–25 mm limit; the expected exception is suppressed and the target is never clamped |
+| **Overtravel** | deliberately jogging the stage past the nominal 0 to 25 mm limit; the expected exception is suppressed and the target is never clamped |
 | **Pickup** | electrical crosstalk from the drive into the detection chain |
-| **Pinched loop** | a constricted loop — defect pinning, internal-bias pairs, or antiferroelectric-like behaviour |
+| **Pinched loop** | a constricted loop, caused by defect pinning, internal-bias pairs, or antiferroelectric-like behaviour |
 | **Poling** | applying a DC bias to align ferroelectric domains |
 | **Quadrature fraction** | $\max\|Q\|/\max\|S\|$; above 0.5 the signed projection is meaningless and the loop is `invalid_projection` |
 | **Quality flag** | a machine-written note that something about a row is suspect. Quality problems become flags, not exceptions, so the run continues and you decide later |
@@ -194,14 +194,14 @@ The short forms that appear in column names, terminal output and figure labels.
 
 ## See also
 
-- [Physics](../physics/index.md) — where most of these symbols come from.
-- [Sénarmont readout](../physics/03-senarmont-readout.md) — $\psi$, $Z(\psi)$,
+- [Physics](../physics/index.md): where most of these symbols come from.
+- [Sénarmont readout](../physics/03-senarmont-readout.md): $\psi$, $Z(\psi)$,
   $D(\psi)$, the S9 certificate.
-- [Ferroelectrics](../physics/05-ferroelectrics.md) — $S(V)$, $V_c$, imprint,
+- [Ferroelectrics](../physics/05-ferroelectrics.md): $S(V)$, $V_c$, imprint,
   squareness.
-- [Instruments](../experiment/instruments.md) — the hardware behind the
+- [Instruments](../experiment/instruments.md): the hardware behind the
   abbreviations.
-- [Data Schema](data-schema.md) — the columns these symbols are stored in.
+- [Data Schema](data-schema.md): the columns these symbols are stored in.
 
 ---
 

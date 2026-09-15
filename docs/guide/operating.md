@@ -10,7 +10,7 @@ using this document as a reference.
 ## Contents
 
 1. [Daily startup checklist](#1-daily-startup-checklist)
-2. [The calibration chain — what to run and when](#2-the-calibration-chain--what-to-run-and-when)
+2. [The calibration chain: what to run and when](#2-the-calibration-chain-what-to-run-and-when)
 3. [The measurement settings, field by field](#3-the-measurement-settings-field-by-field)
 4. [Advanced settings, field by field](#4-advanced-settings-field-by-field)
 5. [Running a chip map](#5-running-a-chip-map)
@@ -34,14 +34,14 @@ using this document as a reference.
 | ☐ | Elliptec rotator hubs powered. |
 | ☐ | Arduino Nano switch matrix connected. |
 | ☐ | PDA30B2 gain = **10 dB**, load = **Hi-Z**. |
-| ☐ | Function generator: CH2 (the lock-in reference) will be driven to 0.5 Vpp @ 30 kHz by software — just make sure it is connected to the lock-in REF IN. |
+| ☐ | Function generator: CH2 (the lock-in reference) will be driven to 0.5 Vpp @ 30 kHz by software, so just make sure it is connected to the lock-in REF IN. |
 | ☐ | Lock-in reachable on the network: `ping 169.254.150.230`. |
 | ☐ | `python pockels\pockels_fast_map_gui.py --cli --list-serial-ports` shows every expected device. |
 | ☐ | Note the lab temperature in your notebook. Curie temperature and coercive field both move with it. |
 
 ---
 
-## 2. The calibration chain — what to run and when
+## 2. The calibration chain: what to run and when
 
 The system is **self-referencing**: every readout is defined relative to *that
 pixel's own optical null*, so the arbitrary encoder zero of each rotator and the
@@ -53,7 +53,7 @@ chain of references below.
 | **A. Guided sample-in optical calibration**<br>*(GUI button, or [`pockels/sample_calibration.py`](../../pockels/sample_calibration.py))* | `sample_calibration.json`: analyser extinction/parallel angles, QWP fast-axis zero $\gamma_0$ and retardance, first sample-in null `(q_null, a_null, p_null)` | optics realigned, sample changed, waveplate swapped, or the null has drifted badly | ~20 min, needs you at the bench |
 | **B. Substrate HWP null-seed table**<br>*(`Substrate = do` during a run)* | `substrate_calibration.json`: `(q_null, a_null, p_null)` for **every** HWP angle in the grid | after A, or when you change the HWP grid | ~20 min, unattended |
 | **C. Stage pixel calibration**<br>*([`pockels/stage_calibration.py`](../../pockels/stage_calibration.py), optional)* | `pixel_positions.json`: the motor coordinates of each pixel's transmission peak | once per chip mounting; optional, because the map re-aligns each pixel anyway | ~1 h for 100 pixels |
-| **D. Calibration pixel** *(automatic, first pixel of every run)* | per-HWP trusted null branch, plus the operating-point ("S9") certificate that later pixels inherit | every run — it is automatic | ~8 min |
+| **D. Calibration pixel** *(automatic, first pixel of every run)* | per-HWP trusted null branch, plus the operating-point ("S9") certificate that later pixels inherit | every run, and it is automatic | ~8 min |
 
 ### When to reuse rather than redo
 
@@ -71,7 +71,7 @@ chain of references below.
 The **Calibration pixel** is the single most important choice you make. It must:
 
 - be **inside your Pixels selection** (the software re-inserts it if missing),
-- **null well** — low `p_null_mV`,
+- **null well**, meaning a low `p_null_mV`,
 - give a **clear Pockels response**, strong enough that the operating-point
   certificate can be fitted.
 
@@ -83,7 +83,7 @@ and pick a strong pixel with an empty `quality_flags` column.
 > **Warning** If a calibration-pixel null exceeds the hard limit you will see
 > `calibration_null_hard_limit_exceeded`. The pixel is still measured, but it is
 > excluded from trusted seeds, learned readouts, peak selection, HWP fitting and
-> the physics analysis. Do not push through it — pick a better pixel.
+> the physics analysis. Do not push through it; pick a better pixel.
 
 ---
 
@@ -95,10 +95,10 @@ These are the always-visible controls, in the order the GUI presents them.
 
 | Field | Default | Meaning |
 | --- | --- | --- |
-| **Chip ID** | *(blank — required)* | Identifier for the chip. Goes into the run folder name (`YYYYMMDD_HHMMSS_<chip-id>_<label>`), into `run_config.json`, and into the `chip_id` column of the chip summary. A run **cannot start** without it. |
+| **Chip ID** | *(blank, required)* | Identifier for the chip. Goes into the run folder name (`YYYYMMDD_HHMMSS_<chip-id>_<label>`), into `run_config.json`, and into the `chip_id` column of the chip summary. A run **cannot start** without it. |
 | **Run label (optional)** | blank | Free text appended after the Chip ID in the folder name. |
 | **Pixels** | `1-6,11-16,21-26,31-37,41-48,51-100` (83 pixels) | Which pixels get the chip map. Accepts `all`, a single number, ranges and lists. `none` runs follow-ups only. |
-| **HWP grid preset** | *Current calibrated default (9 points)* | Quick selector for the incident-polarisation grid — see below. |
+| **HWP grid preset** | *Current calibrated default (9 points)* | Quick selector for the incident-polarisation grid; see below. |
 | **Manual probing (no Arduino)** | off | Stage aligns to each pixel, then **pauses** so you can land probe needles by hand. Disables Arduino routing entirely. |
 | **Grid clicks select** | `Chip map` | Which pixel list your clicks on the 10 × 10 map edit: the chip map, or the DC / AC / ANL follow-up lists. |
 
@@ -178,7 +178,7 @@ These are the always-visible controls, in the order the GUI presents them.
 ## 4. Advanced settings, field by field
 
 Tick **Show advanced settings** to reveal these. The defaults are production
-values — change them only with a reason, and record the reason.
+values. Change them only with a reason, and record the reason.
 
 ### Advanced Run Inputs
 
@@ -206,7 +206,7 @@ values — change them only with a reason, and record the reason.
 | **HWP start/centre, stop, step** | `81.8688`, `165`, `15` | Grid definition for `start-stop` mode; only *start* matters in `centered-180`. |
 | **HWP sweep step [deg]** | `22.5` | $\theta_i$ spacing in `centered-180`. The motor step is half this. |
 | **HWP points** | `9` | Odd number of points in `centered-180`. |
-| **AC voltages [Vpp]** | `9.0` | Comma-separated drive amplitudes for the map. Use `1,3,5,9` for an explicit linearity check (costs 3–4× the time). |
+| **AC voltages [Vpp]** | `9.0` | Comma-separated drive amplitudes for the map. Use `1,3,5,9` for an explicit linearity check (costs 3 to 4× the time). |
 | **Manual raw peak scout** + the three **Manual …raw [deg]** fields | off | Override: measure one exact raw HWP/QWP/ANL triple and use it to seed the peak branch. Forces `--no-rotator-home` so the coordinates are not re-tared. |
 
 ### Advanced Follow-Up Sweeps
@@ -214,13 +214,13 @@ values — change them only with a reason, and record the reason.
 | Field | Default | Meaning |
 | --- | --- | --- |
 | **Follow-up AC Vpp [Vpp]** | `1,3,5,7,9` | Amplitudes for the fixed-peak AC linearity sweep. |
-| **Hysteresis dwell [s]** | `30` | DC-only poling hold at **each** voltage step, before the AC probe turns on. **Loop shape is rate-dependent — keep this fixed for a whole campaign.** |
+| **Hysteresis dwell [s]** | `30` | DC-only poling hold at **each** voltage step, before the AC probe turns on. **Loop shape is rate-dependent, so keep this fixed for a whole campaign.** |
 | **Hysteresis limit [+/−V]** | `40` | Symmetric endpoint: $+V \to -V \to +V$. May be reduced; anything above 40 V is rejected. |
 | **Hysteresis AC [Vpp]** | `4.0` | Small-signal probe amplitude. Gated ON only for each lock-in window and OFF for every ramp and dwell, so it barely perturbs the coercive region. |
 | **Uniform hyst. override [V]** | blank | Blank = the standard 45-point centre-dense grid (levels 40, 30, 25, 20, 15, 12.5, 10, 7.5, 5, 2.5, 1.25, 0 V, mirrored and returned). A positive number forces uniform spacing instead. |
 | **Hysteresis cycles** | `1` | Full down+up loops. Use 2 only when you need wake-up or repeatability. |
 | **Adaptive hysteresis fine grid** | off | Runs a coarse reconnaissance loop first, finds $V_c^\pm$, then centres a dense grid on them. Overrides both other grid choices and takes much longer. |
-| **Dynamic lock-in range during hysteresis** | off | Predictive 5–200 µV ranging *for hysteresis only*. Widens immediately, narrows only after repeated evidence, and changes range while the AC probe is off. Restores the fixed range afterwards. |
+| **Dynamic lock-in range during hysteresis** | off | Predictive 5 to 200 µV ranging *for hysteresis only*. Widens immediately, narrows only after repeated evidence, and changes range while the AC probe is off. Restores the fixed range afterwards. |
 | **AC sweep DC hold / dwell** | `40 V` / `60 s` | Conditions for the fixed-peak AC sweep. |
 | **ANL start / stop / step / DC hold / dwell / AC Vpp** | `15`, `195`, `10`, `40 V`, `5 s`, `1,3,5,7,9` | The analyser diagnostic sweep: 19 analyser angles over a full 180° Malus period. |
 | **DC hysteresis starts at 0 V** | off | Start from 0 V (virgin curve) instead of from $+V_\mathrm{max}$. Only meaningful after a domain reset. |
@@ -238,9 +238,9 @@ values — change them only with a reason, and record the reason.
 | **Read delay [s]** | `1.5` → auto-raised to `2.0` | Spacing between those samples, so they are approximately independent. |
 | **DSP7230 TC index** | `14` (= 500 ms) | Lock-in time constant. Longer = quieter but slower. Index must be ≥ 8 (5 ms). |
 | **Filter slope [dB/oct]** | `12` | 6, 12, 18 or 24. Sets the filter order used in the settle calculation. |
-| **Fixed range index** | `16` (= 200 µV RMS full scale) | The lock-in range is **fixed** for the whole map — automatic ranging is disabled so that every point shares one calibration. Rows at ≥ 85 % of full scale are warned; ≥ 98 % or overload are invalid. |
+| **Fixed range index** | `16` (= 200 µV RMS full scale) | The lock-in range is **fixed** for the whole map: automatic ranging is disabled so that every point shares one calibration. Rows at ≥ 85 % of full scale are warned; ≥ 98 % or overload are invalid. |
 | **Reference source** | `external-analog` | The 0.5 Vpp CH2 sine into the lock-in reference input. |
-| **Reference phase [deg]** | `0` | Cosmetic only — used for the displayed signed value; the analysis re-derives the phase axis from the data. |
+| **Reference phase [deg]** | `0` | Cosmetic only, used for the displayed signed value; the analysis re-derives the phase axis from the data. |
 | **Allow unlocked lock-in reference** | off | Diagnostic override. Normally a zero or mismatched `FRQ` readback stops the run. |
 | **QWP readout offset [deg]** | `0` | `0` keeps the Sénarmont null-compensation geometry. `45` selects the separate quadrature-bias protocol. Do not change casually. |
 | **CH1/CH2 freq [Hz]** | `30000` | Modulation frequency for both drive and reference. |
@@ -251,19 +251,19 @@ values — change them only with a reason, and record the reason.
 | **Null margin [mV]** | `1.5` | Continuation margin above *Null max*. Marginal and high nulls continue **with quality flags** but are never saved as trusted seeds. |
 | **Stage brighten [deg]** | `45` | Analyser offset from the null used only to brighten the beam for stage alignment. |
 | **Rotator tol [deg]** | `0.5` | Readback tolerance before a fast move gets one corrective retry. |
-| **Rotator velocity [%]** | `50` | Elliptec speed for direct moves (clamped to 25–100). |
+| **Rotator velocity [%]** | `50` | Elliptec speed for direct moves (clamped to 25 to 100). |
 
 ### BTO Effective Coefficient
 
 These feed the **absolute** $|r_\mathrm{eff}|$ calculation. Leave them blank and
-the software reports the normalised rotation only — which is the correct
+the software reports the normalised rotation only, which is the correct
 observable for comparing pixels. Fill them in **only** when you have genuinely
 measured each one.
 
 | Field | Meaning |
 | --- | --- |
 | **Wavelength [nm]** | 1550. |
-| **BTO thickness [nm]** (+ std) | Film thickness $t$ — the optical interaction length. |
+| **BTO thickness [nm]** (+ std) | Film thickness $t$, the optical interaction length. |
 | **Electrode gap [µm]** (+ std) | Measured gap $g$. |
 | **Field correction alpha** (+ std) | The FEM electrostatic factor in $E = \alpha V/g$. **Device-specific.** Not an optical overlap factor, and not transferable from a paper. |
 | **BTO refractive index** (+ std) | Default 2.1. |
@@ -290,7 +290,7 @@ measured each one.
 
 ## 5. Running a chip map
 
-1. **Shakedown first.** One pixel, confirm the outputs — see
+1. **Shakedown first.** One pixel, confirm the outputs; see
    [Quick Start §5](quickstart.md#5-run-one-pixel-the-shakedown).
 2. Set **Chip ID**, **Pixels**, **Calibration pixel**, **DC pixels**.
 3. Set **Substrate = `load`** and fill the path (unless this is a first run).
@@ -343,8 +343,8 @@ channel (CH1) is gated. Details of the switching hardware are in
 | Activity | Time |
 | --- | --- |
 | Calibration pixel | ≈ 8 min |
-| Production pixel (9 HWP × triplet × 1 Vpp) | ≈ 4.5–5 min |
-| 83-pixel map | ≈ 6–7 h |
+| Production pixel (9 HWP × triplet × 1 Vpp) | ≈ 4.5 to 5 min |
+| 83-pixel map | ≈ 6 to 7 h |
 | One standard hysteresis loop (45 points, 30 s dwell) | ≈ 29 min |
 | Hysteresis on all 100 pixels | ≈ 49 h |
 | Substrate null table | ≈ 20 min |
@@ -366,7 +366,7 @@ Per DC point, in this exact order:
 
 1. Function generator CH1 **OFF**.
 2. SMU ramps to the next level in 5 V chunks; 0.3 s preset.
-3. Full DC-only poling dwell (default 30 s) — **AC stays off the whole time**.
+3. Full DC-only poling dwell (default 30 s). **AC stays off the whole time**.
 4. Snapshot: SMU current, programmed level, **measured terminal voltage**,
    compliance flag. A missing readback or a voltage error greater than 0.5 V
    aborts the point *before* AC can turn on.
@@ -385,7 +385,7 @@ Launch it three equivalent ways, all with identical parameters:
 ### 6.2 AC amplitude sweep
 
 Holds the optics at the pixel's peak condition and steps the drive amplitude
-through `1,3,5,7,9` Vpp. The response must be **linear** in $V_\mathrm{rms}$ —
+through `1,3,5,7,9` Vpp. The response must be **linear** in $V_\mathrm{rms}$;
 the analysis gate is $R^2 \ge 0.98$. A nonlinear result means you are seeing a
 quadratic or electrostrictive contribution, saturation, or an artefact.
 
@@ -408,7 +408,7 @@ map.
 - **Details:** the current pixel / HWP / analyser side / Vpp.
 - **Progress bars:** current pixel, and whole chip.
 - **LEDs:** *High voltage DC*, *AC voltage*, *Laser*. These mirror the real
-  commanded state — if the DC LED is lit, the SMU output is on.
+  commanded state: if the DC LED is lit, the SMU output is on.
 
 ### Optical Train panel
 
@@ -429,24 +429,24 @@ The **View:** dropdown switches the 10 × 10 map between:
 | Vc+, Vc−, loop width, imprint, S_rem±, switchable, frozen, squareness, loop area, leakage | Per-metric heatmaps, streamed in as each loop finishes |
 
 With the hysteresis curve selected, **Pixel: Auto** follows whichever pixel is
-sweeping; `001`–`100` pins a specific pixel's live or latest saved curve. Branch
-colours: virgin = purple, pre-saturation = orange, down = red, up = green; later
+sweeping; `001` to `100` pins a specific pixel's live or latest saved curve.
+Branch colours: virgin = purple, pre-saturation = orange, down = red, up = green; later
 cycles dashed; compliance trips marked with red crosses.
 
 > **Display orientation:** the map is drawn with `display_col = 10 − stage_col`,
-> i.e. mirrored left–right relative to the internal pixel numbering, so that it
+> i.e. mirrored left-right relative to the internal pixel numbering, so that it
 > matches the chip as you see it on the camera. Clicks are converted back
 > automatically. Keep this in mind when comparing a heat-map position to a pixel
-> number — see [the pixel grid figure](../../assets/figures/pixel_grid.png).
+> number; see [the pixel grid figure](../../assets/figures/pixel_grid.png).
 
 ### Side panels
 
-- **Stage Alignment Live** — the intensity-versus-position trace of the running
+- **Stage Alignment Live**: the intensity-versus-position trace of the running
   alignment search.
-- **HWP/Analyser Lock-In** — bar chart of the lock-in magnitude at each HWP and
+- **HWP/Analyser Lock-In**: bar chart of the lock-in magnitude at each HWP and
   analyser side for the current pixel.
-- **Live Oscilloscope** — the DC detector level, with history.
-- **Live Camera** — the chip surface through the alignment camera, with a
+- **Live Oscilloscope**: the DC detector level, with history.
+- **Live Camera**: the chip surface through the alignment camera, with a
   crosshair.
 
 ### Terminal and Run Notifications
@@ -480,7 +480,7 @@ Every run writes `automation_progress.json` continuously. To resume:
 3. **Start Measurement**.
 
 With *Skip completed pixels on resume* ON, a pixel is skipped only when its chip
-sweep **and** every requested hysteresis artifact verify as complete — a
+sweep **and** every requested hysteresis artifact verify as complete; a
 half-finished loop is redone, not silently accepted.
 
 ### Automatic hardware recovery
@@ -495,7 +495,7 @@ If an instrument drops off the bus mid-run (USB reset, VISA session lost,
 4. Everything is verified: matrix ALL-OFF acknowledgement, SMU OFF readback,
    function generator acceptance, scope telemetry, rotator angles, lock-in
    communication, stage position.
-5. The run continues with the **next** pixel — the interrupted one is not
+5. The run continues with the **next** pixel. The interrupted one is not
    replayed automatically; resume later to fill it in.
 
 Retries back off 5 → 10 → 20 → 40 → 60 s and then stay at 60 s until the
@@ -552,8 +552,8 @@ wizard in the console before touching any hardware.
 
 Tick **Manual probing**. The stage aligns each pixel, then the GUI shows a
 **"Probed - Continue"** panel and waits for you to land the probe needles.
-Arduino routing is disabled entirely (`--no-arduino`). Everything else — poling,
-nulling, the HWP sweep — proceeds normally.
+Arduino routing is disabled entirely (`--no-arduino`). Everything else (poling,
+nulling, the HWP sweep) proceeds normally.
 
 ### Simulated instruments
 
@@ -577,7 +577,7 @@ land inside the original run folder.
 1. **Request Safe Stop** and wait for the worker to exit cleanly.
 2. Confirm on the instrument front panels: SMU output **OFF**, function
    generator CH1 **OFF**.
-3. Turn the laser off — click the laser box in the *Optical Train* panel, or
+3. Turn the laser off: click the laser box in the *Optical Train* panel, or
    close the GUI, whose cleanup switches it off.
 4. Close the GUI.
 5. Copy or back up the run folder. Run folders are deliberately **git-ignored**;
@@ -589,7 +589,7 @@ land inside the original run folder.
 
 ## 12. Campaign design guidance
 
-For compositional studies — the usual purpose of this chip — the measurement
+For compositional studies (the usual purpose of this chip) the measurement
 order and the choice of observable matter as much as the settings do.
 
 1. **Randomise pixel order.** Enter a shuffled pixel list. The order is recorded
@@ -600,12 +600,12 @@ order and the choice of observable matter as much as the settings do.
 3. **Use the normalised rotation, never raw µV**, as the compositional
    observable. Raw lock-in volts depend on laser power, coupling, detector gain
    and null quality; `rotation_slope_rad_per_Vrms` divides all of that out.
-4. **Convert coercive voltages to fields only with measured geometry** —
+4. **Convert coercive voltages to fields only with measured geometry**, using
    $E_c = \alpha V_c / g$, supplied via `--gap-um` and `--alpha`. Never guess
    $\alpha$: with `--alpha 1.0` you are quoting a plain parallel-plate estimate,
    not the real field.
-5. **Take replicates.** Re-measure 2–3 pixels twice in the same run; the spread
-   is your noise floor.
+5. **Take replicates.** Re-measure 2 to 3 pixels twice in the same run; that
+   spread is your noise floor.
 6. **Keep one dwell and one voltage grid for the whole campaign.** Hysteresis
    loop shape is rate-dependent; mixing dwells makes loops incomparable. If you
    want the rate dependence, measure it deliberately as its own experiment.
@@ -616,13 +616,13 @@ order and the choice of observable matter as much as the settings do.
 
 ## See also
 
-- [Troubleshooting](troubleshooting.md) — when any of the above misbehaves.
-- [Data Schema](../reference/data-schema.md) — every file and column the run
+- [Troubleshooting](troubleshooting.md), for when any of the above misbehaves.
+- [Data Schema](../reference/data-schema.md), every file and column the run
   writes.
 - [Architecture](../software/architecture.md) and
-  [Data pipeline](../software/data-pipeline.md) — what the worker is actually
+  [Data pipeline](../software/data-pipeline.md), for what the worker is actually
   doing.
-- [Ferroelectrics](../physics/05-ferroelectrics.md) — how to read a loop.
+- [Ferroelectrics](../physics/05-ferroelectrics.md), how to read a loop.
 
 ---
 

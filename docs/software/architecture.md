@@ -61,8 +61,8 @@ command line and then spawn *itself* with `--cli`.
 - **The worker is independently runnable.** Exactly the same code path runs
   headless from a terminal with `--cli`, so GUI behaviour and CLI behaviour
   cannot drift apart. It also means you can start a run over SSH and watch it
-  later by pointing the GUI's *Resume run* at the folder — the plots populate
-  from the same files.
+  later by pointing the GUI's *Resume run* at the folder, because the plots
+  populate from the same files.
 
 > **Note**
 > The GUI process never opens an instrument session. If the GUI is showing a
@@ -84,12 +84,12 @@ line by line into the Terminal pane.
 | Child | Launched by | Purpose | stdin |
 | --- | --- | --- | --- |
 | **Measurement worker** | *Start Measurement* | The run itself: `python -u pockels_fast_map_gui.py --cli --yes …`. | `DEVNULL` |
-| **Sample calibration** | *Guided Sample-In …* | [`sample_calibration.py`](../../pockels/sample_calibration.py), the three-step optical wizard. | **`PIPE`** — this one asks questions, and the GUI answers them |
+| **Sample calibration** | *Guided Sample-In …* | [`sample_calibration.py`](../../pockels/sample_calibration.py), the three-step optical wizard. | **`PIPE`**: this one asks questions, and the GUI answers them |
 | **Follow-up queue** | *Historical Hyst Only*, *AC Vpp Sweep*, *ANL Sweep* | One job per pixel, executed strictly in sequence; the queue stops at the first non-zero exit code. | `DEVNULL` |
 
 The child's executable is `sys.executable` and the script path is
 `Path(__file__).resolve()`, so the GUI always launches the worker from the same
-directory it is itself running from — never whatever happens to be on `PATH`.
+directory it is itself running from, never whatever happens to be on `PATH`.
 `cwd` is set to that directory as well, and
 [`_bootstrap`](../../pockels/_bootstrap.py) then re-pins the child's working
 directory to the repository root, so run outputs land in the same place no
@@ -117,7 +117,7 @@ a whole class of failure modes that files simply do not have.
 | `.gui_manual_probe_confirmed` | GUI → worker | "I have landed the probes, continue" in manual-probing mode. The worker blocks until it appears. |
 | `gui_laser_command.json` | GUI → worker | Laser on/off and power setpoint changes *during* a run. The worker owns the KLS1550 session; the GUI can only ask. |
 | `gui_state.json` | worker → GUI | The complete live state: phase string, current pixel / HWP / analyser, all three rotator angles, DC/AC/laser on-state, progress counters and the latest lock-in reading. |
-| `gui_alignment.json` | worker → GUI | The live stage-alignment trace — every probe position and detector level — for the alignment plot. |
+| `gui_alignment.json` | worker → GUI | The live stage-alignment trace (every probe position and detector level) for the alignment plot. |
 | `gui_live_camera.png` | worker → GUI | The latest camera frame, rewritten about every 0.15 s (`GUI_CAMERA_FRAME_INTERVAL_S`). |
 | `automation_progress.json` | worker → both | Durable progress: per-pixel status, the accumulated records, the null seed table and the run config. This is the file *Resume* reads. |
 | `fast_map_all_pixels.csv` | worker → GUI | The chip summary, one row per pixel. The GUI polls it to colour the chip map. |
@@ -139,25 +139,25 @@ what changed, so a 140-column CSV that has not moved costs nothing.
 
 ## 4. Control flow of a run
 
-### Phase A — GUI validation, before anything is created
+### Phase A: GUI validation, before anything is created
 
 `_start_measurement()`:
 
 1. Validate every field: Chip ID present; the calibration pixel is in range
    *and* inside the pixel selection; every number parses; the hysteresis limit
    is ≤ 40 V; and so on. Nothing is created while a field is invalid.
-2. `_prepare_run_dir()` — compute
-   `pockels_fast_map/YYYYMMDD_HHMMSS_<chip>_<label>/` and refuse if it already
-   exists (or resolve an existing folder, if this is a resume).
-3. `_build_child_argv()` — translate every GUI variable into an explicit CLI
+2. `_prepare_run_dir()` computes
+   `pockels_fast_map/YYYYMMDD_HHMMSS_<chip>_<label>/` and refuses if it already
+   exists (or resolves an existing folder, if this is a resume).
+3. `_build_child_argv()` translates every GUI variable into an explicit CLI
    flag, including all the IPC file paths.
-4. **Only now** `root_dir.mkdir(parents=True, exist_ok=False)` — the directory
+4. **Only now** `root_dir.mkdir(parents=True, exist_ok=False)`. The directory
    is created after every check has passed, so a rejected dialogue leaves no
    empty folders behind.
 5. `subprocess.Popen`, start the stdout reader thread, enable *Stop* and
    *Skip*.
 
-### Phase B — worker startup
+### Phase B: worker startup
 
 `main(argv)`:
 
@@ -166,11 +166,11 @@ what changed, so a 140-column CSV that has not moved costs nothing.
    `--no-rotator-home` so those coordinates cannot be re-tared out from under
    you; confirming the BTO geometry forces the `triplet` readout.
 2. Bind the IPC file paths and install the stop/skip hooks.
-3. `resolve_instrument_serial_ports()` — identity-based COM resolution, so a
+3. `resolve_instrument_serial_ports()` does identity-based COM resolution, so a
    renumbered USB port is followed rather than guessed.
-4. `configure_fast_globals()` — push the settings into the shared module
+4. `configure_fast_globals()` pushes the settings into the shared module
    globals (`pockels.LOCKIN_SETTLE_S`, `auto.BRIGHTEN_OFFSET_DEG`, …) and
-   **auto-raise** the lock-in settle time and sample spacing to
+   **auto-raises** the lock-in settle time and sample spacing to
    $2 \times \mathrm{TC} \times \text{filter order}$ if the operator asked for
    less.
 5. `make_fast_run_dir()`, load or create the resume state, load the calibrated
@@ -191,24 +191,24 @@ what changed, so a 140-column CSV that has not moved costs nothing.
    instrument most likely to be unreachable (it is on Ethernet at a
    link-local address) and failing in second one is cheaper than failing in
    second ninety. The **function generator is brought up with its drive
-   channel off** — only the CH2 reference is switched on, and it stays on for
+   channel off**: only the CH2 reference is switched on, and it stays on for
    the whole session because the lock-in needs a continuous external
    reference. The **SMU is armed at 0 V with the output disabled**, and stays
    that way until the switch matrix has routed a pixel.
 8. Write `run_config.json` and `lockin_configuration.json`. These two files are
    the provenance record for everything that follows.
 
-### Phase C — substrate calibration (optional)
+### Phase C: substrate calibration (optional)
 
 With `--phase-substrate do`: for every HWP angle in the grid, run a
-Hooke–Jeeves descent over (QWP, analyser) to minimise the detector level.
+Hooke-Jeeves descent over (QWP, analyser) to minimise the detector level.
 Accept a null at or below **14.5 mV**; on failure, run an 81-probe rescue grid.
 The result is saved as `substrate_calibration.json`.
 
 With `load`, the table is read from disk; with `skip`, there is no seed table
 and every pixel searches from scratch.
 
-### Phase D — the per-pixel loop
+### Phase D: the per-pixel loop
 
 For each pixel in the work queue:
 
@@ -227,12 +227,12 @@ After **every HWP block** the per-pixel CSV, the per-pixel summary JSON and the
 chip summary CSV are rewritten and progress is saved. Stop and skip are checked
 at every checkpoint, including inside every sleep.
 
-### Phase E — teardown
+### Phase E: teardown
 
 `cleanup_hardware()` turns off the AC drive, ramps the SMU down and disables
 its output, opens the switch matrix, switches the laser off and closes every
 session. It runs on the normal path, on a safe stop, **and** in the exception
-handler — the same code, three ways in.
+handler: the same code, three ways in.
 
 ---
 
@@ -241,7 +241,7 @@ handler — the same code, three ways in.
 Two distinct policies apply at a pixel, and confusing them is the single most
 common source of "why did it do *that*?".
 
-### The calibration pixel — always the expensive path
+### The calibration pixel: always the expensive path
 
 The first pixel in the queue is the calibration pixel, and it is measured the
 slow, honest way **regardless of `--renull-mode`**. At *every* HWP angle it:
@@ -265,7 +265,7 @@ slow, honest way **regardless of `--renull-mode`**. At *every* HWP angle it:
 The result is the operating-point (S9) certificate and a trusted per-HWP null
 branch that every later pixel inherits as a seed.
 
-> **Warning — the operating angle always comes from the DC fringe, never from
+> **Warning: the operating angle always comes from the DC fringe, never from
 > the fitted AC extremum.**
 > The AC extremum is recorded as a diagnostic (`s9_dynamic_peak_offset_deg`)
 > and is **never followed**. The asymmetry is deliberate: the DC fringe is
@@ -279,7 +279,7 @@ branch that every later pixel inherits as a seed.
 The gates and their thresholds are given in
 [The Null-Slope Sénarmont Readout](../physics/03-senarmont-readout.md).
 
-### Production pixels — the fast path
+### Production pixels: the fast path
 
 At each HWP angle:
 
@@ -307,7 +307,7 @@ substrate calibration.
 | Situation | Response |
 | --- | --- |
 | Seed null leaks | Local 2-D re-null (in `adaptive-renull` mode). |
-| Null is finite but above the hard limit | Measure anyway and flag `high_null_*` / untrusted; **exclude** the row from trusted seeds, learned readouts, peak selection, HWP fitting and the physics analysis. Data is never thrown away — it is labelled. |
+| Null is finite but above the hard limit | Measure anyway and flag `high_null_*` / untrusted; **exclude** the row from trusted seeds, learned readouts, peak selection, HWP fitting and the physics analysis. Data is never thrown away; it is labelled. |
 | The null procedure raises | Fail **this pixel**, save what exists as partial, continue with the next. |
 | A verified rotator move fails | **Stop the run.** A wrong angle silently corrupts data in a way no later analysis can detect, so this is the one motion failure that is not survivable. |
 | Transport loss (USB / VISA / serial) | Save the partial pixel, shut the outputs down, reconnect and verify every instrument, then continue with the **next** pixel. Never replay the interrupted one. |
@@ -322,13 +322,13 @@ substrate calibration.
 | --- | --- | --- | --- |
 | `SkipPixelRequested` | **`BaseException`** | The operator pressed *Skip Current Pixel*. | The per-pixel handler: saves partial data and moves on. |
 | `CriticalHardwareTransportError` | `RuntimeError` | The instrument transport died (USB/VISA/serial). | The pixel handler, which hands control to `FastMapHardwareRecovery`. |
-| `CriticalAngleError` | `RuntimeError` | A verified rotator move could not be certified. | Nothing catches it to continue — the run stops. |
+| `CriticalAngleError` | `RuntimeError` | A verified rotator move could not be certified. | Nothing catches it to continue, so the run stops. |
 | `CriticalNullError` | `RuntimeError` | The null procedure failed. | Fails the pixel. |
 | `CriticalCalibrationNullError` | `CriticalNullError` | The same, on the calibration pixel, carrying extra context. | Fails the pixel, with the calibration-specific message. |
 
 > **Why `SkipPixelRequested` derives from `BaseException` and not `Exception`.**
 > A skip request must propagate out of *any* code, including code wrapped in a
-> broad `except Exception:` — and this codebase has many such wrappers, because
+> broad `except Exception:`, and this codebase has many such wrappers, because
 > "a plotting bug must not destroy a measurement" requires them. If skip were an
 > ordinary `Exception`, one of those defensive handlers would silently swallow
 > it, the operator would press the button and nothing would happen. Deriving
@@ -347,9 +347,9 @@ an arbitrary driver exception into a recoverable event.
 ## 8. The transport-recovery state machine
 
 [`pockels_transport_recovery.py`](../../pockels/pockels_transport_recovery.py)
-implements `FastMapHardwareRecovery`. It imports **no instrument drivers** —
-every driver it needs is handed to it as an already-imported module object —
-which is precisely why it can be unit-tested against mocks.
+implements `FastMapHardwareRecovery`. It imports **no instrument drivers**,
+because every driver it needs is handed to it as an already-imported module
+object, which is precisely why it can be unit-tested against mocks.
 
 ```text
   startup
@@ -370,13 +370,13 @@ which is precisely why it can be unit-tested against mocks.
                           --transport-recovery-attempts limit was reached)
 ```
 
-**`close()` — isolate first, then release.**
+**`close()`: isolate first, then release.**
 
 1. Attempt **electrical isolation before anything else**: function-generator
    drive channel OFF, SMU output OFF. A warning is reported if either fails,
    but both are attempted.
-2. Close every VISA/serial owner — switch matrix, SMU, all three rotators,
-   function generator, lock-in, scope detector — setting each slot in the
+2. Close every VISA/serial owner (switch matrix, SMU, all three rotators,
+   function generator, lock-in, scope detector), setting each slot in the
    hardware dictionary to `None` *before* calling `close()` on it, so a
    half-closed session can never be reused.
 3. Stop polling and disconnect both Kinesis stage axes, with `Disconnect`
@@ -388,10 +388,10 @@ which is precisely why it can be unit-tested against mocks.
 > invalidate the new one, and the verification step would then pass against a
 > dead handle.
 
-**`reconnect()` — rebuild, then verify the whole path.**
+**`reconnect()`: rebuild, then verify the whole path.**
 
 1. Function generator first, followed immediately by a verified
-   `OUTPUT OFF` — *before any routing or motion*.
+   `OUTPUT OFF`, *before any routing or motion*.
 2. SMU, connected with the output disabled, then `_verify_smu_off()` which
    queries `OUTPut:STATe?` and demands `0`/`OFF`.
 3. Switch matrix, followed by `turn_all_off()`.
@@ -400,17 +400,17 @@ which is precisely why it can be unit-tested against mocks.
    > replayed: ALL-OFF is established and acknowledged first, and a channel is
    > only selected again by the next pixel's normal routing.
 
-   All three isolation paths are attempted even if one device stays offline —
-   a failed function-generator reconnect must not leave a now-reachable SMU
-   driving bias — and only then is a combined `RuntimeError` raised if any of
+   All three isolation paths are attempted even if one device stays offline,
+   because a failed function-generator reconnect must not leave a now-reachable
+   SMU driving bias. Only then is a combined `RuntimeError` raised if any of
    them failed.
 4. Scope detector, then `_verify_scope()`: read a voltage and require it to be
    finite.
 5. The three rotators, each reopened by USB identity, homed (unless the run
    disabled homing), polled for an `ok` status for up to 30 s, and checked for
    a home readback within 0.5° of zero. The run's angle coordinate system is
-   then restored by writing back the saved `_offset` — including for manual raw
-   calibration runs that deliberately never tare — and the velocity is re-set.
+   then restored by writing back the saved `_offset`, including for manual raw
+   calibration runs that deliberately never tare, and the velocity is re-set.
 6. Lock-in, `apply_safe_startup()`, an identity readback that must be
    non-empty, and a full re-application of the fixed-range configuration.
 7. Both Kinesis axes: rebuild the device list, create, initialise, home

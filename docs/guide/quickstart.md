@@ -2,13 +2,13 @@
 
 This page takes somebody who has never touched this rig from a cold lab to one
 complete, trustworthy measured pixel in about an hour. Follow it literally, in
-order. Nothing here requires you to understand the physics yet — that is
+order. Nothing here requires you to understand the physics yet; that is
 [Physics](../physics/index.md).
 
 Before you start, make sure the machine is set up:
 [Installation and Setup](installation.md).
 
-> **Rule 0 — run the software from Windows Python, not WSL or Linux.** The XY
+> **Rule 0: run the software from Windows Python, not WSL or Linux.** The XY
 > stage and the laser go through Thorlabs' Kinesis **.NET** assemblies, which
 > exist only on Windows. The analysis-only modules and the whole test suite run
 > anywhere.
@@ -20,12 +20,12 @@ Before you start, make sure the machine is set up:
 ### 1.1 Laser safety
 
 The source is a **1550 nm** fibre-coupled diode laser (Thorlabs KLS1550) at up
-to ~7 mW. 1550 nm is **invisible** — you cannot see the beam and your blink
+to ~7 mW. 1550 nm is **invisible**, so you cannot see the beam and your blink
 reflex will not protect you.
 
 - Wear the 1550 nm laser goggles that live with the setup.
 - Never put your eye at bench level near the beam line.
-- The laser can be switched off from the GUI — click the **Laser** box in the
+- The laser can be switched off from the GUI: click the **Laser** box in the
   *Optical Train* panel. Do that before reaching into the beam path.
 - The beam is enclosed for most of its path. Keep it that way.
 
@@ -64,7 +64,7 @@ The layout of the bench, and what is connected to what, is in
 
 > **Note** If you have never run `tools\pockels_usb_stability_setup.ps1` on this
 > PC, do it now, from an elevated PowerShell, and reboot. It disables USB
-> selective suspend — the single most common cause of an instrument vanishing
+> selective suspend, the single most common cause of an instrument vanishing
 > mid-run. See [Installation §4](installation.md#4-one-time-windows-usb-stability-setup).
 
 ---
@@ -77,7 +77,7 @@ Open a terminal (Anaconda Prompt or PowerShell) in the repository and run:
 python pockels\pockels_fast_map_gui.py
 ```
 
-The **BTO GO!** window opens. Nothing has been connected to yet — the GUI is
+The **BTO GO!** window opens. Nothing has been connected yet; the GUI is
 only a launcher and a monitor. **No hardware is touched, and no run folder is
 created, until you press *Start Measurement*.**
 
@@ -102,16 +102,16 @@ created, until you press *Start Measurement*.**
 └────────────────────┴──────────────────────────────┴───────────────────────┘
 ```
 
-- **Settings panel** (left, scrollable) — everything the run is told to do.
+- **Settings panel** (left, scrollable): everything the run is told to do.
   Tick *Show advanced settings* to reveal the rest.
-- **Run Status** — the current operation, progress bars, and three LEDs that
+- **Run Status**: the current operation, progress bars, and three LEDs that
   mirror the real commanded state of the high-voltage DC, the AC drive and the
   laser.
-- **Optical Train** — a live schematic of the beam line with each rotator's
+- **Optical Train**: a live schematic of the beam line with each rotator's
   commanded and read-back angle.
-- **Live Chip Map** — the 10 × 10 pixel grid, with a *View:* dropdown that
+- **Live Chip Map**: the 10 × 10 pixel grid, with a *View:* dropdown that
   switches between the response layers and the live hysteresis curve.
-- **Terminal / Run Notifications** — raw worker output, and an extracted feed of
+- **Terminal / Run Notifications**: raw worker output, and an extracted feed of
   anything that looked like a warning or an error.
 
 Hover the **`?`** marker beside any setting for its tooltip. Every field has
@@ -144,8 +144,8 @@ Expected (the numbers may differ; most devices auto-resolve by USB identity):
 The SMU and the Arduino are auto-detected by identity
 ([`pockels/serial_port_resolver.py`](../../pockels/serial_port_resolver.py)).
 The **three rotator ports are hard-coded** in
-[`pockels/POL_Chip_Test_Working_2026.py`](../../pockels/POL_Chip_Test_Working_2026.py)
-— if one has changed, edit `PORT_QWP` / `PORT_HWP` / `PORT_ANL` there.
+[`pockels/POL_Chip_Test_Working_2026.py`](../../pockels/POL_Chip_Test_Working_2026.py).
+If one has changed, edit `PORT_QWP` / `PORT_HWP` / `PORT_ANL` there.
 
 While you are at it, check the lock-in is on the network:
 
@@ -188,7 +188,7 @@ Afterwards press **Find Latest Sample Optical Cal** so the GUI fills the
 
 ### 4.2 Substrate HWP null-seed table
 
-The measurement needs a *null* — a QWP + analyser extinction pair — for **every**
+The measurement needs a *null*, a QWP + analyser extinction pair, for **every**
 incident polarisation it will visit, not just one. That table is built
 automatically at the start of the run when **Substrate = `do`** (the default).
 
@@ -216,7 +216,7 @@ Fill in the settings panel:
 | **Pixels** | `1` | One pixel only. |
 | **HWP grid preset** | *Current calibrated default (9 points)* | The 9-point incident-polarisation grid centred on the verified high-response angle. |
 | **Calibration pixel** | `1` | Must be inside *Pixels*. This pixel runs the expensive full calibration. |
-| **DC pixels** | *(clear it)* | Skip hysteresis on the first try — add it once the map works. |
+| **DC pixels** | *(clear it)* | Skip hysteresis on the first try, and add it once the map works. |
 | Advanced ▸ **Substrate** | `load` (or `do` if this is the very first run) | |
 
 Leave everything else at its default. The defaults *are* the production
@@ -231,19 +231,19 @@ Press **Start Measurement**.
 The *Run Status* "Operation:" line steps through roughly this sequence. Watch
 the **Terminal** panel for detail.
 
-1. **Bring-up** — `Connecting lock-in` → `Connecting XY stage` →
+1. **Bring-up**: `Connecting lock-in` → `Connecting XY stage` →
    `Connecting oscilloscope` → `Starting camera live view` →
    `Connecting switch matrix` → `Connecting KLS1550 laser` →
    `Configuring function generator` → `Connecting rotators` →
    `Homing/taring rotators` → `Configuring fixed lock-in range` →
    `Connecting SMU` → `Loading optical calibration`.
-2. If `Substrate = do`, the HWP null-seed table is built — one null search per
+2. If `Substrate = do`, the HWP null-seed table is built, one null search per
    HWP angle. **This is the slow part (~20 min).**
 3. **Pixel 1.** The stage moves to the pixel, the analyser rotates +45° off null
    to brighten the beam, and the stage hill-climbs onto the local transmission
    peak. Watch the *Stage Alignment Live* panel.
 4. The Arduino routes pixel 1's electrode pair. The **DC LED** turns red as the
-   SMU ramps to +40 V in 5 V chunks and poles the pixel — up to 180 s, usually
+   SMU ramps to +40 V in 5 V chunks and poles the pixel for up to 180 s, usually
    less, because adaptive poling stops at the plateau (60 s floor, 180 s cap,
    3 consecutive quiet intervals under 2 %, at least 2 µV of signal).
 5. For each of the 9 HWP angles: null check → **AC LED** on → three lock-in
@@ -252,8 +252,8 @@ the **Terminal** panel for detail.
 6. **Teardown:** AC off → SMU off → matrix off. The *Live Chip Map* cell for
    pixel 1 gets a colour.
 
-**Expected wall clock: ≈ 8 minutes** for the calibration pixel (≈ 4.5–5 min for
-an ordinary production pixel), plus the substrate table if you built one.
+**Expected wall clock: ≈ 8 minutes** for the calibration pixel (≈ 4.5 to 5 min
+for an ordinary production pixel), plus the substrate table if you built one.
 
 ### Did it work?
 
@@ -271,16 +271,16 @@ pockels_fast_map/20260915_143012_BTNO_0087_shakedown/
     └── poling_kinetics.csv
 ```
 
-**Green flags** — open `fast_map.csv` and check:
+**Green flags.** Open `fast_map.csv` and check:
 
 | Look at | Want to see | Why it matters |
 | --- | --- | --- |
 | `p_null_mV` | ≤ **14.5** at most HWP angles | the optics can null properly |
 | `lockin_net_signed_V` | **opposite signs** for `plus45` and `minus45` at the same HWP | the signal really is a polarisation rotation |
 | `quality_flags` | contains `s9_operating_point_certified`, not `s9_operating_point_failed`, at the strong HWP angles | the operating point passed every geometry gate |
-| `s9_status` | `certified_triplet` or `certified_fit` | the readout is trustworthy (`geometry_only_low_signal` is also accepted — the geometry is right, the pixel is simply weak) |
+| `s9_status` | `certified_triplet` or `certified_fit` | the readout is trustworthy (`geometry_only_low_signal` is also accepted: the geometry is right, the pixel is simply weak) |
 
-**Red flags** — stop and read [Troubleshooting](troubleshooting.md):
+**Red flags.** Stop and read [Troubleshooting](troubleshooting.md):
 
 | Symptom | What it usually means |
 | --- | --- |
@@ -308,7 +308,7 @@ Once the map works, prove the electrical path.
 
 This takes about **29 minutes** (≈ 39 s per DC point). While it runs, switch the
 *View:* dropdown above the chip map to **"Hysteresis sweep: lock-in |R| vs
-Vdc"** and leave *Pixel: Auto* — the curve updates after every acquired point.
+Vdc"** and leave *Pixel: Auto*; the curve updates after every acquired point.
 
 ### What a butterfly should look like
 
@@ -325,12 +325,13 @@ crosses.
 The signed S-shaped loop $S(V)$ is produced automatically by the analysis, along
 with the metrics, in the pixel's `dc_hysteresis/sweep/` folder
 (`dc_hysteresis_loops.png` and `dc_hysteresis_metrics.json`). Compare it with
-[the butterfly figure](../../assets/figures/hysteresis_butterfly.png) and read
-[Ferroelectrics](../physics/05-ferroelectrics.md) for what the shape means.
+[a measured loop from this bench](../../assets/figures/hysteresis_measured.png)
+and read [Ferroelectrics](../physics/05-ferroelectrics.md) for what the shape
+means.
 
 > **Warning** The dwell sets the loop shape. 30 s is the default and the
-> production value. Whatever you choose, keep it fixed for the whole campaign —
-> loops taken at different dwells are not comparable.
+> production value. Whatever you choose, keep it fixed for the whole campaign,
+> because loops taken at different dwells are not comparable.
 
 ---
 
@@ -342,13 +343,13 @@ Only after both of the above are clean:
 | --- | --- |
 | **Pixels** | `all`, or the default working set `1-6,11-16,21-26,31-37,41-48,51-100` (83 pixels) |
 | **Calibration pixel** | a pixel you already know gives a strong, clean response |
-| **DC pixels** | the subset you want loops on (each loop is ~29 min — 100 of them is ~49 hours) |
+| **DC pixels** | the subset you want loops on (each loop is ~29 min, so 100 of them is ~49 hours) |
 | Advanced ▸ **Substrate** | `load` |
 
-Rough budget: the chip map runs at ≈ 4.5–5 min/pixel, so **6–7 hours for 83
-pixels**. Add hysteresis only where you need it.
+Rough budget: the chip map runs at ≈ 4.5 to 5 min/pixel, so **6 to 7 hours for
+83 pixels**. Add hysteresis only where you need it.
 
-Choosing the calibration pixel matters more than any other single setting — a
+Choosing the calibration pixel matters more than any other single setting: a
 dead or pinned one poisons the seeds for the whole chip. See
 [Operator Manual §2](operating.md#choosing-the-calibration-pixel).
 
@@ -364,15 +365,15 @@ picks up exactly where it stopped without redoing finished work.
 | --- | --- | --- |
 | **Request Safe Stop** | The worker finishes the point it is on, turns AC off, ramps the SMU down, opens the switch matrix, and saves. | **This is the one to use.** |
 | **Skip Current Pixel** | Abandons just the current pixel (saved as partial) and moves to the next. | One pixel is dead and burning time in alignment retries. |
-| Closing the window / killing the process | Last resort. Outputs may be left energised — check the SMU and function generator front panels by hand. | Never, if you can help it. |
+| Closing the window / killing the process | Last resort. Outputs may be left energised, so check the SMU and function generator front panels by hand. | Never, if you can help it. |
 
 ---
 
 ## 9. What to do next
 
-- [Operator Manual](operating.md) — the complete SOP and every setting.
-- [Physics](../physics/index.md) — what you just measured and why it works.
-- [Data Schema](../reference/data-schema.md) — every file, every column.
+- [Operator Manual](operating.md), the complete SOP and every setting.
+- [Physics](../physics/index.md), what you just measured and why it works.
+- [Data Schema](../reference/data-schema.md), every file, every column.
 
 ### Post-run analysis one-liners
 
