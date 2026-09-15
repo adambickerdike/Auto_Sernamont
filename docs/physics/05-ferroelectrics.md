@@ -187,7 +187,7 @@ $\varepsilon_r$ of order $10^2$ along the polar axis
 [[24]](../references.md#ref-24), (6) gives
 
 $$
-E_c^{\mathrm{int}} \;\sim\; 3\times 10^{7}\ \mathrm{V\,m^{-1}}
+E_c^{\mathrm{int}} \;\sim\; 10^{7}\ \mathrm{V\,m^{-1}}
 \;=\; \text{tens of volts per micrometre}.
 $$
 

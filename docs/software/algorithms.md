@@ -42,8 +42,7 @@ mean**, and the bias is worst exactly where the physics is most interesting.
 
 Model one reading as a true phasor $\mu$ plus circular complex Gaussian noise
 of variance $\sigma^2$ per quadrature. Then $R = \lvert Z\rvert$ follows the
-Rice distribution, derived in S. O. Rice, "Mathematical analysis of random
-noise", *Bell System Technical Journal* (1944 and 1945):
+Rice distribution, derived by Rice [[49]](../references.md#ref-49):
 
 $$
 f(R) = \frac{R}{\sigma^2}\,
@@ -373,15 +372,14 @@ would amplify read noise by $1/h$ for a step $h$. A **direct search** uses only
 *comparisons* of function values, so a common multiplicative gain error or a
 slowly drifting baseline cannot mislead it. Hooke and Jeeves
 [[40]](../references.md#ref-40) is the canonical pattern search;
-V. Torczon, "On the convergence of pattern search algorithms", *SIAM Journal on
-Optimization* (1997), proved global convergence to a stationary point for this
-family under a rational-lattice step rule. The main alternatives were rejected
+Torczon [[51]](../references.md#ref-51) proved global convergence to a
+stationary point for this family under a rational-lattice step rule. The main alternatives were rejected
 for concrete reasons:
 
 | Alternative | Why not |
 | --- | --- |
 | Finite-difference gradient descent | noise amplification $1/h$; two extra evaluations per step |
-| Nelder and Mead simplex (*The Computer Journal*, 1965) | no convergence guarantee, and the simplex can collapse onto a line on a noisy surface |
+| Nelder and Mead simplex [[50]](../references.md#ref-50) | no convergence guarantee, and the simplex can collapse onto a line on a noisy surface |
 | Brent's method [[41]](../references.md#ref-41) | one-dimensional; needs a bracket, which in two dimensions is the hard part |
 | Exhaustive grid | the rescue path uses exactly this, at 81 evaluations, but it is far too slow per pixel |
 
@@ -804,7 +802,7 @@ and the form $\exp[-(t/\tau)^\beta]$ with $0 < \beta < 1$ is exactly the
 Laplace transform of a one-sided stable distribution of rates. So $\beta$ is
 not a shape nuisance: **$\beta = 1$ says one relaxation time, and $\beta < 1$
 says a spread of them**, with smaller $\beta$ meaning a broader spread. This is
-the Kohlrausch (*Annalen der Physik*, 1854) form, brought into dielectric
+the Kohlrausch form [[52]](../references.md#ref-52), brought into dielectric
 relaxation by Williams and Watts [[22]](../references.md#ref-22). In a
 ferroelectric film the spread comes from a distribution of local pinning
 energies for domain walls; see Tagantsev, Cross and Fousek

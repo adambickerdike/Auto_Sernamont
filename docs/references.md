@@ -493,6 +493,8 @@ distribution of relaxation times comes from Williams and Watts
 | [03 The null-slope readout](physics/03-senarmont-readout.md) | [[11]](#ref-11) [[13]](#ref-13) [[30]](#ref-30) [[31]](#ref-31) [[32]](#ref-32) [[33]](#ref-33) [[34]](#ref-34) [[35]](#ref-35) [[36]](#ref-36) [[43]](#ref-43) [[44]](#ref-44) [[45]](#ref-45) |
 | [04 Angular dependence](physics/04-incident-polarisation.md) | [[2]](#ref-2) [[3]](#ref-3) [[7]](#ref-7) [[9]](#ref-9) [[26]](#ref-26) [[44]](#ref-44) |
 | [05 Ferroelectric switching](physics/05-ferroelectrics.md) | [[6]](#ref-6) [[16]](#ref-16) [[17]](#ref-17) [[18]](#ref-18) [[19]](#ref-19) [[20]](#ref-20) [[21]](#ref-21) [[22]](#ref-22) [[23]](#ref-23) [[24]](#ref-24) [[25]](#ref-25) [[26]](#ref-26) [[28]](#ref-28) |
+| [06 Instrument theory](physics/06-instrument-theory.md) | [[3]](#ref-3) [[11]](#ref-11) [[24]](#ref-24) [[25]](#ref-25) [[26]](#ref-26) [[28]](#ref-28) [[29]](#ref-29) [[30]](#ref-30) [[31]](#ref-31) [[32]](#ref-32) [[33]](#ref-33) [[34]](#ref-34) [[35]](#ref-35) [[36]](#ref-36) [[37]](#ref-37) [[38]](#ref-38) |
+| [Algorithms](software/algorithms.md) | [[49]](#ref-49) [[50]](#ref-50) [[51]](#ref-51) [[52]](#ref-52) [[20]](#ref-20) [[22]](#ref-22) [[23]](#ref-23) [[25]](#ref-25) [[26]](#ref-26) [[32]](#ref-32) [[33]](#ref-33) [[36]](#ref-36) [[39]](#ref-39) [[40]](#ref-40) [[41]](#ref-41) [[42]](#ref-42) [[43]](#ref-43) [[44]](#ref-44) [[45]](#ref-45) [[46]](#ref-46) [[48]](#ref-48) |
 
 ---
 

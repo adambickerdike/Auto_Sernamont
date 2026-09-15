@@ -439,10 +439,10 @@ acceptance threshold and the 5 % gate become leakage fractions:
 | --- | --- | --- | --- |
 | $0.0145$ | the 14.5 mV null acceptance against a 1 V swing | $19.1^\circ$ | $1.27$ |
 | $0.05$ | the $r_\mathrm{eff}$ leakage gate | $25.0^\circ$ | $1.19$ |
-| $0.20$ | a poor null | $34.0^\circ$ | $1.06$ |
+| $0.20$ | a poor null | $32.6^\circ$ | $1.08$ |
 
 So even in a purely shot-noise-limited instrument, moving from $45^\circ$ to
-the true optimum would buy between 6 % and 27 % in signal-to-noise. **That is
+the true optimum would buy between about 8 % and 27 % in signal-to-noise. **That is
 not enough to justify it**, for four reasons that have nothing to do with
 noise.
 
@@ -1069,6 +1069,7 @@ for cross-pixel and cross-composition comparison.
 | Linear least squares, covariance and residuals | Lawson and Hanson [[44]](../references.md#ref-44) |
 | The singular value decomposition behind the rank test | Golub and Van Loan [[45]](../references.md#ref-45) |
 | Instrument settings and their indices | DSP7230 manual [[36]](../references.md#ref-36), PDA30B2 [[37]](../references.md#ref-37) |
+| The array and fitting libraries every equation here is evaluated in | NumPy [[47]](../references.md#ref-47), SciPy [[48]](../references.md#ref-48) |
 
 Full bibliography: [`../references.md`](../references.md).
 
