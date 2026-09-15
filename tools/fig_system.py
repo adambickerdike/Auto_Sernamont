@@ -147,8 +147,8 @@ def figure_switch_matrix_circuit():
                     color=VIOLET, family="monospace")
     ax.text(60, 51.9, "7 \u00d7 TLC59282 cascaded  \u2192  112 shift-register bits",
             ha="center", fontsize=8.6, color=VIOLET, fontweight="bold")
-    ax.text(60, 50.0, "bits 0\u201399: one per channel     bits 100\u2013109: one per group "
-                      "of ten     bits 110\u2013111: spare",
+    ax.text(60, 50.0, "bits 0 to 99: one per channel     bits 100 to 109: one per group "
+                      "of ten     bits 110 and 111: spare",
             ha="center", fontsize=7.4, color=MUTED)
 
     # outputs down to the relays
@@ -185,7 +185,7 @@ def figure_switch_matrix_circuit():
             color=LASER, fontweight="bold")
     _box(ax, 2, 10.5, 17, 6.4, "SMU4201", "DC  0 \u2026 \u00b140 V\n1 mA compliance",
          fc="#fef2f2", ec="#fecaca", fs=8.6)
-    _box(ax, 2, 2.0, 17, 6.4, "TGF3162 CH1", "AC  1\u20139 Vpp @ 30 kHz",
+    _box(ax, 2, 2.0, 17, 6.4, "TGF3162 CH1", "AC  1 to 9 Vpp @ 30 kHz",
          fc="#fef2f2", ec="#fecaca", fs=8.6)
     _box(ax, 25, 5.6, 13, 7.4, "bias tee", "sums DC + AC onto\none conductor",
          fc="#fff7ed", ec="#fed7aa", fs=8.6)
@@ -225,7 +225,7 @@ def figure_switch_matrix_circuit():
     ax.text(2, 54.2,
             "One measurement chain, one hundred electrode pairs.  Four Arduino pins shift 112 bits "
             "into a chain of constant-current drivers,\nwhich energise exactly one optically isolated "
-            "relay \u2014 and the SMU and function generator reach that pixel and no other.",
+            "relay, so the SMU and function generator reach that pixel and no other.",
             fontsize=8.6, color=MUTED, linespacing=1.5)
     fig.tight_layout(pad=0.6)
     fig.savefig(OUT / "switch_matrix_circuit.png")
@@ -279,8 +279,8 @@ def figure_timing():
     ax2.grid(axis="y", visible=False)
     ax2.invert_yaxis()
     title(ax2, "Why the fast map exists",
-          "the naive plan \u2014 100 px $\\times$ 7 HWP $\\times$ 5 V $\\times$ 18 analyser angles "
-          "\u2014 is\n63 000 lock-in points, hundreds of hours")
+          "the naive plan of 100 px $\\times$ 7 HWP $\\times$ 5 V $\\times$ 18 analyser angles "
+          "is\n63 000 lock-in points, hundreds of hours")
     fig.tight_layout(pad=1.8)
     fig.savefig(OUT / "timing_breakdown.png")
     plt.close(fig)

@@ -1,8 +1,9 @@
-"""Figures 4-9: the measurement itself.
+"""Idealised figures for the measurement model.
 
-Malus slope, the complex analyser response, the angular harmonics, the
-hysteresis butterfly and its signed loop, the loop taxonomy, and the poling
-kinetics.  Everything is computed from the same models the analysis code uses.
+The Malus slope, the complex analyser response, the angular harmonics, the
+reference shapes of the loop classifier, and the poling kinetics. These are
+computed from the same models the analysis code uses. Figures built from real
+acquired data live in fig_measured_hysteresis.py.
 """
 
 from __future__ import annotations
@@ -80,7 +81,7 @@ def figure_malus_slope():
     ax2.set_xlim(-95, 95); ax2.set_ylim(-1.35, 1.35)
     ax2.set_xticks([-90, -45, 0, 45, 90])
     title(ax2, "The slope is what the lock-in measures",
-          "$dI/d\\psi = I_0\\,\\sin 2\\psi$  \\u2014 maximal at $\\pm45\\degree$, zero at the null")
+          "$dI/d\\psi = I_0\\,\\sin 2\\psi$, maximal at $\\pm45\\degree$ and zero at the null")
     fig.tight_layout(pad=1.6)
     fig.savefig(OUT / "malus_slope.png")
     plt.close(fig)
@@ -121,7 +122,7 @@ def figure_analyser_response():
     ax.set_xticks([-45, 0, 45, 90, 135, 180, 225])
     ax.legend(loc="lower right", ncols=1)
     title(ax, "The complex analyser response",
-          "$Z(\\psi) = P + E_1\\sin 2\\psi + E_2\\cos 2\\psi$ \\u2014 linear in the complex unknowns")
+          "$Z(\\psi) = P + E_1\\sin 2\\psi + E_2\\cos 2\\psi$, linear in the complex unknowns")
 
     # phasor view
     ax2.axhline(0, color=GRID, lw=1.0); ax2.axvline(0, color=GRID, lw=1.0)
@@ -223,104 +224,6 @@ def figure_angular_harmonics():
 
 
 # ------------------------------------------ figure 7: butterfly vs S-loop ---
-def centre_dense_grid(vmax: float = 40.0):
-    """The production 45-point trajectory: +Vmax -> -Vmax -> +Vmax.
-
-    Absolute levels 40, 30, 25, 20, 15, 12.5, 10, 7.5, 5, 2.5, 1.25, 0 V,
-    mirrored about zero and traversed back without duplicating the turning
-    point.  This is the grid the acquisition actually uses.
-    """
-    levels = np.array([40, 30, 25, 20, 15, 12.5, 10, 7.5, 5, 2.5, 1.25, 0.0])
-    levels = levels * (vmax / 40.0)
-    down = np.concatenate([levels, -levels[::-1][1:]])      # +Vmax ... 0 ... -Vmax
-    up = np.concatenate([-levels[::-1][1:-1], levels[::-1]])  # -Vmax ... 0 ... +Vmax
-    return down, up
-
-
-def _branch(v, vc, width, s_sat=1.0, linear=0.004):
-    """One hysteresis branch: a shifted tanh plus a small reversible term."""
-    return s_sat * np.tanh((v - vc) / width) + linear * v
-
-
-def figure_hysteresis_butterfly():
-    vc_plus, vc_minus, width = 5.0, -7.5, 1.9
-    v_d, v_u = centre_dense_grid()
-    s_d = _branch(v_d, vc_minus, width)     # descending: flips at the negative Vc
-    s_u = _branch(v_u, vc_plus, width)      # ascending:  flips at the positive Vc
-
-    phi = np.deg2rad(37.0)                  # an arbitrary lock-in phase axis
-    def to_xy(s, n):
-        return (s * np.cos(phi) + RNG.normal(0, 0.010, n),
-                s * np.sin(phi) + RNG.normal(0, 0.010, n))
-    xd, yd = to_xy(s_d, s_d.size)
-    xu, yu = to_xy(s_u, s_u.size)
-    rd, ru = np.hypot(xd, yd), np.hypot(xu, yu)
-    sd_proj = xd * np.cos(phi) + yd * np.sin(phi)
-    su_proj = xu * np.cos(phi) + yu * np.sin(phi)
-
-    vf = np.linspace(-40, 40, 800)
-    sdf, suf = _branch(vf, vc_minus, width), _branch(vf, vc_plus, width)
-
-    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(12.4, 4.8))
-
-    ax.plot(vf, np.abs(sdf), color=LASER, lw=1.0, alpha=0.35)
-    ax.plot(vf, np.abs(suf), color=GREEN, lw=1.0, alpha=0.35)
-    ax.plot(v_d, rd, "-o", color=LASER, ms=4.0, lw=1.7, label="descending branch")
-    ax.plot(v_u, ru, "-o", color=GREEN, ms=4.0, lw=1.7, label="ascending branch")
-    for vc, col in [(vc_minus, LASER), (vc_plus, GREEN)]:
-        ax.axvline(vc, color=col, lw=0.9, ls=(0, (2, 3)))
-    ax.set_xlabel("DC bias,  $V_\mathrm{dc}$  (V)")
-    ax.set_ylabel("lock-in magnitude  $|R|$  (arb.)")
-    ax.set_xlim(-44, 44); ax.set_ylim(-0.05, 1.35)
-    ax.legend(loc="upper center", ncols=2, bbox_to_anchor=(0.5, 0.20))
-    ax.annotate("the magnitude dips towards zero\nwhere the phasor flips by 180$\degree$\n"
-                "\u2014 near the coercive voltages",
-                xy=(vc_minus, 0.06), xytext=(-42, 0.72), fontsize=8.5, color=MUTED,
-                linespacing=1.5,
-                arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.0,
-                                connectionstyle="arc3,rad=-0.25"))
-    ax.text(0.985, 0.03, "faint line: the underlying response\n"
-                         "dots: the 45 acquired points",
-            transform=ax.transAxes, ha="right", va="bottom", fontsize=7.8,
-            color=MUTED, linespacing=1.4)
-    title(ax, "What the lock-in magnitude does: a butterfly",
-          "magnitude discards the sign, so a 180$\degree$ phase flip appears as a dip")
-
-    ax2.axhline(0, color=GRID, lw=1.0); ax2.axvline(0, color=GRID, lw=1.0)
-    ax2.plot(vf, sdf, color=LASER, lw=1.0, alpha=0.35)
-    ax2.plot(vf, suf, color=GREEN, lw=1.0, alpha=0.35)
-    ax2.plot(v_d, sd_proj, "-o", color=LASER, ms=4.0, lw=1.7, label="descending branch")
-    ax2.plot(v_u, su_proj, "-o", color=GREEN, ms=4.0, lw=1.7, label="ascending branch")
-    for vc, col, lab in [(vc_minus, LASER, "$V_c^-$"), (vc_plus, GREEN, "$V_c^+$")]:
-        ax2.scatter([vc], [0], color=col, s=64, zorder=7, edgecolors="white", linewidths=1.2)
-        ax2.text(vc, 0.13, lab, ha="center", fontsize=11, color=col, fontweight="bold")
-    ax2.annotate("", xy=(vc_minus, -0.30), xytext=(vc_plus, -0.30),
-                 arrowprops=dict(arrowstyle="<|-|>", color=SLATE, lw=1.1))
-    ax2.text((vc_plus + vc_minus) / 2, -0.44, "loop width", ha="center",
-             fontsize=8.7, color=SLATE)
-    ax2.scatter([(vc_plus + vc_minus) / 2], [0], color=SLATE, s=34, marker="|", zorder=7)
-    ax2.annotate("imprint = $(V_c^+ + V_c^-)/2$",
-                 xy=((vc_plus + vc_minus) / 2, 0.0), xytext=(15, 0.30),
-                 fontsize=8.7, color=SLATE,
-                 arrowprops=dict(arrowstyle="-|>", color=SLATE, lw=1.0,
-                                 connectionstyle="arc3,rad=-0.25"))
-    ax2.annotate("remanent response\n$S_\mathrm{rem}^{\pm}$ at $V$ = 0",
-                 xy=(0, _branch(0.0, vc_minus, width)), xytext=(-40, 0.45),
-                 fontsize=8.5, color=MUTED, linespacing=1.5,
-                 arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.0,
-                                 connectionstyle="arc3,rad=-0.2"))
-    ax2.set_xlabel("DC bias,  $V_\mathrm{dc}$  (V)")
-    ax2.set_ylabel("signed response  $S(V)$  (arb.)")
-    ax2.set_xlim(-44, 44); ax2.set_ylim(-1.45, 1.45)
-    ax2.legend(loc="upper left")
-    title(ax2, "Projected onto the saturation axis: the loop",
-          "$S = X\cos\phi_\mathrm{ref} + Y\sin\phi_\mathrm{ref}$, with "
-          "$\phi_\mathrm{ref}$ taken from the $|V|\geq 0.8\,V_\mathrm{max}$ tail")
-    fig.tight_layout(pad=1.7)
-    fig.savefig(OUT / "hysteresis_butterfly.png")
-    plt.close(fig)
-
-
 def figure_loop_taxonomy():
     v = np.linspace(-40, 40, 600)
 
@@ -345,7 +248,7 @@ def figure_loop_taxonomy():
         ("ferroelectric_square", loop(8, -8, 1.6),
          "uniform, well-switching\nmean squareness $\\geq$ 0.7", GREEN),
         ("ferroelectric_slanted", loop(9, -9, 6.0),
-         "broad coercive-field\ndistribution (squareness 0.3\u20130.7)", CYAN),
+         "broad coercive-field\ndistribution (squareness 0.3 to 0.7)", CYAN),
         ("ferroelectric_rounded", loop(10, -10, 14.0),
          "strong disorder,\ngraded switching (squareness < 0.3)", BLUE),
         ("pinched", pinched(),
@@ -373,7 +276,7 @@ def figure_loop_taxonomy():
     fig.suptitle("Loop taxonomy: what classify_loop() reports, and what it means",
                  x=0.045, ha="left", fontsize=13.5, fontweight="bold", y=0.982)
     fig.text(0.045, 0.912,
-             "Deterministic, threshold-documented categories \u2014 every threshold is a module "
+             "Deterministic, threshold-documented categories. Every threshold is a module "
              "constant in pockels_hysteresis_analysis.py and is overridable per call.\n"
              "Red = descending branch, green = ascending. Modifiers (marked *) such as imprinted, "
              "partially_frozen, leaky, drifting_loop and saturation_asymmetric\nare reported "
@@ -453,11 +356,10 @@ def main():
     figure_malus_slope()
     figure_analyser_response()
     figure_angular_harmonics()
-    figure_hysteresis_butterfly()
     figure_loop_taxonomy()
     tau, beta = figure_poling_kinetics()
     for name in ("malus_slope", "analyser_response", "angular_harmonics",
-                 "hysteresis_butterfly", "loop_taxonomy", "poling_kinetics"):
+                 "loop_taxonomy", "poling_kinetics"):
         p = OUT / f"{name}.png"
         print(f"  wrote {p.name}  ({p.stat().st_size/1024:.0f} kB)")
 

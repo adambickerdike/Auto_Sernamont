@@ -6,14 +6,14 @@ things, and the order matters:
 1. **Pins ``sys.path[0]`` to ``pockels/``** so that sibling imports always
    resolve to this package.  When you run ``python pockels/x.py`` Python
    already does this, but Spyder's ``runfile`` executes the file inside the
-   kernel *without* adding the script directory to ``sys.path`` -- imports
+   kernel *without* adding the script directory to ``sys.path``, so imports
    would then resolve through the working directory instead.
 
 2. **Changes the working directory to the repository root.**  All run outputs
    (``pockels_fast_map/``, ``pockels_calibration/``, ``stage_calibration/``,
    ``calibration_results_*/`` ...) and all calibration discovery use
-   CWD-relative paths, so every launch mode -- CLI, Spyder, double-click,
-   GUI child worker -- must agree on where "here" is.
+   CWD-relative paths, so every launch mode (CLI, Spyder, double-click, GUI
+   child worker) must agree on where "here" is.
 
 Net effect: data always lands in one predictable place, and code always
 resolves to this package.  The function is idempotent and announces itself

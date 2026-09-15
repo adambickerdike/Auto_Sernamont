@@ -1,0 +1,58 @@
+[
+  {
+    "label": "ferroelectric_rounded_strong",
+    "run": "20260724_100158_BTO_0042_Hyst_test",
+    "pixel": "pixel_001",
+    "file": "ferroelectric_rounded_strong__20260724_pixel_001.csv",
+    "size_kb": 6.9
+  },
+  {
+    "label": "ferroelectric_rounded",
+    "run": "20260724_100158_BTO_0042_Hyst_test",
+    "pixel": "pixel_011",
+    "file": "ferroelectric_rounded__20260724_pixel_011.csv",
+    "size_kb": 6.9
+  },
+  {
+    "label": "pinched",
+    "run": "20260724_100158_BTO_0042_Hyst_test",
+    "pixel": "pixel_032",
+    "file": "pinched__20260724_pixel_032.csv",
+    "size_kb": 6.9
+  },
+  {
+    "label": "imprinted",
+    "run": "20260901_134652_BTO_0087_TEST_4",
+    "pixel": "pixel_018",
+    "file": "imprinted__20260901_pixel_018.csv",
+    "size_kb": 13.0
+  },
+  {
+    "label": "linear_no_hysteresis",
+    "run": "20260724_100158_BTO_0042_Hyst_test",
+    "pixel": "pixel_021",
+    "file": "linear_no_hysteresis__20260724_pixel_021.csv",
+    "size_kb": 6.9
+  },
+  {
+    "label": "no_response",
+    "run": "20260803_094010_BTO_HYST_OPTIMIZED_0042",
+    "pixel": "pixel_094",
+    "file": "no_response__20260803_pixel_094.csv",
+    "size_kb": 16.5
+  },
+  {
+    "label": "pinched_0087",
+    "run": "20260901_134652_BTO_0087_TEST_4",
+    "pixel": "pixel_017",
+    "file": "pinched_0087__20260901_pixel_017.csv",
+    "size_kb": 13.0
+  },
+  {
+    "label": "ferroelectric_slanted",
+    "run": "20260803_094010_BTO_HYST_OPTIMIZED_0042",
+    "pixel": "pixel_081",
+    "file": "ferroelectric_slanted__20260803_pixel_081.csv",
+    "size_kb": 16.6
+  }
+]

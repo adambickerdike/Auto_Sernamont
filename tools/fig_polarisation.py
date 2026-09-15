@@ -1,6 +1,6 @@
 """Figures 1-3: the polarisation state everywhere in the instrument.
 
-These are computed with the Jones/Stokes helpers in ``_polarisation.py`` -- they
+These are computed with the Jones/Stokes helpers in ``_polarisation.py``. They
 are not artists' impressions.  The beamline is modelled as
 
     polariser(0 deg) -> HWP(theta_h) -> sample(delta_s, fast axis) -> QWP(gamma)
@@ -72,7 +72,7 @@ def build_beamline():
         ("C", "After the BTO film", j2,
          f"elliptical: the film adds\n{SAMPLE_RETARDANCE:.0f}\u00b0 of static retardance"),
         ("D", f"After QWP ({gamma:.1f}\u00b0)", j3,
-         "linear again \u2014 the QWP has\nundone the film's ellipticity"),
+         "linear again: the QWP has\nundone the film's ellipticity"),
     ]
     return stations, gamma, a_null
 
@@ -87,7 +87,7 @@ def figure_ellipses():
 
     panels = list(stations) + [
         ("E", f"At the analyser (null, {a_null:.1f}\u00b0)", j_null_in,
-         "the analyser is crossed with D:\nextinction \u2014 the operating null")]
+         "the analyser is crossed with D:\nextinction, the operating null")]
 
     for k, (tag, name, j, note) in enumerate(panels):
         ax = fig.add_subplot(gs[0, k])
@@ -340,7 +340,7 @@ def figure_poincare_modulation(gamma, a_null):
               "onto its own axis.  At the null the two are antipodal,\n"
               "so the projection is second order in the swing.  At\n"
               "$\\pm$45$\\degree$ the axis is 90$\\degree$ away and the projection is\n"
-              "first order \u2014 and of opposite sign on the two sides.",
+              "first order, and of opposite sign on the two sides.",
               transform=ax.transAxes, fontsize=8.4, color=INK, linespacing=1.5)
 
     # ---- right panel: the Malus curve and its derivative ----
