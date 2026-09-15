@@ -1,16 +1,16 @@
 <div align="center">
 
-<img src="assets/logo/logo.png" alt="PockelsMap" width="108">
+<img src="assets/logo/logo.png" alt="Auto_Sernamont" width="108">
 
-# PockelsMap
+# Auto_Sernamont
 
 **Automated Sénarmont polarimetry for electro-optic and ferroelectric mapping of BaTiO₃ thin films at 1550 nm**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-1f6feb.svg?style=flat-square)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/github/actions/workflow/status/adambickerdike/PockelsMap/tests.yml?branch=main&style=flat-square&label=tests)](../../actions/workflows/tests.yml)
-[![Stars](https://img.shields.io/github/stars/adambickerdike/PockelsMap?style=flat-square&color=f59e0b)](../../stargazers)
-[![Last commit](https://img.shields.io/github/last-commit/adambickerdike/PockelsMap?style=flat-square&color=7c3aed)](../../commits/main)
+[![Tests](https://img.shields.io/github/actions/workflow/status/adambickerdike/Auto_Sernamont/tests.yml?branch=main&style=flat-square&label=tests)](../../actions/workflows/tests.yml)
+[![Stars](https://img.shields.io/github/stars/adambickerdike/Auto_Sernamont?style=flat-square&color=f59e0b)](../../stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/adambickerdike/Auto_Sernamont?style=flat-square&color=7c3aed)](../../commits/main)
 [![Docs](https://img.shields.io/badge/docs-25_pages-16a34a.svg?style=flat-square)](docs/)
 
 **[Documentation](docs/) · [Quick start](docs/guide/quickstart.md) · [Physics](docs/physics/) · [The instrument](docs/experiment/) · [The code](docs/software/)**
@@ -20,7 +20,7 @@
 ---
 
 <div align="center">
-<img src="assets/hero.png" alt="The PockelsMap instrument" width="100%">
+<img src="assets/hero.png" alt="The Auto_Sernamont instrument" width="100%">
 </div>
 
 ---
@@ -119,8 +119,8 @@ DC level by the oscilloscope and as a 30 kHz phasor by the lock-in amplifier.
 > entire test suite run anywhere.
 
 ```bash
-git clone https://github.com/adambickerdike/PockelsMap.git
-cd PockelsMap
+git clone https://github.com/adambickerdike/Auto_Sernamont.git
+cd Auto_Sernamont
 pip install numpy scipy matplotlib pyvisa pyserial pythonnet clr_loader opencv-python
 ```
 
@@ -383,7 +383,7 @@ $\alpha$ is worse than no number.
 ## Repository layout
 
 ```text
-PockelsMap/
+Auto_Sernamont/
 ├── pockels/              the measurement package (flat: sibling imports)
 │   ├── pockels_fast_map_gui.py        GUI + measurement worker (--cli)
 │   ├── Pockels_Calibration_2026.py    hysteresis engine, deep campaign

@@ -181,7 +181,7 @@ def hero():
                     zorder=4)
 
     # ---------------- headline ----------------
-    ax.text(0.55, 8.40, "PockelsMap", fontsize=34, color=PAPER, fontweight="bold",
+    ax.text(0.55, 8.40, "Auto_Sernamont", fontsize=29, color=PAPER, fontweight="bold",
             va="center", zorder=9)
     ax.text(0.55, 7.72,
             "Automated Sénarmont polarimetry\nfor BaTiO$_3$ thin films at 1550 nm",

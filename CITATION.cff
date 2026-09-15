@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: >-
-  PockelsMap: automated Sénarmont polarimetry for electro-optic and
+  Auto_Sernamont: automated Sénarmont polarimetry for electro-optic and
   ferroelectric mapping of BaTiO3 thin films
 message: >-
   If you use this software or its analysis in your work, please cite it.
@@ -8,7 +8,7 @@ type: software
 authors:
   - family-names: Bickerdike
     given-names: Adam
-repository-code: 'https://github.com/adambickerdike/PockelsMap'
+repository-code: 'https://github.com/adambickerdike/Auto_Sernamont'
 abstract: >-
   An instrument-control and analysis system for measuring the linear
   electro-optic (Pockels) response and the ferroelectric switching behaviour of

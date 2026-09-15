@@ -479,7 +479,7 @@ Run the fixed-peak AC sweep at `1,3,5,7,9` Vpp and check
 ### Check the whole software stack without hardware
 
 ```bash
-cd /path/to/PockelsMap
+cd /path/to/Auto_Sernamont
 for f in tests/test_*.py; do python "$f" >/dev/null 2>&1 && echo "PASS $f" || echo "FAIL $f"; done
 ```
 

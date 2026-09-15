@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="../assets/logo/logo.png" alt="PockelsMap" width="84">
+<img src="../assets/logo/logo.png" alt="Auto_Sernamont" width="84">
 
-# PockelsMap Documentation
+# Auto_Sernamont Documentation
 
 **Everything needed to run the measurement, understand the physics, and maintain the code.**
 

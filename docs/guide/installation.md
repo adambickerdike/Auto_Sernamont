@@ -207,7 +207,7 @@ to open everything — see [Switch matrix](../experiment/switch-matrix.md).
 This works on **any** machine, hardware or not:
 
 ```bash
-cd /path/to/PockelsMap
+cd /path/to/Auto_Sernamont
 for f in tests/test_*.py; do
   printf '%-58s ' "$f"
   python "$f" >/dev/null 2>&1 && echo PASS || echo FAIL

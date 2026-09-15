@@ -113,7 +113,7 @@ def banner():
 
     draw_mark(ax, cx=1.9, cy=2.2, s=1.42)
 
-    ax.text(3.45, 2.78, "PockelsMap", fontsize=46, color=PAPER,
+    ax.text(3.45, 2.80, "Auto_Sernamont", fontsize=40, color=PAPER,
             fontweight="bold", va="center", ha="left", family="DejaVu Sans")
     ax.text(3.55, 1.82,
             "Automated Sénarmont polarimetry for electro-optic and\n"
