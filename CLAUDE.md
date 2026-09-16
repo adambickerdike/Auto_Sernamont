@@ -78,7 +78,7 @@ reversed peak-angle table in `docs/physics/04-incident-polarisation.md` does.
 
 ```
 pockels/     the measurement package, flat so sibling imports keep working
-tests/       22 test files, no hardware needed, all must pass
+tests/       23 test files, no hardware needed, all must pass
 firmware/    the Arduino switching-matrix sketch
 docs/        29 pages, the manual
 assets/      schematic, GDS layout, generated figures, curated example data
@@ -154,12 +154,20 @@ There is no `gh` CLI and no GitHub API token on this machine. SSH push works;
 creating a repository does not, so a new repository has to be made by hand
 first.
 
-## Known open item
+## Known open item, now checked
 
-`docs/physics/04-incident-polarisation.md` section 8 now states the reverse of
+`docs/physics/04-incident-polarisation.md` section 8 states the reverse of
 what `ORIENTATION_CALIBRATION.md` in the lab repository says: the axial
 mechanism peaks at 45 degrees to the field and the shear mechanism along it,
 not the other way round. The derivation is on the page and in section 3, and
 the reversal is flagged in a note. It affects interpretation of which tensor
-element dominates, not any measured number. It has not been checked by a
-physicist.
+element dominates, not any measured number.
+
+The derivation was re-checked in the September 2026 review pass and the table
+stands. The check also showed that the shear mechanism survives the limit of
+zero static retardance, as a small induced retarder with its axes at plus or
+minus 45 degrees to the field, so the Sénarmont response to it is maximal with
+the input along or across the field, exactly as the table says. The numerical
+tests behind the corrected statements are in
+`tests/test_docs_physics_claims.py`. No reviewer is named here because the
+owner has not supplied a name.

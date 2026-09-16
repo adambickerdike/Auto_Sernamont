@@ -162,7 +162,7 @@ Full walk-through: [The optical beamline](docs/experiment/beamline.md) and
 ```text
 Auto_Sernamont/
 ├── pockels/       the measurement package, flat so sibling imports work
-├── tests/         22 test files, no hardware required, all passing
+├── tests/         23 test files, no hardware required, all passing
 ├── firmware/      the Arduino switching-matrix sketch
 ├── docs/          the manual
 ├── assets/        schematic, GDS layout, computed figures, curated example data

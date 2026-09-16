@@ -252,7 +252,7 @@ normal-incidence table of
 | Domain | In-plane field relative to its polar axis | Driven mechanism | Visible at normal incidence? |
 | --- | --- | --- | --- |
 | $c$ domain | necessarily perpendicular to $c$ | **rotation**: the field tilts $\mathbf{P}_s$ out of the normal, giving $\Delta B_5 = r_{42}E_1$ | **No.** That shear lies out of the section plane, so there is no first-order signal |
-| $a$ domain | across its in-plane $c$ | **rotation**: $\Delta B_4 = r_{42}E_2$ | **Yes**, as an in-plane eigenaxis rotation $\rho$ |
+| $a$ domain | across its in-plane $c$ | **rotation**: $\Delta B_5 = r_{42}E_1$, with the field along $x_1$ and the light along $x_2$ as in [01 §5.2](01-electro-optics.md#52-the-eigenvalue-problem-for-the-induced-axes) | **Yes**, as an in-plane eigenaxis rotation $\rho$, or, where the static birefringence is small, as the induced retarder of [04 eq. (8a)](04-incident-polarisation.md#32-the-two-mechanisms-differentiated) |
 | $a$ domain | along its in-plane $c$ | **extension**: $\Delta B_1 = r_{13}E$, $\Delta B_3 = r_{33}E$ | **Yes**, as a change in retardance through the $r_c$ combination |
 
 The first row deserves to be stated sharply:

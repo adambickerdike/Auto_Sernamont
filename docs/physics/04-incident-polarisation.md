@@ -183,9 +183,30 @@ this is $\Theta \to \Theta - \rho$:
 
 $$
 \delta s_3^\mathrm{out} \;=\; -\rho\,\frac{\partial s_3^\mathrm{out}}{\partial \Theta}
-\;=\; -\,2\rho\;\sin\Gamma_0\;\cos 2\Theta .
+\;=\; -\,2\rho\;\sin\Gamma_0\;\cos 2\Theta
+\;\equiv\; -\,\Gamma_s\,\cos 2\Theta ,
 \tag{8}
 $$
+
+which defines the **shear amplitude** $\Gamma_s \equiv 2\rho\sin\Gamma_0$. It
+is the right variable because its two factors pull in opposite directions as
+the static birefringence of the pixel disappears. By 01 eq. (13) the axis
+rotation $\lvert\rho\rvert \approx \tfrac{1}{2}n^3 r_{42}E/\Delta n_s$
+diverges as $\Delta n_s \to 0$, while $\Gamma_0 = 2\pi\Delta n_s t/\lambda$
+vanishes, and the product stays finite:
+
+$$
+\Gamma_s \;\xrightarrow[\;\Gamma_0 \ll 1\;]{}\; \frac{2\pi\, n^3 r_{42} E\, t}{\lambda},
+\qquad\text{independent of } \Delta n_s .
+\tag{8a}
+$$
+
+Physically, a shear perturbation applied to a film with no static
+birefringence does not rotate an existing retarder; it *creates* a small one,
+with eigenaxes at $\pm45^\circ$ to the field and retardance (8a), and that
+retarder is fully visible at normal incidence. Equation (8a) is verified
+numerically from the exact eigenvectors of the impermeability matrix in
+[`tests/test_docs_physics_claims.py`](../../tests/test_docs_physics_claims.py).
 
 Putting (7) and (8) into (6):
 
@@ -193,7 +214,8 @@ $$
 \boxed{\;
 \delta(\theta_i) \;=\; \frac{-1}{2\cos 2\chi_o}
 \Big[\;\underbrace{\Delta\Gamma\,\cos\Gamma_0\,\sin 2\Theta}_{\text{axial}}
-\;-\; \underbrace{2\rho\,\sin\Gamma_0\,\cos 2\Theta}_{\text{shear}}\;\Big].
+\;-\; \underbrace{\Gamma_s\,\cos 2\Theta}_{\text{shear}}\;\Big],
+\qquad \Gamma_s = 2\rho\sin\Gamma_0 .
 \;}
 \tag{9}
 $$
@@ -203,11 +225,11 @@ it directly.
 
 | Result | Where it comes from in (9) |
 | --- | --- |
-| **The signed response is a pure second harmonic in $\theta_i$.** | both terms are $\sin 2\Theta$ or $\cos 2\Theta$, and $\Theta = \theta_i - \theta_f$ |
+| **The signed response is a second harmonic in $\theta_i$, to leading order in $\Gamma_0$.** | both terms are $\sin 2\Theta$ or $\cos 2\Theta$, and $\Theta = \theta_i - \theta_f$; the prefactor $1/\cos 2\chi_o$ adds higher harmonics that vanish as $\Gamma_0 \to 0$ (see below) |
 | **The two mechanisms are exactly in quadrature.** | $\sin 2\Theta$ against $\cos 2\Theta$: they peak $45^\circ$ apart in $\theta_i$ |
-| **The shear mechanism is invisible at zero static retardance.** | its weight is $\sin\Gamma_0$; rotating the axis of a retarder with $\Gamma_0 = 0$ does nothing, because there is no retarder |
+| **The shear mechanism survives zero static retardance.** | its weight is $\Gamma_s = 2\rho\sin\Gamma_0$, and (8a) says the product stays finite as $\Gamma_0 \to 0$: the shear perturbation then creates a small retarder with its axes at $\pm45^\circ$ to the field instead of rotating an existing one |
 | **The axial mechanism is invisible at quarter-wave static retardance.** | its weight is $\cos\Gamma_0$, which vanishes at $\Gamma_0 = 90^\circ$ |
-| **The relative weight of the two depends on $\Gamma_0$, which varies pixel to pixel.** | the $\cos\Gamma_0$ and $\sin\Gamma_0$ weights |
+| **The relative weight of the two depends on $\Gamma_0$, which varies pixel to pixel.** | the $\cos\Gamma_0$ and $\Gamma_s = 2\rho\sin\Gamma_0$ weights |
 
 The last row is a caveat that is easy to miss and impossible to remove: two
 pixels with identical tensors but different static retardances will report
@@ -215,34 +237,73 @@ different mixtures of the same two mechanisms. It is one more entry in the
 list of reasons the reported coefficient is an *effective* one
 ([01 §9](01-electro-optics.md#9-why-the-answer-is-always-an-effective-coefficient)).
 
+The first row is exact only as $\Gamma_0 \to 0$. The prefactor
+$1/\cos 2\chi_o = 1/\sqrt{1 - \sin^2 2\Theta\,\sin^2\Gamma_0}$ in (9) depends
+on $\Theta$, so the signed response acquires higher odd harmonics; the leading
+one is a $6\theta_i$ component of relative amplitude $\sin^2\Gamma_0/8$ to
+leading order, about 3 percent at $\Gamma_0 = 30^\circ$ (3.7 percent exactly,
+computed in [`tests/test_docs_physics_claims.py`](../../tests/test_docs_physics_claims.py)). A high
+`r_squared_complex` on the $2\theta_i$ model is therefore itself evidence that
+$\Gamma_0$ is small at that pixel.
+
 ### 3.3 Recovering the ideal Sénarmont limit
 
-Setting $\Gamma_0 \to 0$ and $\Theta = 45^\circ$ in (9), so that $\cos2\chi_o
-\to 1$, the shear term vanishes and
+Set $\Theta = 45^\circ$ in (9). The shear term vanishes identically, because
+$\cos 2\Theta = 0$, and $\cos 2\chi_o = \sqrt{1 - \sin^2\Gamma_0} = \lvert\cos\Gamma_0\rvert$,
+so
 
 $$
-\delta \;=\; -\tfrac{1}{2}\Delta\Gamma
+\delta \;=\; -\tfrac{1}{2}\,\frac{\cos\Gamma_0}{\lvert\cos\Gamma_0\rvert}\,\Delta\Gamma
 \qquad\Longleftrightarrow\qquad
 \lvert\Gamma\rvert \;=\; 2\lvert\delta\rvert ,
 \tag{10}
 $$
 
-which is the conversion the software applies
+for **every** static retardance, not only a small one. The sign flips as
+$\Gamma_0$ passes through $90^\circ$, where the output state is circular and
+the null pair is degenerate; the magnitude does not change. This is the
+classical Sénarmont theorem, and it is worth seeing why it is exact. With the
+incident polarisation bisecting the film's static eigenaxes, (4) reads
+$\hat{\mathbf{s}}_\mathrm{out} = \cos\Gamma_0\,\hat{\mathbf{q}} + \sin\Gamma_0\,\hat{\mathbf{e}}_3$:
+the output state sits on the great-circle meridian through $\hat{\mathbf{q}}$
+at latitude exactly $\Gamma_0$, and a retardance change moves it along that
+meridian to latitude exactly $\Gamma_0 + \Delta\Gamma$. By
+[03 §3](03-senarmont-readout.md#3-where-the-sénarmont-arrangement-comes-from)
+the compensator converts a latitude change into an equal longitude change,
+and longitude is twice azimuth, so the compensated azimuth moves by exactly
+$\Delta\Gamma/2$. Chapter 07 reaches the same result in Jones form
+([07 §1.3](07-instrument-theory.md#13-what-the-quarter-wave-plate-does-algebraically)),
+and [`tests/test_docs_physics_claims.py`](../../tests/test_docs_physics_claims.py)
+checks it numerically from the Jones chain for $\Gamma_0$ up to 1.4 rad.
+Equation (10) is the conversion the software applies
 ([03 §11.2](03-senarmont-readout.md#112-projecting-the-ac-response-onto-the-dc-derivative)).
-Equation (9) is therefore the precise statement of what
-`geometry_confirmed` is asserting: that the pixel is close enough to
-$\Theta = 45^\circ$ and small $\Gamma_0$ for (10) to be a fair
-approximation of (9). Outside that limit the conversion carries the geometric
-factor
+
+Outside $\Theta = 45^\circ$ the conversion carries the geometric factor
 
 $$
-\frac{2\delta}{\Delta\Gamma} \;=\; \frac{\cos\Gamma_0 \sin 2\Theta}{\cos 2\chi_o},
+\frac{2\delta}{\Delta\Gamma} \;=\; \frac{\cos\Gamma_0 \sin 2\Theta}{\cos 2\chi_o}
+\;=\; \frac{\cos\Gamma_0\,\sin 2\Theta}{\sqrt{1 - \sin^2 2\Theta\,\sin^2\Gamma_0}},
 \tag{11}
 $$
 
-which is at most 1 and can be far smaller. Note the direction of the bias: the
-factor is never greater than one, so an uncorrected conversion always
-**under**-reports $\Delta\Gamma$ and hence $r_\mathrm{eff}$.
+whose magnitude is at most 1 and can be far smaller. Note the direction of
+the bias: the factor is never greater than one, so an uncorrected conversion
+always **under**-reports $\Delta\Gamma$ and hence $r_\mathrm{eff}$. Two
+consequences follow for how the operating point is chosen.
+
+1. **An axial-dominated pixel peaks at $\Theta = 45^\circ$ exactly.** The
+   response (11) is monotonic in $\sin 2\Theta$ whatever $\Gamma_0$ is, so
+   the HWP angle at which the measured response peaks is the angle at which
+   (10) is exact. Choosing the peak lands on the exact point, and the test
+   file checks the monotonicity too.
+2. **What `geometry_confirmed` asserts** is therefore not that $\Gamma_0$ is
+   small. It asserts that the incident polarisation bisects the film's static
+   eigenaxes and that the response there is axial. The residual approximation
+   in (10) is **mechanism mixing**: a shear contribution $\Gamma_s$ shifts the
+   measured peak away from $\Theta = 45^\circ$ and adds, in quadrature, a term
+   that (10) would misread as retardance. That is a statement about the
+   pixel's tensor projection ([§6](#6-why-an-angular-scan-alone-is-degenerate)),
+   not about its static birefringence.
 
 ---
 
@@ -439,7 +500,7 @@ Now count what goes in. Equation (9) contains
 | Parameter | Meaning |
 | --- | --- |
 | $a$ | axial amplitude, $\propto n_e^3 r_c E_\parallel t$ |
-| $s$ | shear amplitude, $\propto \rho \propto n^3 r_{42}E_\perp / 2\Delta n$ |
+| $s$ | shear amplitude, $\propto \Gamma_s = 2\rho\sin\Gamma_0$, which tends to $2\pi n^3 r_{42}E_\perp t/\lambda$ for small $\Gamma_0$, eq. (8a) |
 | $\theta_f$ | the film's static in-plane eigenaxis |
 | $\Gamma_0$ | the static retardance of this pixel |
 | $\theta_E$ | the field direction in the polarisation frame |
@@ -562,7 +623,11 @@ polariser. Equation (9) then gives the peak position for each limiting case.
 > the axial mechanism is driven by the field component **along** the local
 > polar axis, so its eigenaxis and the field coincide, while the shear
 > mechanism is driven by the component **perpendicular** to it, so they are
-> $90^\circ$ apart.
+> $90^\circ$ apart. The limit of vanishing static retardance confirms the
+> table from the other side: by (8a) the shear perturbation then creates a
+> small retarder with its axes at $\pm45^\circ$ to the field, and by (7) a
+> retardance change is seen best with the input at $45^\circ$ to the
+> retarder's own axes, that is, along or across the field.
 
 Absolute magnitude, and the signs of the slopes at $\pm45^\circ$ either side of
 the peak, help distinguish the two regimes. But, as §6 showed by counting, the

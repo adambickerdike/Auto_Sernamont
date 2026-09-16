@@ -808,12 +808,20 @@ as `derivative_residual_fraction` and treated as contamination.
 > longitude, and longitude is twice azimuth, so a retardance change $\Gamma$
 > between the sample's eigenaxes appears as an azimuth rotation of
 > $\Gamma/2$. The step from "the sample's retardance changed by $\Gamma$" to
-> "the output ellipticity changed by $\Gamma$" is exact only in the ideal
-> Sénarmont configuration, with the incident polarisation at $45^\circ$ to the
-> sample's own eigenaxis and a small static retardance. Outside that limit the
-> conversion carries geometric factors derived in
-> [04 §3](04-incident-polarisation.md#3-the-2theta-dependence-derived). This is
-> why `geometry_confirmed` is an explicit human-set flag, not an assumption.
+> "the output latitude changed by $\Gamma$" is exact whenever the incident
+> polarisation bisects the sample's static eigenaxes, at $45^\circ$ to them,
+> **for any static retardance**: the output state then moves along a
+> meridian, and its latitude is exactly the total retardance
+> ([04 §3.3](04-incident-polarisation.md#33-recovering-the-ideal-sénarmont-limit),
+> verified numerically in
+> [`tests/test_docs_physics_claims.py`](../../tests/test_docs_physics_claims.py)).
+> Away from $45^\circ$ the conversion carries the geometric factor of
+> [04 eq. (11)](04-incident-polarisation.md#33-recovering-the-ideal-sénarmont-limit),
+> and at any angle a shear (axis-rotation) contribution enters in quadrature
+> with the retardance change and is misread by (32) as retardance. That
+> mechanism mixing, not the size of $\Gamma_0$, is the residual approximation,
+> and it is why `geometry_confirmed` is an explicit human-set flag, not an
+> assumption.
 
 ### 11.3 Why the operating angle comes from the DC fringe, never the AC extremum
 
@@ -847,19 +855,26 @@ From the DC detector levels at the readout point and at the null,
 $$
 A_\mathrm{opt} \;=\; \frac{V_\mathrm{dc}(\psi) - V_\mathrm{null}}{\sin^{2}\psi},
 \qquad
-\frac{dV_\mathrm{dc}}{d\psi} \;=\; -A_\mathrm{opt}\sin 2\psi .
+d(\psi) \;\equiv\; \frac{\partial V}{\partial \delta} \;=\; -A_\mathrm{opt}\sin 2\psi .
 \tag{33}
 $$
 
-The complex lock-in response is divided first by the detector AC/DC gain ratio
+$d(\psi)$ is the **conversion slope** from rotation to detector volts. It is
+the derivative of the fringe with respect to the rotation $\delta$, not with
+respect to the analyser angle: the fringe is
+$V_\mathrm{null} + A_\mathrm{opt}\sin^2(\psi - \delta)$, because rotating the
+state by $+\delta$ is equivalent to rotating the analyser by $-\delta$
+([02 eq. (56)](02-polarisation.md#14-the-jones-chain-of-this-instrument)), so
+$\partial V/\partial\delta = -\,dV_\mathrm{dc}/d\psi$. The complex lock-in
+response is divided first by the detector AC/DC gain ratio
 $G_\mathrm{AC}/G_\mathrm{DC}$, converting the lock-in channel's volts into the
-DC channel's equivalent volts, then by this derivative. The result is the
+DC channel's equivalent volts, then by this slope. The result is the
 complex RMS **rotation** $\delta$ in radians: dimensionless and throughput
 independent. Several slope rows combine by derivative-weighted least squares,
 
 $$
 \delta \;=\; \frac{\sum_k d_k Z_k}{\sum_k d_k^2},
-\qquad d_k = \left.\frac{dV_\mathrm{dc}}{d\psi}\right|_{\psi_k},
+\qquad d_k = d(\psi_k) = \left.\frac{\partial V}{\partial \delta}\right|_{\psi_k},
 \tag{34}
 $$
 
@@ -882,12 +897,16 @@ Each admitted row also yields
 $\text{null leakage} = V_\mathrm{null}/\left(V_\mathrm{null} + A_\mathrm{opt}\right)$,
 whose maximum over the group feeds the 5 % gate in Step 3.
 
-> **On the minus sign.** §6 wrote the idealised slope as $+I_0\sin 2\psi$; the
-> code carries $-A_\mathrm{opt}\sin 2\psi$, because the rotator encoder's sense
-> of increasing $\psi$ is opposite to the idealised model's, exactly the sign
-> discussed at
-> [02 §14](02-polarisation.md#14-the-jones-chain-of-this-instrument). The two
-> differ only by an overall sign, which propagates into the reported *phase* of
+> **On the minus sign.** §6 differentiated the fringe with respect to the
+> analyser angle, $dI/d\psi = +I_0\sin 2\psi$, and (33) differentiates it with
+> respect to the rotation, $\partial V/\partial\delta = -A_\mathrm{opt}\sin 2\psi$.
+> The two are the same slope with opposite sign, because a rotation of the
+> state by $+\delta$ and a rotation of the analyser by $-\delta$ are the same
+> thing ([02 eq. (56)](02-polarisation.md#14-the-jones-chain-of-this-instrument)),
+> and the code carries the rotation form, `dV_ac / d(delta) = -A sin(2 beta)`
+> in [`pockels_measurement_analysis.py`](../../pockels/pockels_measurement_analysis.py).
+> The rotator encoder's sense can flip the sign of the reported $\delta$ on top
+> of that, and any overall sign propagates into the reported *phase* of
 > $\delta$ and not into its magnitude, which is why the material result exposed
 > by the module is $\lvert r_\mathrm{eff}\rvert$. Signs are always interpreted
 > *relative* to another reading, the $\pm45^\circ$ pair or the saturation axis

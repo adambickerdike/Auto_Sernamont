@@ -1088,9 +1088,11 @@ $$
 with $\delta = \Gamma/2$ the azimuth rotation. The magnitude is maximal at
 $\psi = \pm45^\circ$ and zero at $\psi = 0$ and $90^\circ$. The overall minus
 sign says only that rotating the state by $+\delta$ has the same effect as
-rotating the analyser by $-\delta$; page 03 writes the slope with the opposite
-sign because it follows the rotator's encoder sense, and nothing in the
-analysis depends on that choice
+rotating the analyser by $-\delta$. Page 03 carries exactly this sign as the
+conversion slope $\partial V/\partial\delta = -A_\mathrm{opt}\sin 2\psi$ of its
+equation (33); the rotator's encoder sense can flip the sign of a reported
+rotation on top of it, and nothing in the analysis depends on that, because
+signs are only ever read relative to another reading
 ([03 §12](03-senarmont-readout.md#12-from-lock-in-volts-to-physics)).
 
 **(iii) Nothing in the chain is intensity-calibrated, and it does not matter.**

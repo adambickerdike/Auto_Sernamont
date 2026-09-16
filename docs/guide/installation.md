@@ -38,7 +38,7 @@ no hardware attached at all, because they import **no** instrument drivers:
 | [`pockels/pockels_lockin_ranging.py`](../../pockels/pockels_lockin_ranging.py) | the predictive lock-in range controller |
 | [`pockels/pockels_angular_plots.py`](../../pockels/pockels_angular_plots.py) | the polar and diagnostic angular plots |
 | [`pockels/make_hysteresis_maps.py`](../../pockels/make_hysteresis_maps.py), [`make_compositional_report.py`](../../pockels/make_compositional_report.py), [`make_fast_map_extra_plots.py`](../../pockels/make_fast_map_extra_plots.py), [`make_peak_hwp_angle_map.py`](../../pockels/make_peak_hwp_angle_map.py) | the post-run chip-level figures |
-| **the entire `tests/` suite** | 22 test files, all passing, no drivers imported |
+| **the entire `tests/` suite** | 23 test files, all passing, no drivers imported |
 
 The test suite parses the large GUI module with `ast` and exercises individual
 functions in isolation, precisely so it never needs PyVISA, pythonnet or a

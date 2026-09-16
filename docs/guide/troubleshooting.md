@@ -483,7 +483,7 @@ cd /path/to/Auto_Sernamont
 for f in tests/test_*.py; do python "$f" >/dev/null 2>&1 && echo "PASS $f" || echo "FAIL $f"; done
 ```
 
-All 22 test files should pass. They import no drivers, so this works on any
+All 23 test files should pass. They import no drivers, so this works on any
 machine, including WSL and Linux.
 
 You can also exercise the whole control flow with no instruments at all:

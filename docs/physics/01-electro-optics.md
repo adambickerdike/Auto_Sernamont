@@ -255,8 +255,14 @@ Equation (9) contains the central structural fact of this measurement:
 
 ### 5.2 The eigenvalue problem for the induced axes
 
-Take the field along $x_1$, so $\Delta B_5 = r_{42}E_1$ is the only non-zero
-perturbation. From (7) the impermeability matrix is
+Take the field along $x_1$ and the light along $x_2$, so
+$\Delta B_5 = r_{42}E_1$ is the only non-zero perturbation and the section
+plane the light sees is $x_1 x_3$. This is the frame used for the shear
+mechanism throughout the manual, in the table of §5.3 and in
+[06 §4.2](06-material.md#42-the-visibility-rule); the other labelling, light
+along $x_1$ with the field along $x_2$, gives $\Delta B_4 = r_{42}E_2$ instead
+and is the same physics by the fourfold symmetry. From (7) the impermeability
+matrix is
 
 $$
 B \;=\;
@@ -318,7 +324,7 @@ first order. Combining that with (9) gives a table which settles a great deal.
 | --- | --- | --- | --- |
 | **normal to the film** | any in-plane direction | none: $\Delta B_4, \Delta B_5$ lie out of the section, $\Delta B_6 = 0$ | **nothing at first order** |
 | **in the film plane** | along $c$ | $\Delta B_1 = r_{13}E$ and $\Delta B_3 = r_{33}E$, both in the section | the birefringence **magnitude** is modulated, eigenaxes fixed |
-| **in the film plane** | perpendicular to $c$, in plane | $\Delta B_4 = r_{42}E$, in the section | the in-plane eigenaxes are **rotated** by $\rho$ |
+| **in the film plane** | perpendicular to $c$, in plane | $\Delta B_5 = r_{42}E$, in the section (field along $x_1$, light along $x_2$, the frame of §5.2) | the in-plane eigenaxes are **rotated** by $\rho$ |
 
 Three things follow, and they are the honest framing of every number this
 instrument produces.
@@ -361,9 +367,13 @@ difference of tensor elements. Comparing (14) with the general form of §6
 shows that $n^3 r_\mathrm{eff} = n_e^3 r_c$ in this geometry.
 
 $r_c$ is what a null-slope measurement reports when the axial terms dominate.
-When the response is $r_{42}$-dominated there is no retardance change at all
-at leading order, only an axis rotation, and the conversion the software
-applies is then a *definition* rather than a measurement of a tensor element.
+When the response is $r_{42}$-dominated the field rotates the in-plane
+eigenaxes rather than changing the retardance between them, at leading order
+in $r_{42}E/\Delta n$; in the limit of vanishing static birefringence the
+same shear instead creates a small retarder with its axes at $\pm45^\circ$ to
+the field ([04 §3.2](04-incident-polarisation.md#32-the-two-mechanisms-differentiated)).
+Either way the conversion the software applies is then a *definition* rather
+than a measurement of a tensor element.
 That is precisely why the reported number is always called
 $r_\mathrm{eff}$ (§9).
 

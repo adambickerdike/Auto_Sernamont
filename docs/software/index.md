@@ -26,7 +26,7 @@ rules made it so.
 | **Physics maths must be testable without hardware.** | [`pockels_measurement_analysis.py`](../../pockels/pockels_measurement_analysis.py) and [`pockels_hysteresis_analysis.py`](../../pockels/pockels_hysteresis_analysis.py) import no instrument drivers at all. They are covered by unit tests that run on any machine, with no PyVISA, no pythonnet and no display. |
 
 > **Note**
-> The fourth principle is what makes the test suite possible. The 22 test files
+> The fourth principle is what makes the test suite possible. The 23 test files
 > in [`tests/`](../../tests) either import the pure-analysis modules directly or
 > parse the large hardware modules with `ast` and check their constants and
 > control flow as *source*, without ever executing an instrument call.

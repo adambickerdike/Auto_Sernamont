@@ -117,20 +117,42 @@ construction is in Born and Wolf, *Principles of Optics*
 [[11]](../references.md#ref-11), and the electro-optic application in Yariv and
 Yeh, *Optical Waves in Crystals* [[3]](../references.md#ref-3).
 
+Equation (5) holds for every $\Gamma$, not only a small one: at $u = 45^\circ$
+the compensated azimuth is exactly $\Gamma/2$, so
+$d\psi_\mathrm{out}/d\Gamma = \tfrac{1}{2}$ whatever the static retardance
+$\Gamma_0$. That is the Sénarmont theorem, and
+[`tests/test_docs_physics_claims.py`](../../tests/test_docs_physics_claims.py)
+checks it numerically from the Jones chain for $\Gamma_0$ up to 1.4 rad.
+
 For general $u$, equation (3) says the arc length swept per unit $\Gamma$ is
-$\sin 2u$ rather than $1$, and the compensated azimuth changes by half of it:
+$\sin 2u$ rather than $1$, but only the **meridional** component of that arc
+converts to azimuth: the compensator turns a change of latitude into an equal
+change of longitude and is blind, at first order, to the change of longitude
+of the output state itself
+([03 §3](03-senarmont-readout.md#3-where-the-sénarmont-arrangement-comes-from)).
+From (3), $\sin 2\chi = \sin 2u\,\sin\Gamma$, and differentiating,
 
 $$
-\boxed{\;\frac{d\psi_\mathrm{out}}{d\Gamma} = \tfrac{1}{2}\sin 2u
+\boxed{\;\frac{d\psi_\mathrm{out}}{d\Gamma}
+= \frac{d\chi}{d\Gamma}
+= \tfrac{1}{2}\,\frac{\sin 2u\,\cos\Gamma_0}{\sqrt{1 - \sin^2 2u\,\sin^2\Gamma_0}}
 \;\;\Longrightarrow\;\;
-\Gamma = \frac{2\,\delta\psi}{\sin 2u}. \;}
+\Gamma = \frac{2\,\delta\psi\,\sqrt{1 - \sin^2 2u\,\sin^2\Gamma_0}}{\sin 2u\,\cos\Gamma_0}. \;}
 \tag{6}
 $$
 
-The code carries $\Gamma = 2\,\delta\psi$, which is equation (6) **with
-$\sin 2u = 1$ assumed**. That assumption is exactly what the operator asserts
-by setting `geometry_confirmed`, and it is why the flag is a human decision
-rather than an inference
+Equation (6) reduces to $\tfrac{1}{2}\sin 2u$ for small $\Gamma_0$ and to
+exactly $\tfrac{1}{2}$ at $u = 45^\circ$ for any $\Gamma_0$. It is the same
+factor as [04 eq. (11)](04-incident-polarisation.md#33-recovering-the-ideal-sénarmont-limit),
+and the test file checks it at $u = 30^\circ$, $\Gamma_0 = 0.5$ rad.
+
+The code carries $\Gamma = 2\,\delta\psi$, which is equation (6) **at
+$u = 45^\circ$**, where it is exact for any static retardance. What the
+operator asserts by setting `geometry_confirmed` is that the incident
+polarisation bisects the sample's static eigenaxes and that the response
+there is a retardance change rather than an axis rotation
+([04 §3.3](04-incident-polarisation.md#33-recovering-the-ideal-sénarmont-limit)),
+and that is why the flag is a human decision rather than an inference
 ([03 §12](03-senarmont-readout.md#12-from-lock-in-volts-to-physics)).
 
 ### 1.4 The master intensity equation
@@ -165,6 +187,13 @@ $$
 \;+\; \mathcal{O}(\delta^3).
 \tag{8}
 $$
+
+The coefficient of $\delta$ in (8), times the optical swing, is the conversion
+slope $\partial V/\partial\delta = -A_\mathrm{opt}\sin 2\psi$ that
+[03 eq. (33)](03-senarmont-readout.md#step-1-malus-normalisation) uses to turn
+lock-in volts into radians. The minus sign is the statement that rotating the
+state by $+\delta$ is equivalent to rotating the analyser by $-\delta$
+([02 eq. (56)](02-polarisation.md#14-the-jones-chain-of-this-instrument)).
 
 Add the two contaminants that are always present on a real bench: a fractional
 modulation $m(t)$ of the **total** transmitted intensity (electro-absorption,
@@ -341,8 +370,8 @@ Each factor separately:
 | 6 | Refractive index, entering as $n^3$ | $n$ | dimensionless | 2.1 default, a parameter not a constant | assumed |
 | 7 | Optical interaction length | $t$ | m | film thickness, traceable with an uncertainty | **unmeasured**, gates $r_\mathrm{eff}$ |
 | 8 | Vacuum wavelength | $\lambda$ | m | 1550 nm | **known** |
-| 9 | Sénarmont conversion | $\Gamma = 2\delta$ | dimensionless | equation (6) with $\sin 2u = 1$ | asserted by `geometry_confirmed` |
-| 10 | Malus slope at the operating point | $A_\mathrm{opt}$ | V, equivalently V/rad at the slope point | $\bigl(V_\mathrm{dc} - V_\mathrm{null}\bigr)/\sin^2\psi$ | **measured in situ, every point** |
+| 9 | Sénarmont conversion | $\Gamma = 2\delta$ | dimensionless | equation (6) at $u = 45^\circ$, exact for any $\Gamma_0$; elsewhere the factor $\tfrac{1}{2}\sin 2u\cos\Gamma_0/\sqrt{1 - \sin^2 2u\,\sin^2\Gamma_0}$ | asserted by `geometry_confirmed` |
+| 10 | Conversion slope at the operating point, $\lvert\partial V/\partial\delta\rvert = A_\mathrm{opt}\lvert\sin 2\psi\rvert$ | $A_\mathrm{opt}$ | V, equivalently V/rad at the $\pm45^\circ$ slope points | $\bigl(V_\mathrm{dc} - V_\mathrm{null}\bigr)/\sin^2\psi$, 03 eq. (33) | **measured in situ, every point** |
 | 11 | Detector responsivity | $\mathcal{R}$ | A/W | 0.875 at 1550 nm | **known** |
 | 12 | Transimpedance gain | $G$ | V/A | $4.75\times10^{3}$ at 10 dB, Hi-Z | **known** |
 | 13 | Detector AC over DC transfer at 30 kHz | $G_\mathrm{AC}/G_\mathrm{DC}$ | dimensionless | `--bto-detector-ac-gain-over-dc-gain` | **unmeasured**, gates $r_\mathrm{eff}$ |
