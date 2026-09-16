@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
+"""Legacy shared control classes, retained for reference only.
+
+Nothing in ``pockels/`` or ``tests/`` imports this module. The production
+scripts take their hardware constants and their detector conversion from
+``POL_Chip_Test_Working_2026.py``, whose ``volts_to_watts_scale()`` uses the
+PDA30B2 transimpedance gain at 10 dB into Hi-Z, 4.75e3 V/A. The ``V_TO_W``
+below treats the detector as a bare photodiode into a 1 MΩ scope input and
+is superseded: do not quote it. No documentation page quotes any constant
+from this file.
+"""
 # --------------------------------------------------------------------
-# Main controller – accurate, fast nulling with adaptive averaging
+# Main controller: accurate, fast nulling with adaptive averaging
 # - HWP compensation seeding: QWP ≈ -ΔHWP, Analyzer ≈ -2ΔHWP
 # - Alternating 1D golden-section (Analyzer → QWP) within tight windows
 # - Scope on-screen MEAN with adaptive stability (RSD tolerance)

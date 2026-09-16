@@ -35,7 +35,7 @@ the hysteresis and fit quantities.
 | $\Gamma$ | field-induced retardance; $\Gamma = 2\delta$ in this geometry | rad |
 | $r_{ij}$ | electro-optic tensor element, Voigt notation | pm/V |
 | $r_\mathrm{eff}$ | geometry-specific **effective** coefficient | pm/V |
-| $n$ | refractive index (default 2.1 for BTO at 1550 nm) | dimensionless |
+| $n$ | refractive index; the code default is a film placeholder, see [03 Step 3](../physics/03-senarmont-readout.md#step-3-the-effective-coefficient-and-its-gates) | dimensionless |
 | $t$ | film thickness = optical interaction length | nm |
 | $g$ | electrode gap | µm |
 | $\alpha$ | FEM electrostatic field correction, $E = \alpha V/g$ | dimensionless |

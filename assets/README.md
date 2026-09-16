@@ -35,7 +35,7 @@ from the repository root.
 | `polarisation_rotation.png` | `tools/fig_material.py` | The free-energy valley connecting two polar variants, the transverse susceptibility it controls, and why the shear coefficient inherits it. |
 | `strain_phase_diagram.png` | `tools/fig_material.py` | Schematic misfit-strain phase diagram, and the rotation path a buffer layer opens. |
 | `domain_visibility.png` | `tools/fig_material.py` | The film as a domain mosaic, and which domains produce a first-order signal at normal incidence. |
-| `eo_from_susceptibility.png` | `tools/fig_material.py` | The chain from epitaxial strain to a measured microradian. |
+| `eo_from_susceptibility.png` | `tools/fig_material.py` | The chain from epitaxial strain to a measured rotation. |
 
 Shared style and physics helpers live in `tools/_figstyle.py` and
 `tools/_polarisation.py`. After changing any constant a figure quotes,

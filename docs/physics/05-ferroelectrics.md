@@ -429,10 +429,13 @@ electro-optic response at every step. Because the response is odd in $P_s$ by
 The production sweep uses a 45-point centre-dense voltage grid (absolute levels
 40, 30, 25, 20, 15, 12.5, 10, 7.5, 5, 2.5, 1.25 and 0 V) with a 30 s dwell per
 point, about 39 s per point in wall-clock terms, roughly 29 minutes per loop.
-At least two full cycles are run, because the first cycle after any history
-(poling, storage) shows **wake-up** transients
-[[25]](../references.md#ref-25); the headline metrics come from the **last**
-cycle and the first is retained so the cycle-to-cycle deltas can be reported.
+The default is one cycle (`--hyst-cycles 1`, `DEFAULT_HYSTERESIS_CYCLES` in
+the GUI module), and the 29 minutes, the 45 points and the 49 h budget for 100
+pixels in the operating guide are all one-cycle figures. With `--hyst-cycles`
+set to two or more, the headline metrics come from the **last** cycle and the
+first is retained so the cycle-to-cycle deltas can be reported, because the
+first cycle after any history (poling, storage) shows **wake-up** transients
+[[25]](../references.md#ref-25).
 
 > **Why the AC probe is small and gated.** The hysteresis probe defaults to
 > **4 Vpp**, not the 9 Vpp used for mapping, and the AC drive is switched

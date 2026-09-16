@@ -545,7 +545,7 @@ balanced four-point fit and its confirmation, roughly **8 min** in total.
 | AC on + settle + averaging | ~6 s |
 | **Per point** | **≈ 39 s** |
 | **45-point single cycle** | **≈ 29 min** |
-| **100 pixels** | **≈ 49 h** |
+| **100 pixels**, one cycle each | **≈ 49 h** |
 
 The 45 points come from the centre-dense grid: 12 absolute levels
 (40, 30, 25, 20, 15, 12.5, 10, 7.5, 5, 2.5, 1.25, 0 V) give 23 signed levels,
@@ -560,7 +560,7 @@ traversed $+40 \to -40 \to +40$ as 23 + 22 points.
 | The calibration pixel | ~8 min |
 | **83-pixel chip map** (the default selection) | **~6 to 7 h** |
 | One 45-point hysteresis loop | ~29 min |
-| **100 hysteresis loops** | **~49 h** |
+| **100 hysteresis loops**, one cycle each | **~49 h** |
 
 Three quarters of a production pixel is poling and lock-in settling: that is,
 waiting for physics, not for software. This is the honest reason the map uses

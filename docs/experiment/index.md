@@ -139,8 +139,8 @@ detail pages:
    slope points.
 8. All voltages off, matrix open, move to the next pixel.
 
-A production pixel takes about 4.5 to 5 minutes; a full 83-pixel default
-selection takes 6 to 7 hours.
+A production pixel takes about 4.5 to 5 minutes, so the 83-pixel default
+selection takes 6 to 7 hours and all 100 pixels roughly 7 to 8 hours.
 
 ---
 

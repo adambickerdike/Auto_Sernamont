@@ -367,7 +367,7 @@ Each factor separately:
 | 3 | Electrostatic factor of the coplanar gap | $\alpha$ | dimensionless | FEM of *this* electrode geometry | **unmeasured**, gates $r_\mathrm{eff}$ |
 | 4 | Electrode gap | $g$ | m | about 7 µm nominal; must be measured | measured optically, per chip |
 | 5 | Electro-optic tensor projection | $r_\mathrm{eff}$ | m/V | the unknown | the answer |
-| 6 | Refractive index, entering as $n^3$ | $n$ | dimensionless | 2.1 default, a parameter not a constant | assumed |
+| 6 | Refractive index, entering as $n^3$ | $n$ | dimensionless | the code default is a film placeholder, to be replaced by an ellipsometry value; bulk $n_o \approx 2.3$ at 1550 nm ([03 Step 3](03-senarmont-readout.md#step-3-the-effective-coefficient-and-its-gates)) | assumed |
 | 7 | Optical interaction length | $t$ | m | film thickness, traceable with an uncertainty | **unmeasured**, gates $r_\mathrm{eff}$ |
 | 8 | Vacuum wavelength | $\lambda$ | m | 1550 nm | **known** |
 | 9 | Sénarmont conversion | $\Gamma = 2\delta$ | dimensionless | equation (6) at $u = 45^\circ$, exact for any $\Gamma_0$; elsewhere the factor $\tfrac{1}{2}\sin 2u\cos\Gamma_0/\sqrt{1 - \sin^2 2u\,\sin^2\Gamma_0}$ | asserted by `geometry_confirmed` |
@@ -510,8 +510,8 @@ is why the instrument spends its effort on re-nulling and on the sign-reversal
 test rather than on averaging.
 
 Expressed as a coefficient, using equation (12) at 9 Vpp
-($V_\mathrm{rms} = 3.18$ V), $\lambda = 1550$ nm, $g = 7$ µm, $n = 2.1$,
-$\alpha = 1$ and a **placeholder** $t = 100$ nm:
+($V_\mathrm{rms} = 3.18$ V), $\lambda = 1550$ nm, $g = 7$ µm, the code's
+default $n = 2.1$, $\alpha = 1$ and a **placeholder** $t = 100$ nm:
 
 $$
 \left.\frac{d\delta}{dV_\mathrm{rms}}\right|_\mathrm{noise}
@@ -799,8 +799,9 @@ Three properties of this implementation are worth stating explicitly.
 2. **The refractive index is the cheapest way to be badly wrong.** A 5 %
    uncertainty on $n$ contributes $3 \times 0.05 = 15$ % to
    $\sigma_r/r$, three times what the same 5 % on the gap would contribute.
-   Assuming $n = 2.1$ for a strained, graded, multi-domain film is a stronger
-   assumption than it looks.
+   Assuming the code's default of 2.1 for a strained, graded, multi-domain
+   film is a stronger assumption than it looks, and the bulk value is nearer
+   2.3 ([03 Step 3](03-senarmont-readout.md#step-3-the-effective-coefficient-and-its-gates)).
 3. **The dominant term will be $\alpha$.** The electrostatic factor of a
    coplanar gap is not transferable between geometries and is not close to 1;
    it must come from a finite-element solution of *this* electrode pattern,

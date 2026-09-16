@@ -688,8 +688,8 @@ introduced, returning the state to $\chi = 0$ at some azimuth. *(e)* **After
 the analyser**: a line along the analyser's own axis, with the amplitude set
 by the projection. When the analyser is crossed with (d) the output is
 extinguished, which is the **null**. The tiny field-induced change that the
-whole instrument exists to measure is a sub-microradian wobble of the azimuth
-in panel (d), far too small to draw to scale.
+whole instrument exists to measure is a wobble of the azimuth in panel (d) of
+microradians to tens of microradians, far too small to draw to scale.
 
 ---
 
@@ -766,7 +766,8 @@ which is what "compensating the static birefringence" means geometrically. The
 **analyser** is placed antipodally to **Q**, and the detector sees extinction.
 The measurement then consists of stepping a controlled $\pm90^\circ$ of
 *longitude* along the equator away from that null, which is $\pm45^\circ$ of
-physical analyser rotation, and watching a microradian-scale wobble of **Q**.
+physical analyser rotation, and watching a wobble of **Q** of microradians to
+tens of microradians.
 That last step is drawn separately in
 [Figure 3](03-senarmont-readout.md#8-the-modulation-on-the-sphere).
 
@@ -1131,8 +1132,9 @@ $$
 
 On the half-wave plate that is $87.66\ \mathrm{\mu rad}$ of incident
 polarisation, and $175.3\ \mathrm{\mu rad}$ of longitude on the sphere. Note
-what this says: **the finest angle the instrument can command is about
-$10^2$ times larger than the rotation it measures.** There is no contradiction,
+what this says: **the finest angle the instrument can command is comparable
+to or larger than the rotation it measures**, which is tens of microradians on
+a responsive pixel and microradians on a weak one. There is no contradiction,
 because the measurement is differential at a fixed commanded angle. The
 rotators place the operating point; the lock-in measures the wobble about it.
 
@@ -1155,7 +1157,9 @@ difference between them is drift, not physics.
 
 ### 15.3 One microradian at the detector
 
-Take a rotation $\delta = 1\ \mathrm{\mu rad}$ RMS at a pixel whose measured
+Take a rotation $\delta = 1\ \mathrm{\mu rad}$ RMS, a worked round number at
+the weak end of what the instrument sees (a responsive pixel gives tens of
+microradians, see the [physics overview](index.md)), at a pixel whose measured
 optical swing is $A_\mathrm{opt} = 1$ V.
 
 | Step | Relation | Value |
@@ -1173,10 +1177,12 @@ And the null acceptance threshold of 14.5 mV
 is $1.45\ \%$ of that swing, comfortably inside the $5\ \%$ leakage gate that
 guards the effective-coefficient report.
 
-This is the scale the instrument works at: a sub-picometre path difference,
-read as a microvolt, sitting on half a volt of DC, recovered by a lock-in with
-a 500 ms time constant. Figure 2's arc is drawn six orders of magnitude too
-large, and it has to be.
+This is the scale the instrument works at on a weak pixel: a sub-picometre
+path difference, read as a microvolt, sitting on half a volt of DC, recovered
+by a lock-in with a 500 ms time constant. A responsive pixel scales the
+rotation, the path difference and the lock-in signal up by a few tens.
+Figure 2's arc is drawn three to five orders of magnitude too large, and it
+has to be.
 
 ---
 

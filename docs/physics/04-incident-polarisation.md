@@ -604,14 +604,17 @@ reach: the **direction of the applied E field** in the polarisation frame. It
 is measured, not assumed, by the simplest possible experiment: **sweep the HWP
 with the AC drive on and find the lock-in peak.**
 
-Let the peak occur at HWP encoder angle $\varphi_\mathrm{peak}$, so that the
-incident polarisation there is $2\varphi_\mathrm{peak}$ relative to the
-polariser. Equation (9) then gives the peak position for each limiting case.
+Let the peak occur at the calibrated incident polarisation
+$\theta_{i,\mathrm{peak}}$, read through the lab mapping of §2 and never from
+the raw HWP encoder angle: the naive $2\theta_\mathrm{HWP}$ is not used
+anywhere in the analysis, and a missing mapping blocks the physics rather than
+substituting for it. Equation (9) then gives the peak position for each
+limiting case.
 
 | If the response is | The signal goes as | The peak occurs at | So the field lies along |
 | --- | --- | --- | --- |
-| axial-dominated, $r_{13}$ and $r_{33}$ | $\sin 2\left(\theta_i - \theta_f\right)$ with $\theta_f = \theta_E$ | $\theta_i = 45^\circ$ to the field | polarisation-frame angle $2\varphi_\mathrm{peak} - 45^\circ$ |
-| shear-dominated, $r_{42}$ | $\cos 2\left(\theta_i - \theta_f\right)$ with $\theta_f = \theta_E \pm 90^\circ$ | $\theta_i = 0^\circ$ or $90^\circ$ to the field | polarisation-frame angle $2\varphi_\mathrm{peak}$ |
+| axial-dominated, $r_{13}$ and $r_{33}$ | $\sin 2\left(\theta_i - \theta_f\right)$ with $\theta_f = \theta_E$ | $\theta_i = 45^\circ$ to the field | polarisation-frame angle $\theta_{i,\mathrm{peak}} - 45^\circ$ |
+| shear-dominated, $r_{42}$ | $\cos 2\left(\theta_i - \theta_f\right)$ with $\theta_f = \theta_E \pm 90^\circ$ | $\theta_i = 0^\circ$ or $90^\circ$ to the field | polarisation-frame angle $\theta_{i,\mathrm{peak}}$ |
 
 > **Note: this table is the reverse of a rule of thumb that is sometimes
 > quoted, and the derivation is the reason.** A change in the *magnitude* of a

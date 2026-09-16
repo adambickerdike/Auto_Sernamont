@@ -60,7 +60,7 @@ rules made it so.
 | [`POL_Chip_Test_Working_2026.py`](../../pockels/POL_Chip_Test_Working_2026.py) | ~2 670 | The original chip-test script. The rest of the package imports its hardware constants (COM ports, scope address, detector calibration, stage serials), its `DetectorTekTBS` class, and its accurate rotator move helpers `safe_move_abs()` / `safe_move_abs_fast()`. |
 | [`pockels_transport_recovery.py`](../../pockels/pockels_transport_recovery.py) | ~310 | The reconnect-and-verify state machine. **Imports no drivers**, so it is unit-testable. |
 | [`pockels_lockin_ranging.py`](../../pockels/pockels_lockin_ranging.py) | ~250 | `PredictiveHystereticRangeController`, the optional hysteresis-only ranging predictor. Also driver-free. |
-| [`main_control_classes.py`](../../pockels/main_control_classes.py) | ~640 | Older shared control classes, retained for compatibility with earlier scripts. |
+| [`main_control_classes.py`](../../pockels/main_control_classes.py) | ~650 | Legacy shared control classes, retained for reference only. Imported by nothing in `pockels/` or `tests/`; its detector conversion treats the PDA30B2 as a bare photodiode into 1 MΩ and is superseded by `volts_to_watts_scale()` in `POL_Chip_Test_Working_2026.py`. |
 | [`_bootstrap.py`](../../pockels/_bootstrap.py) | 50 | Import and working-directory pinning (see below). |
 
 ### Hardware drivers: one module per instrument

@@ -266,7 +266,7 @@ measured each one.
 | **BTO thickness [nm]** (+ std) | Film thickness $t$, the optical interaction length. |
 | **Electrode gap [µm]** (+ std) | Measured gap $g$. |
 | **Field correction alpha** (+ std) | The FEM electrostatic factor in $E = \alpha V/g$. **Device-specific.** Not an optical overlap factor, and not transferable from a paper. |
-| **BTO refractive index** (+ std) | Default 2.1. |
+| **BTO refractive index** (+ std) | The default is a film placeholder. Enter a measured value with its standard deviation, or at least a standard deviation spanning the 2.1 to 2.3 spread ([03 Step 3](../physics/03-senarmont-readout.md#step-3-the-effective-coefficient-and-its-gates)). |
 | **Device/source Vpp** (+ std) | Measured volts across the electrodes ÷ programmed generator Vpp, at the modulation frequency, with the device connected. |
 | **Detector AC/DC gain** (+ std) | Lock-in-channel V/W at $f_\mathrm{mod}$ ÷ scope DC-channel V/W. Enter 1 only after verifying they are identical. |
 | **Confirm Sénarmont null-slope geometry** | Master enable for $r_\mathrm{eff}$. |
@@ -345,8 +345,8 @@ channel (CH1) is gated. Details of the switching hardware are in
 | Calibration pixel | ≈ 8 min |
 | Production pixel (9 HWP × triplet × 1 Vpp) | ≈ 4.5 to 5 min |
 | 83-pixel map | ≈ 6 to 7 h |
-| One standard hysteresis loop (45 points, 30 s dwell) | ≈ 29 min |
-| Hysteresis on all 100 pixels | ≈ 49 h |
+| One standard hysteresis loop (45 points, 30 s dwell, one cycle) | ≈ 29 min |
+| Hysteresis on all 100 pixels, one cycle each | ≈ 49 h |
 | Substrate null table | ≈ 20 min |
 
 See [the timing breakdown figure](../../assets/figures/timing_breakdown.png) for

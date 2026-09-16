@@ -212,9 +212,15 @@ $r_{33} \approx 30$ pm/V. The figure of merit that matters is $n^3 r$ (§7):
 | Material | $n$ | $r$ used | $n^3 r$ |
 | --- | --- | --- | --- |
 | LiNbO₃ | $\approx 2.2$ | $r_{33} \approx 30$ pm/V | $\approx 3\times10^2$ pm/V |
-| BaTiO₃ | $\approx 2.1$ | $r_{42} \sim 10^3$ pm/V | $\sim 9\times10^3$ pm/V |
+| BaTiO₃, bulk | $\approx 2.3$ | $r_{42} \sim 10^3$ pm/V | $\sim 1.2\times10^4$ pm/V |
 
-So a BaTiO₃ film exploiting $r_{42}$ is worth roughly thirty times a lithium
+The index quoted for BaTiO₃ is the bulk ordinary index near 1550 nm, chosen
+to go with the single-crystal $r_{42}$ beside it. A thin film is reported
+anywhere between about 2.1 and 2.4 depending on density and texture, and the
+code's default of 2.1 is a film placeholder rather than a material constant
+([03 Step 3](03-senarmont-readout.md#step-3-the-effective-coefficient-and-its-gates)).
+
+So a BaTiO₃ film exploiting $r_{42}$ is worth roughly forty times a lithium
 niobate device of the same length, *if* the film can be grown well and its
 domains controlled [[27]](../references.md#ref-27). That conditional is the
 research question the instrument exists to answer, and it is why we map 100
@@ -416,9 +422,9 @@ $$
 \tag{16}
 $$
 
-The expansion parameter is $n^2\Delta B = n^2 r E$. With $n \approx 2.1$,
+The expansion parameter is $n^2\Delta B = n^2 r E$. With $n^2 \approx 5$,
 $r_\mathrm{eff}$ of order $10^2$ pm/V and $E$ of order $10^{-1}$ V/µm, that is
-of order $4\times10^{-5}$: the linear term of (16) is accurate to parts in
+of order $5\times10^{-5}$: the linear term of (16) is accurate to parts in
 $10^5$, and the quadratic correction is far below every other uncertainty in
 the chain. The linearisation is not the weak step anywhere in this
 measurement.
@@ -477,7 +483,8 @@ material figure of merit inside it is $n^3 r_\mathrm{eff}$, tabulated in §4.
 **This instrument is deliberately a terrible modulator.** Here the interaction
 length is the film thickness, $L = t$, of order a few hundred nanometres,
 while the gap $g$ is of order 7 µm. Putting $\lambda = 1550$ nm, $g = 7$ µm,
-$n = 2.1$ and, purely to fix an order of magnitude, $t \approx 300$ nm,
+$n = 2.1$ (the code's film default, [03 Step 3](03-senarmont-readout.md#step-3-the-effective-coefficient-and-its-gates)) and, purely to fix
+an order of magnitude, $t \approx 300$ nm,
 $r_\mathrm{eff} \approx 100$ pm/V and $\alpha \approx 0.9$ (§8) into
 
 $$
@@ -486,9 +493,11 @@ V_\pi \;=\; \frac{\lambda\, g}{\alpha\, n^{3}\, r_\mathrm{eff}\, t}
 $$
 
 gives $V_\pi$ of order $4\times10^{4}$ V. The instrument drives 9 Vpp, so it
-operates at about $10^{-4}$ of a half-wave, which is exactly the microradian
-regime the readout is built for
-([03](03-senarmont-readout.md)).
+operates at about $10^{-4}$ of a half-wave, a rotation $\delta = \Gamma/2$ of
+order $10^{-4}$ rad, which is exactly the sub-milliradian regime the readout
+is built for ([03](03-senarmont-readout.md)). The committed data sit at tens of
+microradians on a responsive pixel, as worked out on the
+[physics overview](index.md).
 
 That is a feature, not a limitation. A waveguide device wins back the factor
 $L/t$ of order $10^3$ by propagating *along* the film instead of through it,

@@ -1,7 +1,7 @@
 # The Null-Slope Sénarmont Readout
 
-**What this page is for:** the heart of the instrument. How a microradian
-polarisation rotation becomes a measurable voltage, where the Sénarmont
+**What this page is for:** the heart of the instrument. How a polarisation
+rotation of microradians to tens of microradians becomes a measurable voltage, where the Sénarmont
 arrangement comes from, why the signal at the null vanishes to *second* order
 while the signal at 45 degrees is first order, what the noise budget really
 says about the best analyser offset, what the three readings of the triplet
@@ -300,9 +300,9 @@ Four results, all of which the instrument uses.
    should see nothing, which is a free systematic check.
 3. **Second-harmonic detection at the null is possible but hopeless.** The
    ratio of the $2\omega$ signal at the null to the $\omega$ signal at
-   $45^\circ$ is $\tfrac{1}{2}\delta_\mathrm{ac}$. For a microradian rotation
-   that is $5\times10^{-7}$, so the null-harmonic route is six to seven orders
-   of magnitude weaker. This is why the instrument reads first order at
+   $45^\circ$ is $\tfrac{1}{2}\delta_\mathrm{ac}$. For a rotation of 60 µrad
+   that is $3\times10^{-5}$, and for a microradian rotation $5\times10^{-7}$,
+   so the null-harmonic route is four to seven orders of magnitude weaker. This is why the instrument reads first order at
    $\pm45^\circ$ and treats the null purely as a background measurement.
 4. **The sign reverses between $+45^\circ$ and $-45^\circ$**, because
    $\sin 2\psi$ is odd. §6 makes that the instrument's strongest self-check.
@@ -494,9 +494,10 @@ v_\mathrm{shot} = 27.6\ \mathrm{nV}/\sqrt{\mathrm{Hz}},
 $$
 
 which in the 0.25 Hz noise bandwidth is about **14 nV RMS**. Against the
-$1\ \mathrm{\mu V}$ signal of a microradian rotation
+$1\ \mathrm{\mu V}$ signal of the worked 1 µrad rotation
 ([02 §15.3](02-polarisation.md#15-a-worked-example-in-the-instruments-own-numbers)),
-that is a per-point signal-to-noise ratio of order **70**.
+that is a per-point signal-to-noise ratio of order **70**, and the tens of
+microradians of a responsive pixel sit a further factor of a few tens above it.
 
 > **Note.** Equation (17) is an order-of-magnitude estimate, not a
 > specification. Whether the instrument is genuinely shot-noise limited depends
@@ -517,7 +518,7 @@ the compensated, linear state reaching the analyser, on the equator (see
 [02 Figure 2](02-polarisation.md#10-the-poincaré-sphere)). The 30 kHz drive
 modulates the sample's retardance by $\Gamma_\mathrm{ac}$, rocking the state
 along the short arc drawn through **Q**, exaggerated by many orders of
-magnitude since the real excursion is microradians. The analyser's Stokes
+magnitude since the real excursion is tens of microradians at most. The analyser's Stokes
 direction $\hat{\mathbf{a}}$ is the antipode of **Q**, and the detected
 intensity $\propto 1 + \hat{\mathbf{a}}\cdot\hat{\mathbf{s}}$ responds only to
 the component of the arc *along* $\hat{\mathbf{a}}$. At the null the arc is
@@ -968,11 +969,24 @@ the run records exactly which in `r_eff_status` and reports the rotation alone.
 | $t$ (film thickness) | traceable, with an uncertainty | enters linearly |
 | $g$ (electrode gap) | **measured**, not nominal | enters linearly |
 | $\alpha$ (field correction) | FEM of *this* electrode geometry | not transferable between devices; the largest systematic [[29]](../references.md#ref-29) |
-| $n$ | a parameter, not a constant (2.1 is a reasonable default) | enters as $n^3$ |
+| $n$ | a parameter, not a constant: the code default is a film placeholder that must be replaced by a measured value, see the note below | enters as $n^3$, so 2.1 against 2.3 is a 31 percent systematic |
 | $V_\mathrm{device}/V_\mathrm{source}$ | measured at 30 kHz with the device connected | cable and loading losses are real |
 | $G_\mathrm{AC}/G_\mathrm{DC}$ | measured | if the detector's 30 kHz and DC transfers differ and you assume 1, everything scales wrongly |
 | voltage linearity | $R^2 \ge 0.98$ with three or more levels | proves the response is linear electro-optic |
 | null leakage | $\le 5\,\%$ | proves the Malus model of §2 applies |
+
+> **On the refractive index.** The default the code ships is, quoted from
+> [`pockels_fast_map_gui.py`](../../pockels/pockels_fast_map_gui.py) and held
+> to it by
+> [`tests/test_docs_physics_claims.py`](../../tests/test_docs_physics_claims.py),
+> `parser.add_argument("--bto-refractive-index", type=float, default=2.1)`.
+> That is a film placeholder, not a material constant. Bulk BaTiO₃ near
+> 1550 nm has $n_o$ close to 2.3, and thin films are reported anywhere between
+> about 2.1 and 2.4 depending on density and texture. Because
+> $r_\mathrm{eff} \propto n^{-3}$, using 2.1 where the film is really 2.3 is a
+> 31 percent systematic. Replace the default by a measured value
+> (ellipsometry), and until then give `--bto-refractive-index-std` a value
+> that reflects the 2.1 to 2.3 spread, so that the budget of §13.2 carries it.
 
 > **Why the software would rather print nothing.** A plausible-looking
 > $r_\mathrm{eff}$ built on an assumed $\alpha$ is worse than no number,
@@ -1031,8 +1045,8 @@ $$
 \sigma_\delta \;\approx\; 10\ \mathrm{nrad}\ \text{per acquisition},
 $$
 
-so a microradian rotation is measured to about 1 % per point before any
-averaging.
+so the worked 1 µrad rotation of 02 §15.3 is measured to about 1 % per point
+before any averaging, and a 60 µrad rotation to a part in $6\times10^{3}$.
 
 ### 13.2 From the rotation to the coefficient
 
@@ -1060,7 +1074,7 @@ the software propagates, and it is worth noticing what it implies.
 | $\lambda$ | 1 | known to much better than 1 % | negligible |
 | $g$ | 1 | measured optically | few percent |
 | $t$ | 1 | traceable with an uncertainty | few to ten percent |
-| $n$ | **3** | a parameter, not a measurement | a 2 % error in $n$ becomes 6 % in $r_\mathrm{eff}$ |
+| $n$ | **3** | a parameter, not a measurement | a 2 % error in $n$ becomes 6 % in $r_\mathrm{eff}$; until $n$ is measured, $\sigma_n$ should span the 2.1 to 2.3 spread between the film default and bulk, about 0.1, which is 14 % in $r_\mathrm{eff}$ (Step 3) |
 | $\alpha$ | 1 | FEM of this geometry | usually the largest single term |
 | $m$ | 1 | fitted, with $R^2 \ge 0.98$ | statistical, and reducible by averaging |
 

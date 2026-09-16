@@ -441,11 +441,13 @@ optics.
 Put numbers in. With room-temperature bulk values, $\varepsilon_{11}$ of a few
 thousand and $\varepsilon_{33}$ of order $10^2$ [[7]](../references.md#ref-7),
 [[24]](../references.md#ref-24), the susceptibility ratio is of order 30; with
-a $g$ ratio of order a half, (8) predicts $r_{42}/r_{33}$ of order 15 against a
-measured ratio of order 20 [[7]](../references.md#ref-7). For an argument with
-no free parameters that is as good as it needs to be. The absolute magnitudes
-come out too, taking $g \sim 10^{-1}\ \mathrm{m^4\,C^{-2}}$ and
-$P_s \approx 0.26\ \mathrm{C\,m^{-2}}$:
+the $g$ ratio of about one third used below, (8) predicts $r_{42}/r_{33}$ of
+order 10 against a measured ratio of order 20 [[7]](../references.md#ref-7).
+For an argument with no free parameters that is as good as it needs to be. The
+absolute magnitudes come out too, taking the tensor components
+$g_{3333} \approx 0.15\ \mathrm{m^4\,C^{-2}}$ and
+$g_{2323} \approx 0.05\ \mathrm{m^4\,C^{-2}}$, both of the order $10^{-1}$
+that every perovskite has, and $P_s \approx 0.26\ \mathrm{C\,m^{-2}}$:
 
 | | $\varepsilon_0\chi$ used | Estimate from (6) or (7) | Measured, single crystal |
 | --- | --- | --- | --- |

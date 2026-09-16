@@ -529,7 +529,7 @@ def figure_eo_from_susceptibility():
          "rotates almost freely,\nso $\\chi_{11}$ is large", VIOLET),
         ("shear coefficient\n$r_{42}$", "$r_{42}\\simeq 2g_{44}P_3"
          "\\varepsilon_0\\chi_{11}$,\nso it inherits $\\chi_{11}$ directly", LASER),
-        ("what this bench\nmeasures", "a rotation of a few\nmicroradians, pixel\nby pixel", GREEN),
+        ("what this bench\nmeasures", "a rotation of tens of\nmicroradians at most,\npixel by pixel", GREEN),
     ]
     w, gap = 16.0, 4.6
     x = 1.5
@@ -548,7 +548,7 @@ def figure_eo_from_susceptibility():
                         arrowprops=dict(arrowstyle="-|>", color=SLATE, lw=2.0))
         x += w + gap
 
-    ax.text(1.5, 27.6, "From the substrate to a microradian",
+    ax.text(1.5, 27.6, "From the substrate to a measured rotation",
             fontsize=13.5, fontweight="bold", color=INK)
     ax.text(1.5, 25.2,
             "The chain that makes a strain- or composition-graded chip worth "

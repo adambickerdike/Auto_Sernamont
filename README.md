@@ -16,10 +16,12 @@
 ---
 
 A voltage applied across a barium titanate thin film changes its refractive
-indices, and that rotates the polarisation of light passing through it by a few
-**microradians**. This repository is the instrument-ready system for measuring
-that rotation, pixel by pixel, across a 10 × 10 electrode array, and for tracing
-the ferroelectric switching loop at each site.
+indices, and that rotates the polarisation of light passing through it by
+**tens of microradians** at most: up to about $10^{-4}$ rad at 9 Vpp on a
+responsive pixel, and microradians on a weak one. This repository is the
+instrument-ready system for measuring that rotation, pixel by pixel, across a
+10 × 10 electrode array, and for tracing the ferroelectric switching loop at
+each site.
 
 It drives a real bench end to end and unattended: three motorised polarisation
 optics, a two-axis translation stage, a 100-channel electrode switching matrix,
@@ -103,7 +105,7 @@ The manual is the point of this repository. Start wherever you need to.
 | --- | --- | --- | --- |
 | Wavelength | 1550 nm | Chip | 10 × 10 pairs, ≈7 µm gap |
 | Incident polarisations | 9, spaced 22.5° | AC drive | 9 Vpp at 30 kHz |
-| DC range | ±40 V, 1 mA compliance | Resolution | microradian rotation |
+| DC range | ±40 V, 1 mA compliance | Rotation noise floor | ≈ 15 nrad per reading, calculated |
 | Chip map | ≈ 4.5 to 5 min per pixel | Hysteresis loop | 45 points, ≈ 29 min |
 
 ---
@@ -128,7 +130,8 @@ python -m unittest discover -s tests -p "test_*.py"   # no hardware, but needs p
 
 Before a real run, work through [Quick start](docs/guide/quickstart.md) in
 full: laser safety, power-on order, the optical calibration, and the
-single-pixel shakedown that must pass before you commit a seven-hour campaign.
+single-pixel shakedown that must pass before you commit a campaign of roughly
+7 to 8 hours for a full chip.
 
 ---
 

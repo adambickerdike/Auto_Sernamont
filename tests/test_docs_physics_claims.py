@@ -33,7 +33,7 @@ curvature of chi(Gamma), about 1e-5 at u = 30 degrees, which the 1e-6
 tolerance below would reject; the central difference cancels that term.
 """
 
-import _bootstrap  # noqa: F401  # keeps the import style of the other tests
+import _bootstrap  # provides module_path() and the package directory
 import math
 import unittest
 
@@ -241,6 +241,18 @@ class HarmonicContentTests(unittest.TestCase):
             self.assertAlmostEqual(ratio / leading, 1.0, delta=tolerance, msg=f"gamma0={gamma0_deg}")
         self.assertGreater(self.sixth_over_second_harmonic(math.radians(30.0)), 0.025)
         self.assertLess(self.sixth_over_second_harmonic(math.radians(30.0)), 0.045)
+
+
+class DocumentedDefaultsTests(unittest.TestCase):
+    def test_refractive_index_default_is_quoted_from_the_code(self):
+        # 03 Step 3 quotes the argparse line verbatim so the default appears
+        # once, taken from the code; this keeps the quotation honest.
+        line = 'parser.add_argument("--bto-refractive-index", type=float, default=2.1)'
+        source = _bootstrap.module_path("pockels_fast_map_gui.py").read_text(encoding="utf-8")
+        self.assertIn(line, source)
+        page = (_bootstrap.PACKAGE_DIR.parent / "docs" / "physics"
+                / "03-senarmont-readout.md").read_text(encoding="utf-8")
+        self.assertIn(line, page)
 
 
 if __name__ == "__main__":

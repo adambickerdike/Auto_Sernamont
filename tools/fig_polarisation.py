@@ -295,7 +295,7 @@ def figure_poincare_modulation(gamma, a_null):
     j3 = quarter_wave_plate(gamma) @ j2
     p3 = normalised_stokes(j3)
 
-    gamma_ac = 14.0     # exaggerated for visibility; the real value is ~microradians
+    gamma_ac = 14.0     # exaggerated for visibility; the real swing is at most tens of microradians
 
     def state_with_eo(g):
         j = retarder(SAMPLE_RETARDANCE + g, SAMPLE_AXIS) @ j1
@@ -333,7 +333,7 @@ def figure_poincare_modulation(gamma, a_null):
               transform=ax.transAxes, fontsize=11.5, fontweight="bold", color=INK)
     ax.text2D(0.02, 0.985,
               "red arc: the state swept by the AC drive\n"
-              f"(exaggerated to $\\pm${gamma_ac:.0f}$\\degree$; the real swing is microradians)",
+              f"(exaggerated to $\\pm${gamma_ac:.0f}$\\degree$; the real swing is at most tens of microradians)",
               transform=ax.transAxes, fontsize=8.4, color=MUTED, linespacing=1.4)
     ax.text2D(0.02, 0.06,
               "The analyser measures the projection of the state\n"

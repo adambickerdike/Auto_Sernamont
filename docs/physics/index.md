@@ -22,8 +22,20 @@ from the literature it carries a numbered citation into
 > and how the ferroelectric domains switch.
 
 Everything else in the instrument is a consequence of one fact: the
-polarisation change is **tiny**, of order microradians. A microradian rotation
-cannot be seen by pointing a photodiode at the beam. It has to be converted
+polarisation change is **tiny**. A responsive pixel rotates the polarisation by
+tens of microradians, up to about $10^{-4}$ rad at 9 Vpp, a weak pixel by
+microradians, and the calculated noise floor is about 15 nrad per reading
+([07 §4.4](07-instrument-theory.md#44-the-rotation-noise-floor)). The scale can
+be read off the committed data: in
+[`assets/data/ferroelectric_rounded_strong__20260724_pixel_001.csv`](../../assets/data/ferroelectric_rounded_strong__20260724_pixel_001.csv)
+the saturated lock-in magnitude is about 110 µV at a DC detector power of
+$2.24\times10^{-4}$ W, which at the documented
+$1/(\mathcal{R}G) = 2.406\times10^{-4}$ W/V is a half-fringe level of 0.93 V
+and an optical swing near 1.9 V, so the rotation is
+$110\ \mathrm{\mu V}/1.9\ \mathrm{V} \approx 60$ µrad RMS, about 85 µrad
+amplitude, at 9 Vpp (taking the detector's AC and DC transfers as equal). A
+rotation that small cannot be seen by pointing a photodiode at the beam. It has
+to be converted
 into an intensity change at the steepest possible point of a transmission
 curve, modulated at a frequency where the laboratory is quiet, and recovered
 with a lock-in amplifier. That chain is the whole design.

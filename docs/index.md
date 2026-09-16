@@ -87,8 +87,9 @@ A 1550 nm laser is polarised, its polarisation direction is set by a motorised
 half-wave plate, and it is focused through one pixel of a 10 × 10 grid of
 electrode pairs patterned on a barium titanate thin film. A voltage applied
 across the ≈7 µm electrode gap changes the film's refractive indices through
-the **Pockels effect**, which rotates the light's polarisation by a few
-microradians. A motorised quarter-wave plate cancels the film's *static*
+the **Pockels effect**, which rotates the light's polarisation by tens of
+microradians on a responsive pixel and by microradians on a weak one. A
+motorised quarter-wave plate cancels the film's *static*
 birefringence so that a motorised analyser can extinguish the beam almost
 completely; sitting ±45° away from that extinction point puts the measurement
 on the steepest part of the transmission curve, where a polarisation change
