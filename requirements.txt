@@ -1,0 +1,13 @@
+# Runtime packages for the measurement PC. Python 3.9 or newer.
+# pythonnet and clr_loader load the Thorlabs Kinesis .NET assemblies and are
+# Windows only; a VISA backend (NI-VISA or Keysight IO Libraries) must be
+# installed separately for pyvisa to find any instrument.
+numpy
+scipy
+matplotlib
+pandas
+pyvisa
+pyserial
+pythonnet
+clr_loader
+opencv-python

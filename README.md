@@ -119,7 +119,7 @@ The manual is the point of this repository. Start wherever you need to.
 ```bash
 git clone https://github.com/adambickerdike/Auto_Sernamont.git
 cd Auto_Sernamont
-pip install numpy scipy matplotlib pyvisa pyserial pythonnet clr_loader opencv-python
+pip install -r requirements.txt        # or requirements-test.txt for the tests alone
 ```
 
 ```bash

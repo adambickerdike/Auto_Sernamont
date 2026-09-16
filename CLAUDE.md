@@ -154,6 +154,20 @@ There is no `gh` CLI and no GitHub API token on this machine. SSH push works;
 creating a repository does not, so a new repository has to be made by hand
 first.
 
+## GitHub settings to paste by hand
+
+The repository page shows "No description, website, or topics provided", and
+there is no `gh` CLI or API token on this machine to set them. Paste these
+into the repository settings on github.com.
+
+Description:
+
+    Automated Sénarmont polarimetry for Pockels-coefficient and ferroelectric-hysteresis mapping of BaTiO₃ thin films
+
+Topics:
+
+    electro-optics pockels-effect barium-titanate ferroelectrics polarimetry senarmont lock-in-amplifier lab-automation photonics python
+
 ## Known open item, now checked
 
 `docs/physics/04-incident-polarisation.md` section 8 states the reverse of

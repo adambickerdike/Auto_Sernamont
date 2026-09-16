@@ -40,7 +40,7 @@ import unittest
 import numpy as np
 
 
-# ------------------------------------------------------------------ Jones --
+# ------------------------------------------------------------------ Jones
 def retarder(retardance, fast_axis):
     """Linear retarder: ``retardance`` of phase (rad), fast axis at ``fast_axis`` (rad)."""
     c, s = math.cos(fast_axis), math.sin(fast_axis)

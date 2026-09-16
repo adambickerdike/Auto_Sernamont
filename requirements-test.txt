@@ -1,0 +1,7 @@
+# Everything the test suite and the figure scripts need, on any machine.
+# pyserial is required even without hardware, because the modules under test
+# import it; no instrument driver is ever loaded.
+numpy
+scipy
+matplotlib
+pyserial

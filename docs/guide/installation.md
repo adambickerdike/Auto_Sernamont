@@ -53,8 +53,13 @@ Python 3.9 or newer. Anaconda is the usual choice on the measurement PC because
 it ships Tk and a working SciPy stack.
 
 ```bat
-python -m pip install numpy scipy matplotlib pandas pyvisa pyserial pythonnet clr_loader opencv-python
+python -m pip install -r requirements.txt
 ```
+
+[`requirements.txt`](../../requirements.txt) at the repository root lists the
+runtime packages in the table below. A machine that will never drive hardware
+only needs [`requirements-test.txt`](../../requirements-test.txt), the four
+packages the test suite and the figure scripts import.
 
 | Package | Needed for | Required where |
 | --- | --- | --- |
@@ -208,12 +213,13 @@ This works on **any** machine, hardware or not:
 
 ```bash
 cd /path/to/Auto_Sernamont
+python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -p "test_*.py"
 ```
 
 The run ends with `OK` and the number of tests it ran. The suite needs
 `pyserial` installed even with no hardware attached, because the modules under
-test import it; the install line in [§2](#2-python-dependencies) provides it.
+test import it; `requirements-test.txt` provides it.
 A failure here is a software problem, not a hardware one, and it tells you so
 before you have spent an hour at the bench. Individual test files run directly:
 
