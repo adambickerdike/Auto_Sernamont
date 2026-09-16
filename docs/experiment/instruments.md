@@ -232,7 +232,9 @@ and 1, 2, 5 V per division.
 
 The rule, in `_select_optimal_range()`: pick the **smallest** scale for which
 
-$$0.25 \times V_\mathrm{div} \;\le\; |V_\mathrm{signal}| \;\le\; 4.0 \times V_\mathrm{div}$$
+$$
+0.25 \times V_\mathrm{div} \;\le\; |V_\mathrm{signal}| \;\le\; 4.0 \times V_\mathrm{div}
+$$
 
 that is `SMART_RANGE_MIN_FILL = 0.25` and `SMART_RANGE_MULTIPLIER = 4.0`, with
 the finest scale (10 mV/div) allowed to violate the lower bound because there
@@ -360,7 +362,9 @@ switching on) the output approaches its new value with that filter's impulse
 response, so the settling time scales as $n\tau$, not $\tau$. The software
 enforces
 
-$$t_\mathrm{settle} \;\ge\; 2 \,\tau \, n$$
+$$
+t_\mathrm{settle} \;\ge\; 2 \,\tau \, n
+$$
 
 `minimum_lockin_settle_s()` computes `2.0 * TC_seconds * order`, where
 `order = slope_index + 1`, and refuses any TC index below 8 (5 ms) because

@@ -61,7 +61,9 @@ $V/g$. It fringes: strongest right at the electrode edges, weaker and more
 curved in the middle of the gap, and it decays with depth into the film. The
 field that matters is the one averaged over the optical mode, and that is
 
-$$E = \alpha \, \frac{V}{g}$$
+$$
+E = \alpha \, \frac{V}{g}
+$$
 
 where $g$ is the gap and $\alpha$ is a dimensionless, device-specific
 electrostatic correction obtained from a **finite-element model of the actual
@@ -129,8 +131,10 @@ neighbours.
 Pixels are numbered **row-major**, with 0-based internal row and column
 indices:
 
-$$\mathrm{pixel} = 10 \times \mathrm{row} + \mathrm{col} + 1,
-\qquad \mathrm{row}, \mathrm{col} \in \{0, \dots, 9\}$$
+$$
+\mathrm{pixel} = 10 \times \mathrm{row} + \mathrm{col} + 1,
+\qquad \mathrm{row}, \mathrm{col} \in \{0, \dots, 9\}
+$$
 
 and inversely `row = (pixel - 1) // 10`, `col = (pixel - 1) % 10`. This is the
 `j` (row, outer) / `i` (column, inner) convention used by `build_grid()`, by

@@ -54,7 +54,7 @@ The beamline, right to left as a matrix product
 $$
 \mathbf{J}_\mathrm{out} = P(a)\,W\!\left(\tfrac{\pi}{2},q\right)
 W\!\left(\Gamma_0 + \gamma(t),\,\theta_s\right) H(h)\, P(0)\,\mathbf{J}_\mathrm{in}.
-\qquad (1)
+\tag{1}
 $$
 
 Work in the sample's own eigenframe, so that $\theta_s = 0$ and the light
@@ -64,7 +64,7 @@ leaving the film is
 
 $$
 \mathbf{J}_1 = \begin{pmatrix}\cos u \\ e^{i\Gamma}\sin u\end{pmatrix}.
-\qquad (2)
+\tag{2}
 $$
 
 Its Stokes vector follows immediately from the definitions of
@@ -74,7 +74,7 @@ $$
 S_1 = \cos 2u, \qquad
 S_2 = \sin 2u\,\cos\Gamma, \qquad
 S_3 = \sin 2u\,\sin\Gamma .
-\qquad (3)
+\tag{3}
 $$
 
 Equation (3) is the single most useful line on this page. As $\Gamma$ changes,
@@ -95,7 +95,7 @@ $$
 A_+ = \tfrac{1}{2}\!\left(e^{-i\Gamma/2} + e^{+i\Gamma/2}\right) = \cos\tfrac{\Gamma}{2},
 \qquad
 A_- = \tfrac{1}{2}\!\left(e^{-i\Gamma/2} - e^{+i\Gamma/2}\right) = -i\sin\tfrac{\Gamma}{2}.
-\qquad (4)
+\tag{4}
 $$
 
 Now put the quarter-wave plate with its fast axis along $\mathbf{e}_+$, that
@@ -105,7 +105,7 @@ $\mathrm{diag}(1, i)$, and
 $$
 \mathbf{J}_2 = \begin{pmatrix}\cos(\Gamma/2) \\ -i\cdot i\,\sin(\Gamma/2)\end{pmatrix}
              = \begin{pmatrix}\cos(\Gamma/2) \\ \sin(\Gamma/2)\end{pmatrix}.
-\qquad (5)
+\tag{5}
 $$
 
 The compensator has converted the ellipse back to a **line**, at azimuth
@@ -124,7 +124,7 @@ $$
 \boxed{\;\frac{d\psi_\mathrm{out}}{d\Gamma} = \tfrac{1}{2}\sin 2u
 \;\;\Longrightarrow\;\;
 \Gamma = \frac{2\,\delta\psi}{\sin 2u}. \;}
-\qquad (6)
+\tag{6}
 $$
 
 The code carries $\Gamma = 2\,\delta\psi$, which is equation (6) **with
@@ -144,7 +144,7 @@ $$
 \boxed{\;
 I(\psi, t) \;=\; I_\mathrm{leak} \;+\; I_0\,\sin^{2}\!\bigl(\psi - \delta(t)\bigr).
 \;}
-\qquad (7)
+\tag{7}
 $$
 
 Everything else on this page is an expansion of equation (7). Note what has
@@ -163,7 +163,7 @@ while $\psi$ is of order radians:
 $$
 \sin^2(\psi - \delta) = \sin^2\psi \;-\; \delta\,\sin 2\psi \;+\; \delta^2\cos 2\psi
 \;+\; \mathcal{O}(\delta^3).
-\qquad (8)
+\tag{8}
 $$
 
 Add the two contaminants that are always present on a real bench: a fractional
@@ -174,7 +174,7 @@ electrical term $p(t)$ picked up after the photodiode. Then
 $$
 V(\psi,t) = \bigl[1 + m(t)\bigr]\Bigl(V_\mathrm{leak}
 + V_0\bigl[\sin^2\psi - \delta\sin 2\psi + \delta^2\cos 2\psi\bigr]\Bigr) + p(t),
-\qquad (9)
+\tag{9}
 $$
 
 where the optical quantities are now in detector volts,
@@ -190,14 +190,14 @@ $$
 V(\psi,t) = \underbrace{\mathcal{P}(t)}_{\text{constant in }\psi}
 \;+\; \underbrace{\mathcal{E}_1(t)}_{\times\,\sin 2\psi}\sin 2\psi
 \;+\; \underbrace{\mathcal{E}_2(t)}_{\times\,\cos 2\psi}\cos 2\psi ,
-\qquad (10)
+\tag{10}
 $$
 
 $$
 \mathcal{P} = p + (1+m)\!\left(V_\mathrm{leak} + \tfrac{V_0}{2}\right), \qquad
 \mathcal{E}_1 = -(1+m)\,V_0\,\delta , \qquad
 \mathcal{E}_2 = (1+m)\,V_0\!\left(\delta^2 - \tfrac{1}{2}\right).
-\qquad (10\mathrm{a})
+\tag{10a}
 $$
 
 At DC, equation (10a) reduces to $\mathcal{E}_2 = -V_0/2$, which is exactly
@@ -247,7 +247,7 @@ $$
 \qquad
 \gamma_1 \propto r_\mathrm{eff}E_\mathrm{rms}, \qquad
 \gamma_2 \propto s_\mathrm{eff}E_\mathrm{rms}^2 .
-\qquad (11)
+\tag{11}
 $$
 
 ### 2.2 The three harmonics of the detector signal
@@ -323,7 +323,7 @@ V_\mathrm{lockin}^\mathrm{rms}
 \cdot
 \underbrace{\frac{V_\mathrm{pp}}{2\sqrt2}}_{\text{source}} .
 \;}
-\qquad (12)
+\tag{12}
 $$
 
 Inverting equation (12) for $r_\mathrm{eff}$ gives exactly the expression
@@ -393,7 +393,7 @@ so
 $$
 P_\mathrm{det} = 120\ \mu\mathrm{W}, \qquad
 I_\mathrm{ph} = \mathcal{R}P_\mathrm{det} = 1.05\times10^{-4}\ \mathrm{A}.
-\qquad (13)
+\tag{13}
 $$
 
 That is 1.7 % of the roughly 7 mW leaving the source, which is a reasonable
@@ -421,7 +421,7 @@ and RIN below the shot floor:
 $$
 e_\mathrm{tot} = \sqrt{27.6^2 + 8.8^2 + 10.0^2}\ \mathrm{nV/\sqrt{Hz}}
 = 30.6\ \mathrm{nV/\sqrt{Hz}} .
-\qquad (14)
+\tag{14}
 $$
 
 The measurement is therefore **shot-noise dominated**: 81 % of the noise power
@@ -436,7 +436,7 @@ density after the mixer is also $S_v$, so each quadrature has variance
 
 $$
 \sigma_X^2 = \sigma_Y^2 = S_v \cdot B_\mathrm{ENBW}.
-\qquad (15)
+\tag{15}
 $$
 
 For $n$ cascaded single-pole sections each of time constant $\tau$, see Meade
@@ -446,7 +446,7 @@ For $n$ cascaded single-pole sections each of time constant $\tau$, see Meade
 $$
 B_\mathrm{ENBW} = \frac{1}{4\tau},\ \frac{1}{8\tau},\ \frac{3}{32\tau},\ \frac{5}{64\tau}
 \quad\text{for } n = 1, 2, 3, 4 .
-\qquad (16)
+\tag{16}
 $$
 
 The instrument runs time-constant index 14, $\tau = 500$ ms, at 12 dB per
@@ -457,7 +457,7 @@ B_\mathrm{ENBW} = \frac{1}{8 \times 0.5\ \mathrm{s}} = 0.25\ \mathrm{Hz},
 \qquad
 \sigma_X = 30.6\ \mathrm{nV/\sqrt{Hz}} \times \sqrt{0.25\ \mathrm{Hz}}
 = 15.3\ \mathrm{nV}.
-\qquad (17)
+\tag{17}
 $$
 
 ### 4.4 The rotation noise floor
@@ -469,7 +469,7 @@ $$
 = \frac{15.3\ \mathrm{nV}}{1.0\ \mathrm{V/rad}}
 = 1.5\times10^{-8}\ \mathrm{rad}
 \;\approx\; \mathbf{0.015\ \mu rad}\ \text{RMS per settled reading}.
-\qquad (18)
+\tag{18}
 $$
 
 This agrees with the shot-only estimate of order 10 nrad in
@@ -489,7 +489,7 @@ $$
 = 4.8\times10^{-9}\ \mathrm{rad/V}
 \;\;\Longrightarrow\;\;
 \lvert r_\mathrm{eff}\rvert_\mathrm{floor} \approx 0.036\ \mathrm{pm/V}.
-\qquad (19)
+\tag{19}
 $$
 
 The thickness is a placeholder because the repository deliberately has no
@@ -535,7 +535,7 @@ the guided wavelength at 30 kHz is
 $$
 \lambda_g = \frac{c}{f\sqrt{\varepsilon_\mathrm{eff}}}
 = \frac{3\times10^8}{3\times10^4 \times 3.16} \approx 3\ \mathrm{km},
-\qquad (20)
+\tag{20}
 $$
 
 against an electrode structure of order a millimetre. The device is
@@ -582,7 +582,7 @@ $$
 \frac{d}{d\psi}\sin 2\psi = 2\cos 2\psi = 0 \quad\text{at }\psi = 45^\circ
 \;\;\Longrightarrow\;\;
 \frac{\Delta(\sin 2\psi)}{\sin 2\psi} = -2\varepsilon^2 .
-\qquad (21)
+\tag{21}
 $$
 
 At $\varepsilon = 8.7\times10^{-4}$ rad that is $1.5\times10^{-6}$, utterly
@@ -596,7 +596,7 @@ order:
 $$
 \frac{\Delta(\sin^2\psi)}{\sin^2\psi}\bigg|_{45^\circ}
 = \frac{\sin 2\psi}{\sin^2\psi}\,\varepsilon = 2\varepsilon = 0.17\ \%.
-\qquad (22)
+\tag{22}
 $$
 
 **Control:** every move is read back and verified to 0.08°, with backlash
@@ -613,7 +613,7 @@ $$
 \sin 2\chi = \sin\Gamma_0 \,\sin\epsilon_Q
 \;\;\Longrightarrow\;\;
 \chi \approx \tfrac{1}{2}\epsilon_Q \sin\Gamma_0 .
-\qquad (23)
+\tag{23}
 $$
 
 The azimuth is unchanged to first order, so the **scale factor
@@ -623,7 +623,7 @@ error costs is null depth, since an ellipse cannot be extinguished:
 $$
 \frac{I_\mathrm{min}}{I_\mathrm{max}} = \tan^2\chi
 \approx \left(\tfrac{1}{2}\epsilon_Q\right)^2 \quad\text{at } \sin\Gamma_0 = 1 .
-\qquad (24)
+\tag{24}
 $$
 
 At the software's tolerance $\epsilon_Q = 10^\circ$ this is 0.76 % leakage,
@@ -643,7 +643,7 @@ section 4.1 the leakage fraction is
 $$
 \frac{V_\mathrm{null}}{V_\mathrm{null} + A_\mathrm{opt}}
 = \frac{0.0145}{1.0145} = 1.43\ \%,
-\qquad (25)
+\tag{25}
 $$
 
 three and a half times inside the 5 % physics gate. Leakage does not bias $\delta$ to
@@ -672,7 +672,7 @@ $$
 \delta = \frac{V_\mathrm{ac}}{dV_\mathrm{dc}/d\psi}
 = \frac{a(1 + 2\zeta I/I_\mathrm{ref})\,\Delta I}{a(1 + 2\zeta I/I_\mathrm{ref})\,dI/d\psi}
 + \mathcal{O}(\zeta^2).
-\qquad (26)
+\tag{26}
 $$
 
 **A smooth nonlinearity cancels to first order precisely because the
@@ -722,7 +722,7 @@ r_\mathrm{eff} \;=\; \frac{2\lambda g}{\pi\,\alpha\,t}\; n^{-3}\;
 \frac{s}{k_\mathrm{div}},
 \qquad
 s \equiv \left\lvert\frac{d\delta_\mathrm{rms}}{dV_\mathrm{source,rms}}\right\rvert .
-\qquad (27)
+\tag{27}
 $$
 
 For $y = \prod_j x_j^{\,p_j}$ the relative variance is the sum of squared
@@ -741,7 +741,7 @@ $$
 +\left(\frac{\sigma_{G}}{G_\mathrm{AC}/G_\mathrm{DC}}\right)^{2}
 +\,9\left(\frac{\sigma_{n}}{n}\right)^{2}.
 \;}
-\qquad (28)
+\tag{28}
 $$
 
 Equation (28) is what `effective_pockels_coefficient()` implements, term for

@@ -456,7 +456,7 @@ $(R, \theta_0)$ better.
 | "the response is $r_{42}$-dominated" | $a$ and $s$ enter (9) in quadrature, so they trade off against $\theta_f$ and $\Gamma_0$ within the three-parameter degeneracy |
 | "the crystal $a$ and $c$ axes lie at angle $X$" | $\theta_f$ is not separately observable, and the lab-frame orientation of the crystal never enters the measurement (§7) |
 | "the film has a particular domain configuration" | many texture and domain populations produce indistinguishable angular signatures once averaged over the optical mode |
-| "$r_{42} = $ some number" | separating tensor elements requires a tensor, texture and domain model **plus** independent structural information such as XRD or TEM [[26]](../references.md#ref-26) |
+| "$r_{42} = {}$ some number" | separating tensor elements requires a tensor, texture and domain model **plus** independent structural information such as XRD or TEM [[26]](../references.md#ref-26) |
 
 ### 6.2 What would close it
 

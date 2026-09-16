@@ -67,11 +67,15 @@ converts every $(|M|, \phi)$ sample into a complex number, averages the real
 and imaginary parts separately, and only then derives a magnitude and phase
 from the mean.
 
-$$\bar{Z} = \frac{1}{N}\sum_k |M_k| e^{i\phi_k}, \qquad |\bar{Z}| = \sqrt{\bar{X}^2 + \bar{Y}^2}$$
+$$
+\bar{Z} = \frac{1}{N}\sum_k |M_k| e^{i\phi_k}, \qquad |\bar{Z}| = \sqrt{\bar{X}^2 + \bar{Y}^2}
+$$
 
 **Never** the other way round:
 
-$$\overline{|M|} = \frac{1}{N}\sum_k |M_k| \qquad \text{(wrong)}$$
+$$
+\overline{|M|} = \frac{1}{N}\sum_k |M_k| \qquad \text{(wrong)}
+$$
 
 > **Warning: averaging magnitudes rectifies noise.**
 > Magnitude is $\sqrt{X^2+Y^2}$, a strictly positive-definite function of two
@@ -480,7 +484,9 @@ points describe how the switched polarisation grows under a constant field,
 [`pockels_hysteresis_analysis.py`](../../pockels/pockels_hysteresis_analysis.py)
 can fit the stretched-exponential (Kohlrausch) form
 
-$$M(t) = M_\infty + (M_0 - M_\infty)\,\exp\!\left[-\left(t/\tau\right)^{\beta}\right]$$
+$$
+M(t) = M_\infty + (M_0 - M_\infty)\,\exp\!\left[-\left(t/\tau\right)^{\beta}\right]
+$$
 
 and return `tau_s`, `beta`, `m0_V`, `m_inf_V` and `r_squared` per pixel. The
 characteristic switching time $\tau$ and the stretching exponent $\beta$ (a

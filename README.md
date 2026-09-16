@@ -32,69 +32,51 @@ amplifier.
 
 The manual is the point of this repository. Start wherever you need to.
 
-<table>
-<tr>
-<td width="25%" valign="top">
-
 ### Physics
 
 *What is measured, and why*
 
-[Overview](docs/physics/index.md)
-[The Pockels effect](docs/physics/01-electro-optics.md)
-[Polarisation formalism](docs/physics/02-polarisation.md)
-[Null-slope readout](docs/physics/03-senarmont-readout.md)
-[Angular dependence](docs/physics/04-incident-polarisation.md)
-[Ferroelectric switching](docs/physics/05-ferroelectrics.md)
-[The material](docs/physics/06-material.md)
-[Theory of the instrument](docs/physics/07-instrument-theory.md)
-
-</td>
-<td width="25%" valign="top">
+- [Overview](docs/physics/index.md)
+- [The Pockels effect](docs/physics/01-electro-optics.md)
+- [Polarisation formalism](docs/physics/02-polarisation.md)
+- [Null-slope readout](docs/physics/03-senarmont-readout.md)
+- [Angular dependence](docs/physics/04-incident-polarisation.md)
+- [Ferroelectric switching](docs/physics/05-ferroelectrics.md)
+- [The material](docs/physics/06-material.md)
+- [Theory of the instrument](docs/physics/07-instrument-theory.md)
 
 ### The instrument
 
 *The bench itself*
 
-[Overview](docs/experiment/index.md)
-[The optical beamline](docs/experiment/beamline.md)
-[Instruments and interfaces](docs/experiment/instruments.md)
-[The BaTiO₃ chip](docs/experiment/chip.md)
-[The switching matrix](docs/experiment/switch-matrix.md)
-
-</td>
-<td width="25%" valign="top">
+- [Overview](docs/experiment/index.md)
+- [The optical beamline](docs/experiment/beamline.md)
+- [Instruments and interfaces](docs/experiment/instruments.md)
+- [The BaTiO₃ chip](docs/experiment/chip.md)
+- [The switching matrix](docs/experiment/switch-matrix.md)
 
 ### The code
 
 *How it is built*
 
-[Overview](docs/software/index.md)
-[Architecture](docs/software/architecture.md)
-[Motion control](docs/software/motion-control.md)
-[Instrument control](docs/software/instrument-control.md)
-[Numerical methods](docs/software/algorithms.md)
-[The data pipeline](docs/software/data-pipeline.md)
-
-</td>
-<td width="25%" valign="top">
+- [Overview](docs/software/index.md)
+- [Architecture](docs/software/architecture.md)
+- [Motion control](docs/software/motion-control.md)
+- [Instrument control](docs/software/instrument-control.md)
+- [Numerical methods](docs/software/algorithms.md)
+- [The data pipeline](docs/software/data-pipeline.md)
 
 ### Operating
 
 *How to run it*
 
-[Overview](docs/guide/index.md)
-[Installation](docs/guide/installation.md)
-[Quick start](docs/guide/quickstart.md)
-[Operator manual](docs/guide/operating.md)
-[Troubleshooting](docs/guide/troubleshooting.md)
+- [Overview](docs/guide/index.md)
+- [Installation](docs/guide/installation.md)
+- [Quick start](docs/guide/quickstart.md)
+- [Operator manual](docs/guide/operating.md)
+- [Troubleshooting](docs/guide/troubleshooting.md)
 
-**Reference**
-[CLI](docs/reference/cli.md) · [Data schema](docs/reference/data-schema.md) · [Glossary](docs/reference/glossary.md) · [Bibliography](docs/references.md)
-
-</td>
-</tr>
-</table>
+**Reference:** [CLI](docs/reference/cli.md) · [Data schema](docs/reference/data-schema.md) · [Glossary](docs/reference/glossary.md) · [Bibliography](docs/references.md)
 
 ---
 
@@ -107,7 +89,7 @@ The manual is the point of this repository. Start wherever you need to.
 
 <br>
 
-| | |
+| Scope | Output |
 | --- | --- |
 | **Per pixel** | effective Pockels response, best incident polarisation, normalised electro-optic rotation, null quality, voltage linearity, a full hysteresis loop with coercive voltages, imprint, squareness and switching-field statistics, and poling kinetics |
 | **Per chip** | 21 metric heatmaps, a loop-type map, a loop gallery, cross-metric correlations and composition trends |
@@ -117,7 +99,7 @@ The manual is the point of this repository. Start wherever you need to.
 
 ## At a glance
 
-| | | | |
+| Parameter | Value | Parameter | Value |
 | --- | --- | --- | --- |
 | Wavelength | 1550 nm | Chip | 10 × 10 pairs, ≈7 µm gap |
 | Incident polarisations | 9, spaced 22.5° | AC drive | 9 Vpp at 30 kHz |
@@ -141,7 +123,7 @@ pip install numpy scipy matplotlib pyvisa pyserial pythonnet clr_loader opencv-p
 ```bash
 python pockels/pockels_fast_map_gui.py            # the operator GUI
 python pockels/pockels_fast_map_gui.py --cli ...  # the same worker, headless
-cd tests && for f in test_*.py; do python "$f"; done   # no hardware needed
+python -m unittest discover -s tests -p "test_*.py"   # no hardware, but needs pyserial (installed above)
 ```
 
 Before a real run, work through [Quick start](docs/guide/quickstart.md) in

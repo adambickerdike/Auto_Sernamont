@@ -280,7 +280,7 @@ derivation and the thresholds are in
 | `s9_midfringe_fraction`, `s9_midfringe_error` | DC balance at the half-fringe (gate 0.075) |
 | `s9_confirm_error_fraction` | confirmation-point agreement (gate 0.25) |
 | `s9_fit_amplitude_V` | fitted EO amplitude |
-| `s9_analyser_independent_fraction` / `s9_pickup_fraction` | the analyser-independent term $\|P\|$ as a fraction, **not** assumed to be pickup |
+| `s9_analyser_independent_fraction` / `s9_pickup_fraction` | the analyser-independent term $\lvert P\rvert$ as a fraction, **not** assumed to be pickup |
 | `s9_derivative_residual_fraction` | how well the AC coefficients align with the DC derivative (gate 0.20) |
 | `s9_temporal_rank_fraction` | whether $E_1$ and $E_2$ share one temporal phase (gate 0.15) |
 | `s9_equivalent_rotation_mag_rad_rms`, `s9_equivalent_rotation_phase_deg` | the certified rotation |
@@ -433,23 +433,23 @@ point so a partially written file is never observed.
 | `s_rem_pos_V`, `s_rem_neg_V` | $S$ at $V = 0$ per branch | remanent EO response |
 | `s_sat_pos_V`, `s_sat_neg_V` | mean $S$ over each saturation tail | saturated response |
 | `squareness_pos`, `squareness_neg` | $S_\mathrm{rem}/S_\mathrm{sat}$ | loop squareness |
-| `sat_asymmetry` | $(\|S_\mathrm{sat}^+\| - \|S_\mathrm{sat}^-\|)/\mathrm{mean}$ | electrode / interface asymmetry |
+| `sat_asymmetry` | $(\lvert S_\mathrm{sat}^+\rvert - \lvert S_\mathrm{sat}^-\rvert)/\mathrm{mean}$ | electrode / interface asymmetry |
 | `switchable_V` | $(S_\mathrm{sat}^+ - S_\mathrm{sat}^-)/2$ | switchable response |
 | `switchable_corrected_V` | the same after removing the fitted linear term | pure hysteron amplitude |
 | `frozen_V` | $(S_\mathrm{sat}^+ + S_\mathrm{sat}^-)/2$ | non-switchable + common mode |
 | `quad_eo_slope_V_per_V` | linear fit of $S$ in the saturation tails | field-induced quadratic-EO / electrostrictive response |
-| `quad_eo_ratio` | $\|\mathrm{slope}\|V_\mathrm{max}/\|\mathrm{switchable\_corrected}\|$ | paraelectric fraction / phase-boundary proximity |
-| `loop_area_V2` | $\|\oint S\,dV\|$ | dissipation proxy |
-| `loop_closure_V` | $\|S(\mathrm{end}) - S(\mathrm{start})\|$ at $+V_\mathrm{max}$ | drift / repeatability |
-| `switching_slope_down`, `switching_slope_up` | $\|dS/dV\|$ peak position `peak_V_per_V`, height, `fwhm_V`, `mean_V`, `sigma_V`, `skewness` | the switching-field distribution |
+| `quad_eo_ratio` | $\lvert\mathrm{slope}\rvert V_\mathrm{max}/\lvert\mathrm{switchable\_corrected}\rvert$ | paraelectric fraction / phase-boundary proximity |
+| `loop_area_V2` | $\lvert\oint S\,dV\rvert$ | dissipation proxy |
+| `loop_closure_V` | $\lvert S(\mathrm{end}) - S(\mathrm{start})\rvert$ at $+V_\mathrm{max}$ | drift / repeatability |
+| `switching_slope_down`, `switching_slope_up` | $\lvert dS/dV\rvert$ peak position `peak_V_per_V`, height, `fwhm_V`, `mean_V`, `sigma_V`, `skewness` | the switching-field distribution |
 | `switching_sigma_V`, `switching_skewness` | branch means of the above | disorder width and asymmetry |
 | `nucleation_asymmetry` | $(h_\mathrm{up}-h_\mathrm{dn})/\mathrm{mean}$ of the $dS/dV$ peak heights | branch nucleation asymmetry |
-| `butterfly_min_over_sat(_down/_up)` | $\min\|R\|/\|R\|_\mathrm{sat}$ | switching completeness (≈ 0 = clean 180° cancellation) |
+| `butterfly_min_over_sat(_down/_up)` | $\min\lvert R\rvert/\lvert R\rvert_\mathrm{sat}$ | switching completeness (≈ 0 = clean 180° cancellation) |
 | `transition_width_25_75_V` (+ `_down`, `_up`) | span between the 25 % and 75 % crossings | switching abruptness ($\approx 1.10\,w$ for a tanh branch) |
 | `phase_intermediate_fraction_down/up` | fraction of coercive-window points 45 to 135° off axis | gradual rotation versus abrupt flip |
 | `tanh_fit_down`, `tanh_fit_up` | $S = a + bV + S_s\tanh((V-V_c)/w)$ with errors and $R^2$ | model $V_c$, width, and the reversible linear term |
 | `leakage` | `conductance_S`, `i_at_pos_sat_A`, `i_at_neg_sat_A`, `i_max_abs_A`, `offset_A` | conduction / defects |
-| `quadrature_fraction` | $\max\|Q\|/\max\|S\|$ | projection validity (> 0.5 → invalid) |
+| `quadrature_fraction` | $\max\lvert Q\rvert/\max\lvert S\rvert$ | projection validity (> 0.5 → invalid) |
 
 </details>
 
@@ -467,7 +467,7 @@ point so a partially written file is never observed.
 | `linear_no_hysteresis` | relative opening < 0.15, or width < 2 V | paraelectric-like reversible response |
 | `frozen_response` | amplitude present but switchable < 1 µV | clamped / non-switchable |
 | `partial_loop_unresolved` | hysteretic, but $V_c$ outside $\pm V_\mathrm{max}$ | sweep range insufficient |
-| `no_response` | $\max\|S\| < 1$ µV | dead pad / no EO response |
+| `no_response` | $\max\lvert S\rvert < 1$ µV | dead pad / no EO response |
 | `invalid_projection` | quadrature fraction > 0.5 | contaminated measurement |
 
 </details>
@@ -476,11 +476,11 @@ point so a partially written file is never observed.
 
 | Modifier | Criterion |
 | --- | --- |
-| `imprinted` | $\|\mathrm{imprint}\| > \max(3\ \mathrm{V},\ 0.5 \times \text{half-width})$ |
-| `partially_frozen` | $\|\mathrm{frozen}/\mathrm{switchable}\| > 1$ |
+| `imprinted` | $\lvert\mathrm{imprint}\rvert > \max(3\ \mathrm{V},\ 0.5 \times \text{half-width})$ |
+| `partially_frozen` | $\lvert\mathrm{frozen}/\mathrm{switchable}\rvert > 1$ |
 | `leaky` | $G > 10$ nS |
-| `drifting_loop` | closure / $\|$switchable$\| > 0.3$ |
-| `saturation_asymmetric` | $\|\mathrm{sat\_asymmetry}\| > 0.3$ |
+| `drifting_loop` | closure / $\lvert\mathrm{switchable}\rvert > 0.3$ |
+| `saturation_asymmetric` | $\lvert\mathrm{sat\_asymmetry}\rvert > 0.3$ |
 
 All thresholds are module constants in
 [`pockels/pockels_hysteresis_analysis.py`](../../pockels/pockels_hysteresis_analysis.py)

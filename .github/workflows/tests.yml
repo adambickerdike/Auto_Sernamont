@@ -58,5 +58,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Check dashes, links, anchors and citations
+      - name: Documentation checks
+        # Seven checks: dashes, links, anchors, citations, pipes inside table
+        # math, whitespace inside inline math delimiters, and $$ alone on its line.
         run: python tools/check_docs.py

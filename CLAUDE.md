@@ -98,13 +98,16 @@ no display.
 ## Before pushing
 
 ```bash
-python tools/check_docs.py                       # dashes, links, anchors, citations
-cd tests && for f in test_*.py; do python "$f"; done   # all 22 must pass
+python tools/check_docs.py                            # seven checks, see below
+python -m unittest discover -s tests -p "test_*.py"   # every test file, no hardware
+cd tests && for f in test_*.py; do python "$f"; done  # the per-file form CI uses
 ```
 
-`tools/check_docs.py` exits non-zero on failure and is safe to wire into CI.
-It knows GitHub's own anchor slug rules, including unicode letters, so a
-heading containing "Poincaré" resolves correctly.
+`tools/check_docs.py` runs seven checks: dashes, links, anchors, citations,
+pipes inside table math, whitespace inside inline math delimiters, and `$$`
+standing alone on its line. It exits non-zero on failure and is safe to wire
+into CI. It knows GitHub's own anchor slug rules, including unicode letters, so
+a heading containing "Poincaré" resolves correctly.
 
 After changing a constant that a figure quotes, regenerate the figures:
 

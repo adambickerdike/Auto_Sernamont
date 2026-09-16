@@ -311,7 +311,7 @@ python pockels/pockels_hysteresis_analysis.py <csv> --gap-um 7 --alpha 0.94
 
 | Flag | Effect |
 | --- | --- |
-| `--sat-fraction` | Defines the saturation tail: $|V| \geq f\,V_\mathrm{max}$ (default 0.8). |
+| `--sat-fraction` | Defines the saturation tail: $\lvert V\rvert \geq f\,V_\mathrm{max}$ (default 0.8). |
 | `--gap-um` | The measured electrode gap; enables coercive-**field** output, $E = \alpha V/g$. |
 | `--alpha` | FEM field-correction factor (default 1.0 = a plain parallel-plate estimate). |
 

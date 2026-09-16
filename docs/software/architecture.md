@@ -256,8 +256,12 @@ slow, honest way **regardless of `--renull-mode`**. At *every* HWP angle it:
    $+90^\circ$**, giving the balanced `0, +45, +90, −45` design. It then fits
    **two independent models to those same four points**:
 
-   $$Z(\psi) = P + E_1\sin 2\psi + E_2\cos 2\psi \qquad \text{(complex, unrestricted AC)}$$
-   $$D(\psi) = C_0 + C_c\cos 2\psi + C_s\sin 2\psi \qquad \text{(real DC Malus fringe)}$$
+   $$
+   Z(\psi) = P + E_1\sin 2\psi + E_2\cos 2\psi \qquad \text{(complex, unrestricted AC)}
+   $$
+   $$
+   D(\psi) = C_0 + C_c\cos 2\psi + C_s\sin 2\psi \qquad \text{(real DC Malus fringe)}
+   $$
 
    projects the AC coefficients onto the **DC derivative**, and confirms the
    fitted **DC half-fringe** whenever the signal is resolved.

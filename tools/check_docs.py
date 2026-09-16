@@ -3,7 +3,7 @@
 
     python tools/check_docs.py
 
-Four checks, all of which must pass before documentation is pushed:
+Seven checks, all of which must pass before documentation is pushed:
 
 1. **Dashes.** No em dash, en dash or prose double hyphen anywhere in the
    Markdown. Horizontal rules, table separators, command-line flags and code
@@ -13,6 +13,14 @@ Four checks, all of which must pass before documentation is pushed:
    ``<a id=...>`` on the target page, using GitHub's own slug rules.
 4. **Citations.** Every ``[[N]](.../references.md#ref-N)`` has a matching
    anchor, the numbering has no gaps, and nothing is defined but never cited.
+5. **Pipes in table math.** No ``|`` or ``\\|`` inside ``$...$`` on a line that
+   starts with ``|``. A bare pipe splits the table cell, and ``\\|`` is the
+   double-bar norm in MathJax, so absolute values must be written
+   ``\\lvert x \\rvert``.
+6. **Inline math spacing.** No whitespace immediately inside a ``$`` delimiter,
+   because GitHub then refuses to render the span as math.
+7. **Display math.** ``$$`` stands alone on its own line, above and below the
+   equation, which is the repository convention.
 
 Exit status is 0 when everything passes and 1 otherwise, so it can be wired
 into CI.
@@ -31,6 +39,10 @@ LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 HTML_REF_RE = re.compile(r'(?:src|href)="([^"]+)"')
 HEADING_RE = re.compile(r"^#{1,6}\s+(.*)$")
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
+CODE_SPAN_RE = re.compile(r"`[^`\n]*`")
+# One inline span: a lone $ (not $$, not \$) up to the next lone $. May run
+# on to the next line of the same paragraph, as GitHub allows.
+INLINE_MATH_RE = re.compile(r"(?<![\\$])\$(?!\$)(.+?)(?<![\\$])\$(?!\$)", re.DOTALL)
 EXTERNAL = ("http://", "https://", "mailto:", "../../actions", "../../star",
             "../../commits")
 
@@ -68,6 +80,45 @@ def strip_code_blocks(text: str) -> list[tuple[int, str]]:
         if not in_fence:
             out.append((n, line))
     return out
+
+
+def prose_lines(text: str) -> list[tuple[int, str]]:
+    """Lines outside fenced code and outside ``$$`` display blocks, with inline
+    code spans blanked so a backtick-quoted ``$`` cannot open a math span."""
+    out, in_display = [], False
+    for n, line in strip_code_blocks(text):
+        if line.strip() == "$$":
+            in_display = not in_display
+            continue
+        if in_display:
+            continue
+        out.append((n, CODE_SPAN_RE.sub(lambda m: " " * len(m.group(0)), line)))
+    return out
+
+
+def inline_math_spans(text: str) -> list[tuple[int, str]]:
+    """Every ``$...$`` span in the prose as (line number, body), pairing the
+    delimiters paragraph by paragraph so a span that continues on the next line
+    is read as one span and a stray ``$`` cannot poison the whole file."""
+    spans: list[tuple[int, str]] = []
+    paragraph: list[tuple[int, str]] = []
+
+    def flush() -> None:
+        if not paragraph:
+            return
+        joined = "\n".join(line for _, line in paragraph)
+        for m in INLINE_MATH_RE.finditer(joined):
+            index = joined.count("\n", 0, m.start())
+            spans.append((paragraph[index][0], m.group(1)))
+        paragraph.clear()
+
+    for n, line in prose_lines(text):
+        if line.strip():
+            paragraph.append((n, line))
+        else:
+            flush()
+    flush()
+    return spans
 
 
 def check_dashes(files: list[Path]) -> list[str]:
@@ -136,6 +187,52 @@ def check_citations() -> tuple[list[str], int]:
     return problems, len(defined)
 
 
+def check_table_math(files: list[Path]) -> tuple[list[str], int]:
+    """No ``|`` or ``\\|`` inside ``$...$`` on a table row."""
+    problems, counted = [], 0
+    for f in files:
+        for n, line in prose_lines(f.read_text(encoding="utf-8")):
+            if not line.lstrip().startswith("|"):
+                continue
+            for m in INLINE_MATH_RE.finditer(line):
+                counted += 1
+                if "|" in m.group(1):
+                    problems.append(
+                        f"{f.relative_to(ROOT)}:{n}: pipe inside table math, "
+                        f"use \\lvert and \\rvert: {m.group(0)[:60]}")
+    return problems, counted
+
+
+def check_math_spacing(files: list[Path]) -> tuple[list[str], int]:
+    """No whitespace immediately inside a ``$`` delimiter."""
+    problems, counted = [], 0
+    for f in files:
+        for n, body in inline_math_spans(f.read_text(encoding="utf-8")):
+            counted += 1
+            if body != body.strip():
+                problems.append(
+                    f"{f.relative_to(ROOT)}:{n}: whitespace inside $ delimiters: "
+                    f"${body[:50]}$")
+    return problems, counted
+
+
+def check_display_math(files: list[Path]) -> tuple[list[str], int]:
+    """``$$`` stands alone on its line."""
+    problems, delimiters = [], 0
+    for f in files:
+        for n, line in strip_code_blocks(f.read_text(encoding="utf-8")):
+            line = CODE_SPAN_RE.sub(lambda m: " " * len(m.group(0)), line)
+            if "$$" not in line:
+                continue
+            if line.strip() == "$$":
+                delimiters += 1
+            else:
+                problems.append(
+                    f"{f.relative_to(ROOT)}:{n}: $$ must stand alone on its line: "
+                    f"{line.strip()[:60]}")
+    return problems, delimiters // 2
+
+
 def main() -> int:
     files = markdown_files()
     failed = False
@@ -160,6 +257,16 @@ def main() -> int:
     for p in cite_problems:
         print(f"            {p}")
     failed |= bool(cite_problems)
+
+    for label, (problems, count), unit in (
+            ("table math ", check_table_math(files), "spans on table rows"),
+            ("inline math", check_math_spacing(files), "spans"),
+            ("display    ", check_display_math(files), "blocks")):
+        print(f"{label} {count} {unit}"
+              f"{'' if not problems else f', {len(problems)} problems'}")
+        for p in problems[:20]:
+            print(f"            {p}")
+        failed |= bool(problems)
 
     print("FAIL" if failed else "OK")
     return 1 if failed else 0

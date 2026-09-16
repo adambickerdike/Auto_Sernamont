@@ -208,15 +208,14 @@ This works on **any** machine, hardware or not:
 
 ```bash
 cd /path/to/Auto_Sernamont
-for f in tests/test_*.py; do
-  printf '%-58s ' "$f"
-  python "$f" >/dev/null 2>&1 && echo PASS || echo FAIL
-done
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
-All **22** test files should print `PASS`. A `FAIL` here is a software problem,
-not a hardware one, and it tells you so before you have spent an hour at the
-bench. Individual tests run the same way:
+The run ends with `OK` and the number of tests it ran. The suite needs
+`pyserial` installed even with no hardware attached, because the modules under
+test import it; the install line in [§2](#2-python-dependencies) provides it.
+A failure here is a software problem, not a hardware one, and it tells you so
+before you have spent an hour at the bench. Individual test files run directly:
 
 ```bash
 python tests/test_pockels_hysteresis_analysis.py

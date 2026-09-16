@@ -167,7 +167,9 @@ about its own fast axis. The consequence used here is that rotating the plate
 by $\Delta$ rotates the *polarisation* by $2\Delta$, with no change of
 intensity and no ellipticity introduced:
 
-$$\theta_i \approx 2\,\theta_\mathrm{HWP} + \text{offset}.$$
+$$
+\theta_i \approx 2\,\theta_\mathrm{HWP} + \text{offset}.
+$$
 
 The current lab mapping makes this concrete:
 $\theta_i = \mathrm{wrap}_{180}\!\left(90 + 2\,(H_\mathrm{raw} - 11.9607)\right)$

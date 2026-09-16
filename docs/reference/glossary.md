@@ -44,7 +44,7 @@ the hysteresis and fit quantities.
 | $\lambda$ | wavelength (1550 nm) | nm |
 | $I_\mathrm{min}$, $I_\mathrm{max}$ | extremes of a transmission sweep; QWP retardance follows from $\delta = 2\arccos\sqrt{I_\mathrm{min}/I_\mathrm{max}}$ | W or V |
 | $X$, $Y$ | lock-in in-phase and quadrature outputs | V |
-| $\|R\|$, $\phi$ | lock-in magnitude and phase | V, ° |
+| $\lvert R\rvert$, $\phi$ | lock-in magnitude and phase | V, ° |
 | $Z(\psi)$ | complex first-harmonic response versus analyser offset | V |
 | $P$ | analyser-independent modulation term in $Z(\psi)$ | V |
 | $E_1$, $E_2$ | complex $\sin 2\psi$ and $\cos 2\psi$ coefficients of $Z(\psi)$ | V |
@@ -58,7 +58,7 @@ the hysteresis and fit quantities.
 | $S_\mathrm{rem}$, $S_\mathrm{sat}$ | remanent and saturated response | V |
 | $S_s$, $w$ | saturation amplitude and width of the $\tanh$ branch fit $S = a + bV + S_s\tanh((V-V_c)/w)$ | V, V |
 | $a$, $b$ | offset and reversible linear term of that fit | V, V/V |
-| $h$ | peak height of $\|dS/dV\|$ on a branch | V/V |
+| $h$ | peak height of $\lvert dS/dV\rvert$ on a branch | V/V |
 | $\sigma$ | width of the switching-field distribution (`switching_sigma_V`) | V |
 | $G$ | leakage conductance of a pixel | S |
 | $\tau$, $\beta$ | poling time constant and stretching exponent | s, dimensionless |
@@ -97,7 +97,7 @@ Where that is so, the entry says what it means *here*.
 | **Backlash compensation** | always approaching a target from the same direction so gear play is loaded identically |
 | **Bring-up sequence** | the fixed order in which instruments are connected at the start of a run; the teardown reverses it |
 | **Brighten** | rotating the analyser off the null so the stage alignment has a bright peak to climb |
-| **Butterfly** | the raw $\|R\|$ versus $V_\mathrm{dc}$ curve; the magnitude of the signed loop |
+| **Butterfly** | the raw $\lvert R\rvert$ versus $V_\mathrm{dc}$ curve; the magnitude of the signed loop |
 | **Calibration pixel** | the first measured pixel, which does the expensive full per-HWP calibration that later pixels inherit |
 | **Centre-dense grid** | the default 45-point hysteresis voltage grid, with levels packed near 0 V where the coercive behaviour is |
 | **Chip map** | see *Fast map* |
@@ -136,7 +136,7 @@ Where that is so, the entry says what it means *here*.
 | **Pickup** | electrical crosstalk from the drive into the detection chain |
 | **Pinched loop** | a constricted loop, caused by defect pinning, internal-bias pairs, or antiferroelectric-like behaviour |
 | **Poling** | applying a DC bias to align ferroelectric domains |
-| **Quadrature fraction** | $\max\|Q\|/\max\|S\|$; above 0.5 the signed projection is meaningless and the loop is `invalid_projection` |
+| **Quadrature fraction** | $\max\lvert Q\rvert/\max\lvert S\rvert$; above 0.5 the signed projection is meaningless and the loop is `invalid_projection` |
 | **Quality flag** | a machine-written note that something about a row is suspect. Quality problems become flags, not exceptions, so the run continues and you decide later |
 | **Re-null** | re-optimising QWP/analyser at a pixel because the inherited seed leaks |
 | **Resume** | restarting an interrupted run against its existing folder; completed pixels are skipped only when every requested artifact verifies as complete |
@@ -147,7 +147,7 @@ Where that is so, the entry says what it means *here*.
 | **Sensitivity index** | the DSP7230's discrete voltage-range setting. Index 16 = 200 µV RMS full scale, and it is deliberately held **fixed** for a whole map so every point shares one calibration |
 | **Sénarmont** | compensator plus analyser near extinction; the classic small-retardance measurement geometry |
 | **Shakedown** | a deliberate single-pixel run, done before every campaign, to prove the whole chain end to end |
-| **Slope point** | analyser at ±45° from the null, where $\|dI/d\psi\|$ is maximal |
+| **Slope point** | analyser at ±45° from the null, where $\lvert dI/d\psi\rvert$ is maximal |
 | **Squareness** | $S_\mathrm{rem}/S_\mathrm{sat}$; how "square" a loop is |
 | **Stage calibration** | the optional separate pass that records each pixel's transmission-peak motor coordinates |
 | **Substrate calibration** | the per-HWP null seed table |
